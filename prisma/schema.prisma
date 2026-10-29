@@ -1,0 +1,721 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Short-lived OAuth requests and one-use codes are shared by all API replicas.
+model AuthChallenge {
+  id        String   @id
+  purpose   String
+  payload   Json
+  expiresAt DateTime
+
+  @@index([expiresAt])
+  @@map("auth_challenges")
+}
+
+model AuthRateLimit {
+  key       String   @id
+  count     Int
+  expiresAt DateTime
+
+  @@index([expiresAt])
+  @@map("auth_rate_limits")
+}
+
+enum UserRole {
+  CANDIDATE
+  COMPANY
+  ADMIN
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum ApplicationStatus {
+  APPLIED
+  REVIEWING
+  INTERVIEW
+  TECHNICAL_TEST
+  OFFER
+  ACCEPTED
+  REJECTED
+  CANCELLED
+}
+
+enum AssessmentType {
+  THEORY
+  PRACTICAL_CODING
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTING
+  COMPLETED
+  EXPIRED
+  SYSTEM_ERROR
+}
+
+enum QuestionDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum JobSource {
+  INTERNAL
+  JSEARCH
+  REMOTIVE
+  BLOGNONE
+  JOBTHAI
+  JOBSDB
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  REMOTE
+}
+
+enum CourseSource {
+  UDEMY
+  YOUTUBE
+}
+
+enum IngestionStatus {
+  SUCCESS
+  PARTIAL_SUCCESS
+  FAILED
+}
+
+enum SkillCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  DEVOPS
+  TESTING
+  MOBILE
+  AI_ML
+  SECURITY
+  SALES
+  COORDINATION
+  WRITING
+}
+
+enum NotificationType {
+  APPLICATION_STATUS_CHANGED
+  INTERVIEW_INVITATION
+  ASSESSMENT_ASSIGNED
+  OFFER_RECEIVED
+  SYSTEM_ANNOUNCEMENT
+}
+
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+  GITHUB
+}
+
+// 1. User Account
+model User {
+  id               String            @id @default(uuid())
+  email            String            @unique
+  passwordHash     String?
+  role             UserRole          @default(CANDIDATE)
+  authProvider     AuthProvider      @default(LOCAL)
+  providerId       String?
+  avatarUrl        String?
+  isActive         Boolean           @default(true)
+  tokenVersion     Int               @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  candidateProfile CandidateProfile?
+  companyMembers   CompanyMember[]
+  statusHistories  ApplicationStatusHistory[]
+  notifications    Notification[]
+  auditLogs        AdminAuditLog[]
+
+  @@map("users")
+}
+
+// 2. Candidate Profile
+model CandidateProfile {
+  id                String            @id @default(uuid())
+  userId            String            @unique
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName          String
+  headline          String?
+  bio               String?
+  avatarUrl         String?
+  education         Json?             // Array of degree, school, year
+  experience        Json?             // Array of title, company, duration, desc
+  targetCareer      String?           // e.g. "Full Stack Developer", "Data Engineer"
+  githubUsername    String?           @unique
+  githubConnectedAt DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  skills            CandidateSkill[]
+  githubRepos       GitHubRepository[]
+  applications      JobApplication[]
+  assessmentAttempts AssessmentAttempt[]
+  evaluations       CompanyEvaluation[]
+  favorites         JobFavorite[]
+
+  @@map("candidate_profiles")
+}
+
+// 3. Company
+model Company {
+  id                 String             @id @default(uuid())
+  name               String
+  slug               String             @unique
+  industry           String?
+  companySize        String?
+  description        String?
+  website            String?
+  address            String?
+  contactEmail       String?
+  contactPhone       String?
+  logoUrl            String?
+  verificationStatus VerificationStatus @default(PENDING)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  members            CompanyMember[]
+  verifications      CompanyVerification[]
+  jobs               Job[]
+  evaluations        CompanyEvaluation[]
+  assessments        Assessment[]
+
+  @@map("companies")
+}
+
+// 4. Company Member
+model CompanyMember {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  role      String   @default("RECRUITER") // OWNER, RECRUITER, HR
+  createdAt DateTime @default(now())
+
+  @@unique([userId, companyId])
+  @@map("company_members")
+}
+
+// 5. Company Verification
+model CompanyVerification {
+  id              String             @id @default(uuid())
+  companyId       String
+  company         Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  businessRegNo   String?
+  documents       Json?              // file paths or links
+  status          VerificationStatus @default(PENDING)
+  reviewedBy      String?            // Admin user id
+  reviewedAt      DateTime?
+  rejectionReason String?
+  createdAt       DateTime           @default(now())
+
+  @@index([createdAt, id])
+  @@index([status, createdAt, id])
+  @@index([companyId, createdAt])
+  @@map("company_verifications")
+}
+
+// 6. Skill Master
+model Skill {
+  id          String             @id @default(uuid())
+  name        String             @unique
+  slug        String             @unique
+  category    SkillCategory      @default(BACKEND)
+  description String?
+  icon        String?
+  createdAt   DateTime           @default(now())
+
+  candidateSkills CandidateSkill[]
+  jobSkills       JobSkill[]
+  courseSkills    CourseSkill[]
+  assessments     Assessment[]
+  frameworkItems  SkillFrameworkItem[]
+
+  @@map("skills")
+}
+
+// 7. Candidate Skill
+model CandidateSkill {
+  id             String         @id @default(uuid())
+  candidateId    String
+  candidate      CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  skillId        String
+  skill          Skill          @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  practicalScore Float          @default(0) // Legacy GitHub cache; not a proficiency result
+  theoryScore    Float          @default(0) // 0-100 from Assessment
+  codingScore    Float          @default(0) // 0-100 from Judge0
+  verifiedScore  Float          @default(0) // Legacy cache; not used for assessment matching
+  isVerified     Boolean        @default(false)
+  verifiedAt     DateTime?
+  updatedAt      DateTime       @updatedAt
+
+  evidences      GitHubEvidence[]
+
+  @@unique([candidateId, skillId])
+  @@map("candidate_skills")
+}
+
+// 8. GitHub Repository
+model GitHubRepository {
+  id                 String           @id @default(uuid())
+  candidateId        String
+  candidate          CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  repoName           String
+  fullName           String
+  description        String?
+  url                String
+  language           String?
+  stargazersCount    Int              @default(0)
+  forksCount         Int              @default(0)
+  isFork             Boolean          @default(false)
+  lastCommitAt       DateTime?
+  topics             Json?            // Array of strings
+  languagesBreakdown Json?            // { TypeScript: 85000, HTML: 12000 }
+  createdAt          DateTime         @default(now())
+
+  evidences          GitHubEvidence[]
+
+  @@unique([candidateId, fullName])
+  @@map("github_repositories")
+}
+
+// 9. GitHub Evidence
+model GitHubEvidence {
+  id                 String           @id @default(uuid())
+  candidateSkillId   String
+  candidateSkill     CandidateSkill   @relation(fields: [candidateSkillId], references: [id], onDelete: Cascade)
+  repositoryId       String
+  repository         GitHubRepository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  dependencyMatches  Json?            // matched dependencies in package.json/requirements.txt
+  commitCount        Int              @default(0)
+  linesOfCode        Int              @default(0)
+  scoreContribution  Float            @default(0)
+  detectedAt         DateTime         @default(now())
+
+  @@map("github_evidences")
+}
+
+// 10. Skill Framework
+model SkillFramework {
+  id          String               @id @default(uuid())
+  name        String
+  provider    String               // MICROSOFT, AWS, GOOGLE_CLOUD, COMPTIA, INTERNAL
+  code        String               @unique
+  description String?
+  version     String?
+  createdAt   DateTime             @default(now())
+
+  items       SkillFrameworkItem[]
+
+  @@map("skill_frameworks")
+}
+
+// 11. Skill Framework Item
+model SkillFrameworkItem {
+  id            String         @id @default(uuid())
+  frameworkId   String
+  framework     SkillFramework @relation(fields: [frameworkId], references: [id], onDelete: Cascade)
+  skillId       String
+  skill         Skill          @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  topicName     String
+  level         String         @default("ASSOCIATE")
+  requiredScore Float          @default(70)
+  description   String?
+
+  @@map("skill_framework_items")
+}
+
+// 12. Job Listing
+model Job {
+  id             String           @id @default(uuid())
+  companyId      String?
+  company        Company?         @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  companyName    String           // Stored directly to support external jobs
+  companyLogoUrl String?
+  title          String
+  slug           String
+  description    String
+  requirements   String?
+  benefits       String?
+  location       String           @default("Bangkok, Thailand")
+  isRemote       Boolean          @default(false)
+  employmentType JobType          @default(FULL_TIME)
+  salaryMin      Int?
+  salaryMax      Int?
+  salaryCurrency String           @default("THB")
+  source         JobSource        @default(INTERNAL)
+  sourceUrl      String?
+  externalId     String?
+  isActive       Boolean          @default(true)
+  acceptedQuota  Int?
+  publishedAt    DateTime         @default(now())
+  expiresAt      DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  skills         JobSkill[]
+  applications   JobApplication[]
+  favoritedBy    JobFavorite[]
+  customAssessmentId String?
+  customAssessment   Assessment? @relation(fields: [customAssessmentId], references: [id], onDelete: SetNull)
+
+  @@index([source, externalId])
+  @@index([isActive, publishedAt])
+  @@map("jobs")
+}
+
+// 13. Job Required Skill
+model JobSkill {
+  id           String   @id @default(uuid())
+  jobId        String
+  job          Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skillId      String
+  skill        Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  isRequired   Boolean  @default(true) // true = Required (70%), false = Preferred (20%)
+  weight       Float    @default(1.0)
+  minimumScore Float    @default(50)
+
+  @@unique([jobId, skillId])
+  @@map("job_skills")
+}
+
+// 14. Job Application
+model JobApplication {
+  id                      String                    @id @default(uuid())
+  jobId                   String
+  job                     Job                       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  candidateId             String
+  candidate               CandidateProfile          @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  status                  ApplicationStatus         @default(APPLIED)
+  roundNumber             Int                       @default(1)
+  coverLetter             String?
+  resumeUrl               String?
+  matchScoreAtApplication Float?
+  matchAssessmentSnapshot Json? // Assessment policy and coverage; null = legacy
+  internalNote            String?
+  assignedAssessmentId    String?
+  assignedAssessment      Assessment?               @relation("AssignedApplicationAssessment", fields: [assignedAssessmentId], references: [id], onDelete: SetNull)
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+
+  statusHistory           ApplicationStatusHistory[]
+  evaluation              CompanyEvaluation?
+
+  @@unique([jobId, candidateId, roundNumber])
+  @@map("job_applications")
+}
+
+// 14.1 Job Favorite
+model JobFavorite {
+  id          String           @id @default(uuid())
+  candidateId String
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  jobId       String
+  job         Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt   DateTime         @default(now())
+
+  @@unique([candidateId, jobId])
+  @@map("job_favorites")
+}
+
+// 15. Application Status History
+model ApplicationStatusHistory {
+  id             String            @id @default(uuid())
+  applicationId  String
+  application    JobApplication    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  previousStatus ApplicationStatus?
+  newStatus      ApplicationStatus
+  changedById    String?
+  changedBy      User?             @relation(fields: [changedById], references: [id], onDelete: SetNull)
+  note           String?
+  createdAt      DateTime          @default(now())
+
+  @@map("application_status_histories")
+}
+
+enum QuestionEvaluationMethod {
+  AUTOMATED_TEST_CASES
+  OPEN_ENDED
+}
+
+enum AssessmentReviewStatus {
+  NOT_REQUIRED
+  PENDING_HUMAN_REVIEW
+  HUMAN_REVIEWED
+  EVALUATION_PENDING
+  EVALUATION_FAILED
+}
+
+enum FeedbackVisibility {
+  IMMEDIATE
+  AFTER_REVIEW
+  PRIVATE_TO_COMPANY
+}
+
+// 16. Assessment
+model Assessment {
+  id               String              @id @default(uuid())
+  companyId        String?
+  company          Company?            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title            String
+  slug             String              @unique
+  description      String?
+  frameworkCode    String?
+  frameworkVersion String?
+  frameworkScope   String?
+  type             AssessmentType      @default(THEORY)
+  skillId          String?
+  skill            Skill?              @relation(fields: [skillId], references: [id], onDelete: SetNull)
+  version          Int                 @default(1)
+  timeLimitMinutes Int                 @default(30)
+  passingScore     Float               @default(70)
+  feedbackVisibility FeedbackVisibility @default(IMMEDIATE)
+  isActive         Boolean             @default(true)
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  questions        Question[]
+  attempts         AssessmentAttempt[]
+  jobs             Job[]
+  assignedApplications JobApplication[]      @relation("AssignedApplicationAssessment")
+
+  @@map("assessments")
+}
+
+// 17. Question
+model Question {
+  id               String                   @id @default(uuid())
+  assessmentId     String
+  assessment       Assessment               @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  title            String
+  prompt           String
+  frameworkTopicId String?
+  frameworkMappingNote String?
+  difficulty       QuestionDifficulty       @default(MEDIUM)
+  points           Int                      @default(10)
+  starterCode      String?
+  testCases        Json?                    // Array of { input: string, expectedOutput: string, isHidden: boolean }
+  evaluationMethod QuestionEvaluationMethod @default(AUTOMATED_TEST_CASES)
+  rubric           Json?                    // Custom rubric weights or scoring criteria
+  behavioralChecks Json?                    // Anti-plagiarism, structure checks
+  solutionCode     String?
+  explanation      String?
+  version          Int                      @default(1)
+  createdAt        DateTime                 @default(now())
+
+  choices          Choice[]
+  answers          AssessmentAnswer[]
+
+  @@map("questions")
+}
+
+// 18. Choice (Theory)
+model Choice {
+  id         String   @id @default(uuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text       String
+  isCorrect  Boolean  @default(false)
+  order      Int      @default(0)
+
+  @@map("choices")
+}
+
+// 19. Assessment Attempt
+model AssessmentAttempt {
+  id                String                 @id @default(uuid())
+  assessmentId      String
+  assessment        Assessment             @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  candidateId       String
+  candidate         CandidateProfile       @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  status            AttemptStatus          @default(IN_PROGRESS)
+  assessmentVersion Int                    @default(1)
+  score             Float?                 // Nullable during EVALUATION_PENDING or company pending review
+  maxScore          Float                  @default(100)
+  percentage        Float?                 // Nullable
+  passed            Boolean?               // Nullable
+  aiScore           Float?                 // Pure AI evaluation score
+  humanScore        Float?                 // Reviewer / Tech lead score
+  finalScore        Float?                 // Effective score: humanScore ?? aiScore
+  reviewStatus      AssessmentReviewStatus @default(NOT_REQUIRED)
+  reviewedById      String?
+  reviewedAt        DateTime?
+  reviewReason      String?
+  evaluationSnapshot Json?                 // AI Rubric breakdown, feedback, strengths, improvements
+  evaluatorModel    String?                // e.g. gemini-3.8-flash
+  evaluatorProvider String?                // e.g. GOOGLE_GENAI
+  promptVersion     String?
+  sourceCode        String?                @db.Text
+  timeSpentSeconds  Int                    @default(0)
+  snapshot          Json?                  // Snapshot of assessment criteria and questions at start
+  integrityEvents   Json?                  // [{ type: 'TAB_BLUR', timestamp: '...' }]
+  draftCode         Json?                  // { [questionId]: string }
+  startedAt         DateTime               @default(now())
+  completedAt       DateTime?
+
+  answers           AssessmentAnswer[]
+
+  @@map("assessment_attempts")
+}
+
+// 20. Assessment Answer
+model AssessmentAnswer {
+  id               String            @id @default(uuid())
+  attemptId        String
+  attempt          AssessmentAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId       String
+  question         Question          @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedChoiceId String?
+  submittedCode    String?
+  executionResult  Json?             // stdout, stderr, compile_output, status
+  isCorrect        Boolean           @default(false)
+  pointsEarned     Float             @default(0)
+  createdAt        DateTime          @default(now())
+
+  @@map("assessment_answers")
+}
+
+// 21. Company Candidate Evaluation
+model CompanyEvaluation {
+  id                  String         @id @default(uuid())
+  applicationId       String         @unique
+  application         JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  companyId           String
+  company             Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  candidateId         String
+  candidate           CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  technicalScore      Int            @default(3) // 1-5
+  problemSolvingScore Int            @default(3) // 1-5
+  communicationScore  Int            @default(3) // 1-5
+  teamworkScore       Int            @default(3) // 1-5
+  overallFeedback     String
+  strengths           Json?          // Array of strings
+  areasForImprovement Json?          // Array of strings
+  createdAt           DateTime       @default(now())
+
+  @@map("company_evaluations")
+}
+
+// 22. Course
+model Course {
+  id           String        @id @default(uuid())
+  title        String
+  provider     CourseSource  @default(YOUTUBE)
+  description  String?
+  url          String
+  thumbnailUrl String?
+  duration     String?
+  level        String        @default("All Levels")
+  rating       Float?
+  source       String        @default("YouTube")
+  externalId   String?
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+
+  skills       CourseSkill[]
+
+  @@index([provider, externalId])
+  @@map("courses")
+}
+
+// 23. Course Skill
+model CourseSkill {
+  id             String   @id @default(uuid())
+  courseId       String
+  course         Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  skillId        String
+  skill          Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  relevanceScore Float    @default(1.0)
+
+  @@unique([courseId, skillId])
+  @@map("course_skills")
+}
+
+// 24. Ingestion Log
+// Durable tracking and a database-enforced per-source lock for long job imports.
+model IngestionRun {
+  id          String   @id @default(uuid())
+  requestKey  String   @unique
+  source      String
+  quota       Int
+  activeKey   String?  @unique
+  parentId    String?
+  state       String   @default("RUNNING")
+  startedAt   DateTime @default(now())
+  heartbeatAt DateTime @default(now())
+  finishedAt  DateTime?
+  result      Json?
+
+  @@index([state, heartbeatAt])
+  @@map("ingestion_runs")
+}
+
+model IngestionLog {
+  id             String          @id @default(uuid())
+  source         String
+  status         IngestionStatus @default(SUCCESS)
+  startedAt      DateTime        @default(now())
+  finishedAt     DateTime        @default(now())
+  createdCount   Int             @default(0)
+  updatedCount   Int             @default(0)
+  duplicateCount Int             @default(0)
+  errorCount     Int             @default(0)
+  errorMessage   String?
+  metadata       Json?
+
+  @@map("ingestion_logs")
+}
+
+// 25. Notification
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType @default(APPLICATION_STATUS_CHANGED)
+  title     String
+  message   String
+  link      String?
+  metadata  Json?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+  @@map("notifications")
+}
+
+// 26. Admin Audit Log
+model AdminAuditLog {
+  id         String   @id @default(uuid())
+  actorId    String
+  actor      User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  action     String
+  targetType String
+  targetId   String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([actorId])
+  @@index([targetType, targetId])
+  @@map("admin_audit_logs")
+}

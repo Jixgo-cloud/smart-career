@@ -1,0 +1,92 @@
+name: E2E (API suites + Playwright browser)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+# Mock OAuth / Judge0 fixtures only — no external provider secrets are needed or used.
+# Live-provider checks (OAuth, Judge0, Gemini, JSearch, YouTube) are run manually with
+# `node outputs/live-services-check.cjs` against a real .env, never in CI.
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: smartcareer_ci
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smartcareer_ci?schema=public
+      JWT_SECRET: ci-only-jwt-secret-key-minimum-32-characters-long
+      FRONTEND_URL: http://localhost:3000
+      ALLOWED_ORIGINS: http://localhost:3000
+      API_URL: http://localhost:4000/api
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api
+      NEXT_PUBLIC_SHOW_DEMO_LOGIN: 'true'   # baked into the web build
+      ENABLE_DEV_MOCK_AUTH: 'true'
+      JUDGE0_FIXTURE_MODE: 'true'
+      DISABLE_RUN_CODE_RATE_LIMIT: 'true'
+      GITHUB_CALLBACK_URL: http://localhost:4000/api/auth/github/callback
+      GOOGLE_CALLBACK_URL: http://localhost:4000/api/auth/google/callback
+      ADMIN_EMAIL: admin@smartcareer.local
+      ADMIN_PASSWORD: Admin@SmartCareer2026!
+      PORT: '4000'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run prisma:generate
+      - run: npm run build:shared
+      - run: npm run build:api
+      - run: npm run build:web
+
+      - name: Create schema and seed demo data
+        run: |
+          npm run prisma:push -- --skip-generate
+          npm run prisma:seed
+
+      - name: API suites (domain, security, UAT, admin)
+        run: npm test
+
+      - name: Start API and web (production builds)
+        run: |
+          nohup npm run start --workspace=@smartcareer/api > api.log 2>&1 &
+          nohup npm run start --workspace=@smartcareer/web > web.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -fs http://localhost:4000/api/health/ready >/dev/null && curl -fs http://localhost:3000/login >/dev/null && exit 0
+            sleep 2
+          done
+          echo "servers did not become ready"; tail -n 50 api.log web.log; exit 1
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Playwright browser E2E (Candidate / Company / Admin)
+        run: npx playwright test
+
+      - name: Upload Playwright report and server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-artifacts
+          path: |
+            outputs/playwright-report
+            outputs/playwright-artifacts
+            api.log
+            web.log
+          retention-days: 7

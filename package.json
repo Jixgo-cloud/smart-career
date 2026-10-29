@@ -1,0 +1,43 @@
+{
+  "name": "smartcareer",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build:shared": "npm run build --workspace=@smartcareer/shared",
+    "prisma:generate": "npx prisma generate --schema=prisma/schema.prisma",
+    "prisma:push": "npx prisma db push --schema=prisma/schema.prisma",
+    "prisma:migrate": "npx prisma migrate dev --schema=prisma/schema.prisma",
+    "prisma:seed": "npx ts-node -P tsconfig.base.json prisma/seed.ts",
+    "prisma:seed:prod": "npx ts-node -P tsconfig.base.json prisma/seed-production.ts",
+    "admin:create": "node scripts/create-admin.cjs",
+    "dev:api": "npm run dev --workspace=@smartcareer/api",
+    "dev:web": "npm run dev --workspace=@smartcareer/web",
+    "build:api": "npm run build --workspace=@smartcareer/api",
+    "build:web": "npm run build --workspace=@smartcareer/web",
+    "build": "npm run build:shared && npm run prisma:generate && npm run build:api && npm run build:web",
+    "lint": "npm run lint --workspace=@smartcareer/shared && npm run lint --workspace=@smartcareer/api && npm run lint --workspace=@smartcareer/web",
+    "test:domain": "node --test tests/skill-assessment.spec.cjs tests/job-detail-content.spec.cjs",
+    "test:security": "node --test tests/security.spec.cjs",
+    "test:uat": "node --test tests/uat-e2e.spec.cjs",
+    "test:admin": "node --test tests/admin-completeness.spec.cjs",
+    "test:e2e:browser": "playwright test",
+    "test:scraping": "node --test tests/live-scraping.spec.cjs",
+    "test:regression": "node scripts/verify-core-regression.cjs",
+    "verify:core": "node scripts/verify-core-regression.cjs",
+    "test": "npm run test:domain && npm run test:security && npm run test:uat && npm run test:admin"
+  },
+  "dependencies": {
+    "@prisma/client": "5.22.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^22.10.0",
+    "prisma": "5.22.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,15 @@
+node_modules/
+.next/
+dist/
+out/
+output/
+outputs/
+tmp/
+.env
+.env.*
+!.env.example
+*.log
+*.tsbuildinfo
+.DS_Store
+coverage/
+SERVER_PACKAGE_PROPOSAL.md

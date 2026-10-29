@@ -1,0 +1,155 @@
+{
+  "assessments": [
+    {
+      "slug": "javascript-practical-coding-v1",
+      "title": "JavaScript Practical Coding Assessment",
+      "description": "วัดทักษะการเขียนโค้ด JavaScript เชิงปฏิบัติสำหรับการประมวลผลข้อมูลและตรรกะพื้นฐาน",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "javascript",
+      "timeLimitMinutes": 30,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Sum Positive Numbers",
+          "prompt": "เขียนฟังก์ชัน `solution(numbers)` ที่รับอาร์เรย์ของตัวเลข และคืนค่าผลรวมของตัวเลขที่มีค่ามากกว่า 0 เท่านั้น หากไม่มีตัวเลขบวกเลยให้คืนค่า 0",
+          "difficulty": "EASY",
+          "points": 50,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(numbers) {\n  // เขียนโค้ดของคุณที่นี่\n  return 0;\n}",
+          "solutionCode": "function solution(numbers) {\n  if (!Array.isArray(numbers)) return 0;\n  return numbers.filter((n) => typeof n === 'number' && n > 0).reduce((a, b) => a + b, 0);\n}",
+          "explanation": "กรองเฉพาะค่าที่มากกว่า 0 ด้วย filter แล้วหาผลรวมด้วย reduce",
+          "testCases": [
+            { "input": "[[1, -2, 3, 4]]", "expectedOutput": "8", "isHidden": false },
+            { "input": "[[-5, 0, -1]]", "expectedOutput": "0", "isHidden": false },
+            { "input": "[[10, 20, -5, 15]]", "expectedOutput": "45", "isHidden": true },
+            { "input": "[[]]", "expectedOutput": "0", "isHidden": true }
+          ]
+        },
+        {
+          "title": "Normalize Unique Tags",
+          "prompt": "เขียนฟังก์ชัน `solution(tags)` ที่รับอาร์เรย์ของสตริง แปลงทุกตัวเป็นตัวพิมพ์เล็ก ตัดช่องว่างหัวท้าย ตัดสตริงว่างทิ้ง และคืนค่าอาร์เรย์ของแท็กที่ไม่ซ้ำกันเรียงตามลำดับตัวอักษร (A-Z)",
+          "difficulty": "MEDIUM",
+          "points": 50,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(tags) {\n  // เขียนโค้ดของคุณที่นี่\n  return [];\n}",
+          "solutionCode": "function solution(tags) {\n  if (!Array.isArray(tags)) return [];\n  const set = new Set(tags.map((t) => String(t).trim().toLowerCase()).filter(Boolean));\n  return Array.from(set).sort();\n}",
+          "explanation": "ใช้ trim(), toLowerCase(), Set เพื่อตัดซ้ำ และ sort() เพื่อเรียงลำดับ",
+          "testCases": [
+            { "input": "[[\" React \", \"nodejs\", \"react\", \"  \"]]", "expectedOutput": "[\"nodejs\",\"react\"]", "isHidden": false },
+            { "input": "[[\"SQL\", \"api\", \"Api\"]]", "expectedOutput": "[\"api\",\"sql\"]", "isHidden": false },
+            { "input": "[[\"docker\", \"Docker\", \"kubernetes\", \"aws\"]]", "expectedOutput": "[\"aws\",\"docker\",\"kubernetes\"]", "isHidden": true },
+            { "input": "[[]]", "expectedOutput": "[]", "isHidden": true }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "sql-data-query-practical-v1",
+      "title": "SQL & Data Query Logic Assessment",
+      "description": "ประเมินทักษะการกรองและสรุปผลข้อมูลเชิงตารางสำหรับงานฐานข้อมูลและ Backend",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "sql",
+      "timeLimitMinutes": 30,
+      "passingScore": 60,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Aggregate Department Salary",
+          "prompt": "เขียนฟังก์ชัน `solution(rows, minSalary)` ที่จำลองคำสั่ง `SELECT department, COUNT(*) FROM employees WHERE salary >= minSalary GROUP BY department` โดยรับ `rows` เป็นอาร์เรย์ของ `{ department, salary }` และคืนค่าอ็อบเจกต์ที่เก็บจำนวนพนักงานต่อแผนกที่มีเงินเดือนตั้งแต่ `minSalary` ขึ้นไป",
+          "difficulty": "MEDIUM",
+          "points": 100,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(rows, minSalary) {\n  // คืนค่าเป็น object เช่น { Engineering: 2 }\n  return {};\n}",
+          "solutionCode": "function solution(rows, minSalary) {\n  const out = {};\n  for (const r of rows || []) {\n    if (r && typeof r.salary === 'number' && r.salary >= minSalary) {\n      out[r.department] = (out[r.department] || 0) + 1;\n    }\n  }\n  return out;\n}",
+          "explanation": "กรองแถวที่ salary >= minSalary แล้วนับจำนวนแยกตาม department",
+          "testCases": [
+            {
+              "input": "[[{\"department\":\"Eng\",\"salary\":50000},{\"department\":\"Eng\",\"salary\":30000},{\"department\":\"HR\",\"salary\":45000}], 40000]",
+              "expectedOutput": "{\"Eng\":1,\"HR\":1}",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"department\":\"Data\",\"salary\":60000},{\"department\":\"Data\",\"salary\":75000}], 50000]",
+              "expectedOutput": "{\"Data\":2}",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"department\":\"Sales\",\"salary\":25000}], 40000]",
+              "expectedOutput": "{}",
+              "isHidden": true
+            },
+            {
+              "input": "[[], 30000]",
+              "expectedOutput": "{}",
+              "isHidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "python-practical-coding-v1",
+      "title": "Python Practical Problem Solving",
+      "description": "วัดทักษะการเขียนโปรแกรมภาษา Python สำหรับการประมวลผลข้อมูลและอัลกอริทึม",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "python",
+      "timeLimitMinutes": 30,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Word Frequency Counter",
+          "prompt": "เขียนฟังก์ชัน `def solution(words):` ในภาษา Python ที่รับลิสต์ของคำศัพท์และคืนค่า dictionary ที่นับความถี่ของแต่ละคำ (แปลงเป็นตัวพิมพ์เล็กทั้งหมด)",
+          "difficulty": "EASY",
+          "points": 100,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "def solution(words):\n    # เขียนโค้ด Python ที่นี่\n    return {}\n",
+          "solutionCode": "def solution(words):\n    counts = {}\n    for w in (words or []):\n        k = str(w).strip().lower()\n        if k:\n            counts[k] = counts.get(k, 0) + 1\n    return counts\n",
+          "explanation": "วนลูปแปลงคำเป็นตัวพิมพ์เล็กและนับจำนวนใน dictionary",
+          "testCases": [
+            { "input": "[[\"Python\", \"python\", \"Data\"]]", "expectedOutput": "{\"python\":2,\"data\":1}", "isHidden": false },
+            { "input": "[[\"AI\", \"ML\", \"ai\"]]", "expectedOutput": "{\"ai\":2,\"ml\":1}", "isHidden": false },
+            { "input": "[[]]", "expectedOutput": "{}", "isHidden": true }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "web-engineering-theory-v1",
+      "title": "Web & Cloud Engineering Fundamentals (Theory)",
+      "description": "ข้อสอบทฤษฎีสำหรับทบทวนความรู้พื้นฐานด้าน HTTP, JavaScript และ Cloud (ผลสอบทฤษฎีใช้เพื่อการเรียนรู้ ไม่นำไปคำนวณคะแนนทักษะปฏิบัติส่วนกลาง)",
+      "type": "THEORY",
+      "skillSlug": "javascript",
+      "timeLimitMinutes": 20,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "JavaScript Block Scope",
+          "prompt": "คำสั่งใดในภาษา JavaScript ที่ใช้ประกาศตัวแปรแบบ Block Scope และสามารถเปลี่ยนค่าใหม่ได้?",
+          "difficulty": "EASY",
+          "points": 50,
+          "choices": [
+            { "text": "let", "isCorrect": true, "order": 1 },
+            { "text": "var", "isCorrect": false, "order": 2 },
+            { "text": "const", "isCorrect": false, "order": 3 },
+            { "text": "function", "isCorrect": false, "order": 4 }
+          ]
+        },
+        {
+          "title": "HTTP Status Code for Conflict",
+          "prompt": "เมื่อเกิดข้อขัดแย้งของสถานะข้อมูล เช่น การส่งใบสมัครซ้ำหรือ revision ไม่ตรงกัน ควรใช้ HTTP Status Code ใด?",
+          "difficulty": "EASY",
+          "points": 50,
+          "choices": [
+            { "text": "409 Conflict", "isCorrect": true, "order": 1 },
+            { "text": "401 Unauthorized", "isCorrect": false, "order": 2 },
+            { "text": "404 Not Found", "isCorrect": false, "order": 3 },
+            { "text": "502 Bad Gateway", "isCorrect": false, "order": 4 }
+          ]
+        }
+      ]
+    }
+  ]
+}

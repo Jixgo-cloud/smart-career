@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-main: #f2f4f8;
+  --primary: #1d7afc;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: #0f172a;
+  font-family: 'Plus Jakarta Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Noto Sans Thai', sans-serif;
+}
+
+.font-mono-code {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm;
+  }
+  .input {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20;
+  }
+  .btn-primary {
+    @apply cursor-pointer inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#1D7AFC] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply cursor-pointer inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50;
+  }
+  .btn-danger {
+    @apply cursor-pointer inline-flex items-center justify-center gap-1.5 rounded-xl border border-rose-200 bg-white px-3.5 py-2 text-sm font-semibold text-rose-600 shadow-sm transition-all duration-200 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500/20 disabled:opacity-50;
+  }
+  .btn-segmented-group {
+    @apply inline-flex rounded-xl border border-slate-200 bg-white shadow-sm divide-x divide-slate-200 overflow-hidden;
+  }
+  .btn-segmented-item {
+    @apply cursor-pointer inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white transition-colors duration-200 hover:bg-slate-50 hover:text-slate-900 focus:outline-none disabled:opacity-50;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-semibold text-slate-700;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
