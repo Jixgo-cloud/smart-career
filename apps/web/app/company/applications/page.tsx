@@ -111,11 +111,12 @@ function CompanyApplicationsInner() {
     setMessage('');
     setError('');
     try {
+      const publicNote = statusNotes[app.id]?.trim();
       await apiFetch(`/company/applications/${app.id}/status`, {
         method: 'PUT',
         body: JSON.stringify({
           status: app.status,
-          note: statusNotes[app.id]?.trim() || 'Updated HR internal note',
+          ...(publicNote ? { note: publicNote } : {}),
           internalNote: internalNotes[app.id] ?? app.internalNote ?? '',
         }),
       });
@@ -219,9 +220,6 @@ function CompanyApplicationsInner() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">คัดกรองผู้สมัครและประเมินผล</h1>
-          <p className="text-sm text-slate-600">
-            ตรวจสอบคะแนนสอบปฏิบัติ คะแนน Match ตอนสมัคร โปรไฟล์เชิงลึก มอบหมายข้อสอบ และส่งผลประเมิน 4 มิติ
-          </p>
         </div>
 
         <a
@@ -310,7 +308,7 @@ function CompanyApplicationsInner() {
       {/* Candidate Screening Profile Modal */}
       {screeningData && (
         <div className="card space-y-4 border-2 border-indigo-500 bg-indigo-50/15">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <h2 className="text-lg font-bold text-slate-900">
                 โปรไฟล์เชิงลึก: {screeningData.candidate?.fullName}
@@ -358,7 +356,7 @@ function CompanyApplicationsInner() {
 
             <div className="bg-white p-3 rounded-lg border border-slate-200 space-y-1">
               <div className="font-bold text-slate-800">
-                ประวัติการ تغییرสถานะใบสมัคร (Status History)
+                ประวัติการเปลี่ยนสถานะใบสมัคร (Status History)
               </div>
               <div className="space-y-1">
                 {(screeningData.application?.statusHistory || []).map((h: any) => (
@@ -400,7 +398,7 @@ function CompanyApplicationsInner() {
           onSubmit={handleSubmitEvaluation}
           className="card space-y-4 border-2 border-blue-500 bg-blue-50/20"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-slate-900">
               ประเมินผลผู้สมัคร: {evaluatingApp.candidate?.fullName} ({evaluatingApp.job?.title})
             </h2>
@@ -413,7 +411,7 @@ function CompanyApplicationsInner() {
             </button>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             <div>
               <label className="label">ทักษะเทคนิค (1-5)</label>
               <input
@@ -618,7 +616,7 @@ function CompanyApplicationsInner() {
                       )}
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  <div className="flex flex-wrap items-center gap-2 shrink-0 w-full md:w-auto">
                     <button
                       type="button"
                       disabled={loadingScreening}
@@ -629,7 +627,7 @@ function CompanyApplicationsInner() {
                     </button>
 
                     <select
-                      className="input text-xs w-44"
+                      className="input text-xs w-full sm:w-44"
                       value={app.status}
                       onChange={(e) => handleUpdateStatus(app.id, e.target.value)}
                     >
@@ -643,7 +641,7 @@ function CompanyApplicationsInner() {
                     </select>
 
                     <select
-                      className="input text-xs w-48"
+                      className="input text-xs w-full sm:w-48"
                       defaultValue=""
                       onChange={(e) => handleAssignAssessment(app.id, e.target.value)}
                     >

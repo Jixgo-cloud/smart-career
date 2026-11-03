@@ -97,13 +97,10 @@ export default function AdminSkillsPage() {
           <h1 className="text-2xl font-bold text-slate-900">
             จัดการทักษะมาตรฐาน (Master Skills Taxonomy)
           </h1>
-          <p className="text-sm text-slate-600">
-            ครอบคลุมทั้ง 11 หมวดทักษะ พร้อมตรวจสอบจำนวนการอ้างอิงในตำแหน่งงาน คอร์สเรียน และข้อสอบก่อนลบ
-          </p>
         </div>
         <input
           type="text"
-          className="input max-w-xs"
+          className="input w-full sm:max-w-xs"
           placeholder="กรองทักษะในตาราง..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -119,7 +116,7 @@ export default function AdminSkillsPage() {
         }}
       />
 
-      <form onSubmit={handleCreate} className="card grid md:grid-cols-4 gap-4 items-end">
+      <form onSubmit={handleCreate} className="card grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
         <div>
           <label className="label">ชื่อทักษะ</label>
           <input
@@ -164,7 +161,7 @@ export default function AdminSkillsPage() {
         {loading ? (
           <div className="p-8 text-center text-slate-500">กำลังโหลดทักษะ...</div>
         ) : (
-          <table className="w-full text-sm text-left border-collapse">
+          <table className="w-full min-w-[720px] text-sm text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2.5 px-3">ชื่อทักษะ</th>

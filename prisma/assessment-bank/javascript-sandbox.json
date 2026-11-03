@@ -150,6 +150,771 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "fcc-js-algorithms-data-structures-v1",
+      "title": "JavaScript Algorithms & Data Structures (freeCodeCamp Reference)",
+      "description": "อ้างอิงหลักสูตร JavaScript Algorithms and Data Structures จาก freeCodeCamp.org วัดทักษะการจัดการสตริง การแปลงระบบตัวเลข และอัลกอริทึมเชิงตรรกะระดับใช้งานจริง",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "javascript",
+      "timeLimitMinutes": 45,
+      "passingScore": 75,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Alphanumeric Palindrome Validator",
+          "prompt": "อ้างอิงโจทย์ Palindrome Checker จาก freeCodeCamp: เขียนฟังก์ชัน `solution(text)` ที่ตรวจสอบว่าสตริง `text` เป็น Palindrome หรือไม่ โดยตัดอักขระที่ไม่ใช่ตัวอักษรภาษาอังกฤษหรือตัวเลข (non-alphanumeric) และช่องว่างออกทั้งหมด และไม่สนใจตัวพิมพ์เล็ก-ใหญ่ คืนค่าเป็น `true` หรือ `false`",
+          "difficulty": "EASY",
+          "points": 30,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(text) {\n  // ลบอักขระพิเศษ แปลงเป็นพิมพ์เล็ก และตรวจ Palindrome\n  return false;\n}",
+          "solutionCode": "function solution(text) {\n  const cleaned = String(text || '').toLowerCase().replace(/[^a-z0-9]/g, '');\n  const reversed = cleaned.split('').reverse().join('');\n  return cleaned === reversed;\n}",
+          "explanation": "ใช้ Regular Expression `/[^a-z0-9]/g` ตัดอักขระพิเศษออก แปลงเป็นตัวพิมพ์เล็ก แล้วเปรียบเทียบกับสตริงที่กลับด้าน",
+          "testCases": [
+            { "input": "[\"A man, a plan, a canal. Panama\"]", "expectedOutput": "true", "isHidden": false },
+            { "input": "[\"race a car\"]", "expectedOutput": "false", "isHidden": false },
+            { "input": "[\"_eye\"]", "expectedOutput": "true", "isHidden": true },
+            { "input": "[\"0_0 (: /-\\\\ :) 0-0\"]", "expectedOutput": "true", "isHidden": true },
+            { "input": "[\"almostomla\"]", "expectedOutput": "false", "isHidden": true }
+          ]
+        },
+        {
+          "title": "Roman Numeral Converter",
+          "prompt": "อ้างอิงโจทย์ Roman Numeral Converter จาก freeCodeCamp: เขียนฟังก์ชัน `solution(num)` ที่แปลงตัวเลขจำนวนเต็มบวก `num` (1 ถึง 3999) ให้เป็นสตริงเลขโรมันมาตรฐาน (เช่น 1994 -> `\"MCMXCIV\"`) หากอยู่นอกช่วงให้คืนค่า `\"\"`",
+          "difficulty": "MEDIUM",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(num) {\n  // แปลงตัวเลขเป็นเลขโรมัน เช่น 36 -> \"XXXVI\"\n  return \"\";\n}",
+          "solutionCode": "function solution(num) {\n  const n = Number(num);\n  if (!Number.isInteger(n) || n < 1 || n > 3999) return '';\n  const pairs = [\n    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],\n    [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],\n    [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']\n  ];\n  let rem = n;\n  let out = '';\n  for (const [val, sym] of pairs) {\n    while (rem >= val) {\n      out += sym;\n      rem -= val;\n    }\n  }\n  return out;\n}",
+          "explanation": "จับคู่ค่าตัวเลขกับสัญลักษณ์โรมันจากมากไปน้อย (รวมรูปย่อ 900, 400, 90, 40, 9, 4) แล้วหักลบค่าไปเรื่อยๆ แบบ Greedy",
+          "testCases": [
+            { "input": "[36]", "expectedOutput": "XXXVI", "isHidden": false },
+            { "input": "[1994]", "expectedOutput": "MCMXCIV", "isHidden": false },
+            { "input": "[3999]", "expectedOutput": "MMMCMXCIX", "isHidden": true },
+            { "input": "[44]", "expectedOutput": "XLIV", "isHidden": true },
+            { "input": "[58]", "expectedOutput": "LVIII", "isHidden": true }
+          ]
+        },
+        {
+          "title": "Caesar Cipher ROT13 Decoder",
+          "prompt": "อ้างอิงโจทย์ Caesars Cipher (ROT13) จาก freeCodeCamp: เขียนฟังก์ชัน `solution(encoded)` ที่ถอดรหัสสตริงตัวพิมพ์ใหญ่โดยเลื่อนตัวอักษรภาษาอังกฤษ A-Z ไปข้างหน้า 13 ตำแหน่ง (เช่น `\"SERR PBQR PNZC\"` -> `\"FREE CODE CAMP\"`) โดยคงช่องว่างและเครื่องหมายวรรคตอนไว้ตามเดิม",
+          "difficulty": "HARD",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(encoded) {\n  // ถอดรหัส ROT13 สำหรับตัวอักษร A-Z และคงอักขระอื่นไว้เหมือนเดิม\n  return \"\";\n}",
+          "solutionCode": "function solution(encoded) {\n  return String(encoded || '').replace(/[A-Z]/g, (ch) => {\n    const code = ch.charCodeAt(0) - 65;\n    return String.fromCharCode(((code + 13) % 26) + 65);\n  });\n}",
+          "explanation": "แปลงรหัส ASCII ของ A-Z (65-90) ด้วยสูตร `((code - 65 + 13) % 26) + 65` โดยไม่แตะต้องอักขระที่ไม่ใช่ A-Z",
+          "testCases": [
+            { "input": "[\"SERR PBQR PNZC\"]", "expectedOutput": "FREE CODE CAMP", "isHidden": false },
+            { "input": "[\"SERR CVMMN!\"]", "expectedOutput": "FREE PIZZA!", "isHidden": false },
+            { "input": "[\"GUR DHVPX OEBJA SBK WHZCF BIRE GUR YNML QBT.\"]", "expectedOutput": "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", "isHidden": true },
+            { "input": "[\"123-ABC\"]", "expectedOutput": "123-NOP", "isHidden": true }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "fcc-nodejs-backend-api-v1",
+      "title": "Node.js Backend & REST API Engineering (freeCodeCamp Reference)",
+      "description": "อ้างอิงหลักสูตร Back End Development and APIs จาก freeCodeCamp.org วัดทักษะการจัดการ Pagination, Rate Limiting และการประมวลผล Webhook แบบ Idempotent สำหรับงานวิศวกร Backend",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "nodejs",
+      "timeLimitMinutes": 45,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Sanitize REST Pagination Parameters",
+          "prompt": "อ้างอิงมาตรฐาน REST API จาก freeCodeCamp Back End Development: เขียนฟังก์ชัน `solution(query)` ที่รับอ็อบเจกต์ `{ page, limit, totalItems }` แล้วคืนค่า `{ page, limit, offset, totalPages }` โดยมีเกณฑ์ดังนี้:\n- `page` ต้องเป็นจำนวนเต็มตั้งแต่ 1 ขึ้นไป (ค่าเริ่มต้น 1)\n- `limit` ต้องเป็นจำนวนเต็มระหว่าง 1 ถึง 100 (ค่าเริ่มต้น 20, หากเกิน 100 ให้ปัดเป็น 100, หากน้อยกว่า 1 ให้ใช้ 20)\n- `offset = (page - 1) * limit`\n- `totalPages = Math.max(1, Math.ceil(totalItems / limit))`",
+          "difficulty": "EASY",
+          "points": 30,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(query) {\n  // คำนวณ { page, limit, offset, totalPages }\n  return { page: 1, limit: 20, offset: 0, totalPages: 1 };\n}",
+          "solutionCode": "function solution(query) {\n  const q = query || {};\n  const rawPage = parseInt(q.page, 10);\n  const page = Number.isFinite(rawPage) && rawPage >= 1 ? rawPage : 1;\n  const rawLimit = parseInt(q.limit, 10);\n  let limit = 20;\n  if (Number.isFinite(rawLimit) && rawLimit >= 1) {\n    limit = Math.min(100, rawLimit);\n  }\n  const totalItems = Math.max(0, Number(q.totalItems) || 0);\n  const offset = (page - 1) * limit;\n  const totalPages = Math.max(1, Math.ceil(totalItems / limit));\n  return { page, limit, offset, totalPages };\n}",
+          "explanation": "แปลงค่า page และ limit ด้วย parseInt พร้อมทำ Boundary Clamping เพื่อป้องกันการดึงข้อมูลเกินพิกัดใน REST API",
+          "testCases": [
+            { "input": "[{\"page\": 2, \"limit\": 10, \"totalItems\": 45}]", "expectedOutput": "{\"page\":2,\"limit\":10,\"offset\":10,\"totalPages\":5}", "isHidden": false },
+            { "input": "[{\"page\": -1, \"limit\": 500, \"totalItems\": 250}]", "expectedOutput": "{\"page\":1,\"limit\":100,\"offset\":0,\"totalPages\":3}", "isHidden": false },
+            { "input": "[{\"totalItems\": 0}]", "expectedOutput": "{\"page\":1,\"limit\":20,\"offset\":0,\"totalPages\":1}", "isHidden": true },
+            { "input": "[{\"page\": \"3\", \"limit\": \"0\", \"totalItems\": 60}]", "expectedOutput": "{\"page\":3,\"limit\":20,\"offset\":40,\"totalPages\":3}", "isHidden": true }
+          ]
+        },
+        {
+          "title": "Sliding Window API Rate Limiter",
+          "prompt": "เขียนฟังก์ชัน `solution(timestamps, windowMs, maxRequests)` ที่จำลองการทำงานของ Middleware Rate Limiter สำหรับ Node.js API โดยรับอาร์เรย์ของเวลาที่เกิด Request (`timestamps` เรียงจากน้อยไปมาก), ขนาดหน้าต่างเวลา `windowMs`, และโควตาสูงสุด `maxRequests` ในช่วง `[t - windowMs + 1, t]` คืนค่าอาร์เรย์ของ `boolean` (`true` ถ้าอนุญาต, `false` ถ้าถูกบล็อกและไม่นับรวมในโควตา)",
+          "difficulty": "MEDIUM",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(timestamps, windowMs, maxRequests) {\n  // คืนค่าอาร์เรย์ของ true/false สำหรับแต่ละ timestamp\n  return [];\n}",
+          "solutionCode": "function solution(timestamps, windowMs, maxRequests) {\n  const accepted = [];\n  const out = [];\n  for (const t of timestamps || []) {\n    while (accepted.length > 0 && accepted[0] <= t - windowMs) {\n      accepted.shift();\n    }\n    if (accepted.length < maxRequests) {\n      accepted.push(t);\n      out.push(true);\n    } else {\n      out.push(false);\n    }\n  }\n  return out;\n}",
+          "explanation": "ใช้คิวเก็บเฉพาะ Timestamp ของ Request ที่ได้รับอนุญาตภายในหน้าต่างเวลา `[t - windowMs + 1, t]`",
+          "testCases": [
+            { "input": "[[100, 200, 300, 1100], 1000, 2]", "expectedOutput": "[true,true,false,true]", "isHidden": false },
+            { "input": "[[10, 20, 30, 40], 100, 3]", "expectedOutput": "[true,true,true,false]", "isHidden": false },
+            { "input": "[[1000, 2000, 3000], 500, 1]", "expectedOutput": "[true,true,true]", "isHidden": true },
+            { "input": "[[], 1000, 5]", "expectedOutput": "[]", "isHidden": true }
+          ]
+        },
+        {
+          "title": "Idempotent Webhook Ledger Aggregator",
+          "prompt": "เขียนฟังก์ชัน `solution(events)` ที่รับรายการ Webhook Events รูปแบบ `{ eventId, accountId, amount }` โดยระบบอาจส่ง Event ซ้ำ (`eventId` เดิม) มาได้ ให้ประมวลผลแต่ละ `eventId` เพียงครั้งแรกเท่านั้น และคืนค่าอาร์เรย์ของ `{ accountId, balance }` เรียงลำดับตาม `accountId` (A-Z)",
+          "difficulty": "HARD",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(events) {\n  // กรอง eventId ซ้ำ และรวมยอด amount แยกตาม accountId เรียง A-Z\n  return [];\n}",
+          "solutionCode": "function solution(events) {\n  const seen = new Set();\n  const balances = new Map();\n  for (const ev of events || []) {\n    if (!ev || !ev.eventId || !ev.accountId) continue;\n    if (seen.has(ev.eventId)) continue;\n    seen.add(ev.eventId);\n    const prev = balances.get(ev.accountId) || 0;\n    balances.set(ev.accountId, prev + Number(ev.amount || 0));\n  }\n  return Array.from(balances.entries())\n    .sort((a, b) => a[0].localeCompare(b[0]))\n    .map(([accountId, balance]) => ({ accountId, balance }));\n}",
+          "explanation": "ใช้ `Set` เก็บ `eventId` ที่เคยประมวลผลแล้วเพื่อรับประกัน Idempotency และใช้ `Map` รวมยอดตาม `accountId`",
+          "testCases": [
+            {
+              "input": "[[{\"eventId\":\"e1\",\"accountId\":\"acc-b\",\"amount\":100},{\"eventId\":\"e1\",\"accountId\":\"acc-b\",\"amount\":100},{\"eventId\":\"e2\",\"accountId\":\"acc-a\",\"amount\":50}]]",
+              "expectedOutput": "[{\"accountId\":\"acc-a\",\"balance\":50},{\"accountId\":\"acc-b\",\"balance\":100}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"eventId\":\"x1\",\"accountId\":\"u1\",\"amount\":200},{\"eventId\":\"x2\",\"accountId\":\"u1\",\"amount\":-50}]]",
+              "expectedOutput": "[{\"accountId\":\"u1\",\"balance\":150}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"eventId\":\"dup\",\"accountId\":\"z\",\"amount\":500},{\"eventId\":\"dup\",\"accountId\":\"z\",\"amount\":999}]]",
+              "expectedOutput": "[{\"accountId\":\"z\",\"balance\":500}]",
+              "isHidden": true
+            },
+            {
+              "input": "[[]]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "fcc-automated-testing-qa-v1",
+      "title": "Automated Testing & Quality Assurance (freeCodeCamp Reference)",
+      "description": "อ้างอิงหลักสูตร Quality Assurance จาก freeCodeCamp.org วัดทักษะการออกแบบ Boundary Value Analysis, การตรวจสอบ API Contract Schema และการวิเคราะห์ Flaky Tests ในระบบ CI/CD",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "automated-testing",
+      "timeLimitMinutes": 45,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Boundary Value Partition Classifier",
+          "prompt": "ในการทดสอบแบบ Boundary Value Analysis (BVA) ให้เขียนฟังก์ชัน `solution(values, min, max)` ที่รับอาร์เรย์ของตัวเลข `values` และจำแนกแต่ละค่าเป็น:\n- `\"OUT_OF_RANGE\"` หาก `< min` หรือ `> max`\n- `\"BOUNDARY\"` หากเท่ากับ `min`, `min + 1`, `max - 1`, หรือ `max`\n- `\"NOMINAL\"` หากอยู่ภายในช่วงปกติที่ไม่ใช่ขอบเขต\nคืนค่าเป็นอาร์เรย์ของสตริงสถานะตามลำดับ",
+          "difficulty": "EASY",
+          "points": 30,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(values, min, max) {\n  // คืนค่าสถานะ OUT_OF_RANGE, BOUNDARY หรือ NOMINAL ของแต่ละตัวเลข\n  return [];\n}",
+          "solutionCode": "function solution(values, min, max) {\n  return (values || []).map((v) => {\n    if (typeof v !== 'number' || v < min || v > max) return 'OUT_OF_RANGE';\n    if (v === min || v === min + 1 || v === max - 1 || v === max) return 'BOUNDARY';\n    return 'NOMINAL';\n  });\n}",
+          "explanation": "ตรวจสอบเงื่อนไขนอกช่วงก่อน จากนั้นตรวจค่าขอบเขต `min, min+1, max-1, max` และค่าทั่วไปเป็น `NOMINAL`",
+          "testCases": [
+            { "input": "[[0, 1, 2, 5, 9, 10, 11], 1, 10]", "expectedOutput": "[\"OUT_OF_RANGE\",\"BOUNDARY\",\"BOUNDARY\",\"NOMINAL\",\"BOUNDARY\",\"BOUNDARY\",\"OUT_OF_RANGE\"]", "isHidden": false },
+            { "input": "[[-1, 0, 50, 100], 0, 100]", "expectedOutput": "[\"OUT_OF_RANGE\",\"BOUNDARY\",\"NOMINAL\",\"BOUNDARY\"]", "isHidden": false },
+            { "input": "[[10, 11], 10, 11]", "expectedOutput": "[\"BOUNDARY\",\"BOUNDARY\"]", "isHidden": true },
+            { "input": "[[], 1, 5]", "expectedOutput": "[]", "isHidden": true }
+          ]
+        },
+        {
+          "title": "API Response Contract Validator",
+          "prompt": "เขียนฟังก์ชัน `solution(payload, schema)` เพื่อตรวจสอบผลลัพธ์จาก API ในชุดทดสอบ Integration Test โดย `schema` เป็นอ็อบเจกต์ที่ระบุชนิดข้อมูลที่ต้องการ เช่น `{ id: \"string\", score: \"number\", active: \"boolean\", tags: \"array\" }` ให้คืนค่าอาร์เรย์ของชื่อฟิลด์ที่หายไปหรือมีชนิดข้อมูลไม่ตรงกับ `schema` เรียงตามตัวอักษร (A-Z)",
+          "difficulty": "MEDIUM",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(payload, schema) {\n  // คืนค่ารายชื่อ key ที่ไม่ผ่านการตรวจชนิดข้อมูล เรียงตาม A-Z\n  return [];\n}",
+          "solutionCode": "function solution(payload, schema) {\n  const obj = payload && typeof payload === 'object' ? payload : {};\n  const rules = schema && typeof schema === 'object' ? schema : {};\n  const invalid = [];\n  for (const [key, expectedType] of Object.entries(rules)) {\n    const val = obj[key];\n    if (expectedType === 'array') {\n      if (!Array.isArray(val)) invalid.push(key);\n    } else if (expectedType === 'number') {\n      if (typeof val !== 'number' || Number.isNaN(val)) invalid.push(key);\n    } else if (typeof val !== expectedType) {\n      invalid.push(key);\n    }\n  }\n  return invalid.sort();\n}",
+          "explanation": "วนลูปตรวจแต่ละฟิลด์ใน `schema` โดยแยกกรณี `array` ด้วย `Array.isArray` และตรวจ `typeof` สำหรับชนิดพื้นฐาน",
+          "testCases": [
+            {
+              "input": "[{\"id\":\"u1\",\"score\":95,\"tags\":[\"js\"]}, {\"id\":\"string\",\"score\":\"number\",\"tags\":\"array\"}]",
+              "expectedOutput": "[]",
+              "isHidden": false
+            },
+            {
+              "input": "[{\"id\":123,\"score\":\"95\",\"tags\":{}}, {\"id\":\"string\",\"score\":\"number\",\"tags\":\"array\"}]",
+              "expectedOutput": "[\"id\",\"score\",\"tags\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[{\"active\":true}, {\"active\":\"boolean\",\"missingField\":\"string\"}]",
+              "expectedOutput": "[\"missingField\"]",
+              "isHidden": true
+            },
+            {
+              "input": "[{}, {\"b\":\"number\",\"a\":\"string\"}]",
+              "expectedOutput": "[\"a\",\"b\"]",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "CI Flaky Test Detector",
+          "prompt": "เขียนฟังก์ชัน `solution(runs)` ที่รับอาร์เรย์ของผลการรันชุดทดสอบ `{ testName, passed }` ใน CI Pipeline แล้วค้นหาชื่อการทดสอบที่เป็น **Flaky Test** (คือการทดสอบชื่อเดียวกันที่มีทั้งผล `passed: true` และ `passed: false` ปะปนกัน) คืนค่าเป็นอาร์เรย์ของชื่อ Flaky Test เรียงตามตัวอักษร (A-Z)",
+          "difficulty": "HARD",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(runs) {\n  // คืนค่ารายชื่อ testName ที่มีทั้งผลลัพธ์ true และ false เรียง A-Z\n  return [];\n}",
+          "solutionCode": "function solution(runs) {\n  const stats = new Map();\n  for (const r of runs || []) {\n    if (!r || !r.testName) continue;\n    const cur = stats.get(r.testName) || { pass: false, fail: false };\n    if (r.passed) cur.pass = true;\n    else cur.fail = true;\n    stats.set(r.testName, cur);\n  }\n  return Array.from(stats.entries())\n    .filter(([, s]) => s.pass && s.fail)\n    .map(([name]) => name)\n    .sort();\n}",
+          "explanation": "เก็บสถานะว่าแต่ละ `testName` เคยผ่าน (`pass`) และเคยตก (`fail`) หรือไม่ หากมีทั้งสองสถานะถือเป็น Flaky Test",
+          "testCases": [
+            {
+              "input": "[[{\"testName\":\"auth.login\",\"passed\":true},{\"testName\":\"auth.login\",\"passed\":false},{\"testName\":\"db.connect\",\"passed\":true},{\"testName\":\"db.connect\",\"passed\":true}]]",
+              "expectedOutput": "[\"auth.login\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"testName\":\"z.spec\",\"passed\":false},{\"testName\":\"a.spec\",\"passed\":true},{\"testName\":\"z.spec\",\"passed\":true},{\"testName\":\"a.spec\",\"passed\":false}]]",
+              "expectedOutput": "[\"a.spec\",\"z.spec\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"testName\":\"always.fail\",\"passed\":false},{\"testName\":\"always.fail\",\"passed\":false}]]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            },
+            {
+              "input": "[[]]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "mdn-typescript-data-modeling-v1",
+      "title": "TypeScript Type-Safe Data Modeling (MDN Web Docs Reference)",
+      "description": "อ้างอิงหลักสูตร MDN Web Docs Curriculum ด้าน TypeScript และ Modern JavaScript วัดทักษะการเขียน Runtime Type Guards, Discriminated Union State Reducers และการจัดการข้อมูลแบบ Immutable",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "typescript",
+      "timeLimitMinutes": 45,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Runtime Type Guard Validator",
+          "prompt": "อ้างอิงแนวคิด Type Narrowing & Type Guards จาก MDN / TypeScript Handbook: เขียนฟังก์ชัน `solution(input)` เพื่อตรวจสอบว่าข้อมูล `input` มีโครงสร้างตรงตามอินเทอร์เฟซต่อไปนี้หรือไม่:\n- `id`: สตริงที่ไม่ใช่ค่าว่างหลังตัดช่องว่าง\n- `email`: สตริงที่มีเครื่องหมาย `@`\n- `roles`: อาร์เรย์ที่มีสมาชิกอย่างน้อย 1 ตัว และทุกตัวต้องเป็นสตริง\nคืนค่า `true` หรือ `false`",
+          "difficulty": "EASY",
+          "points": 30,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(input) {\n  // ตรวจสอบโครงสร้าง { id: string, email: string, roles: string[] }\n  return false;\n}",
+          "solutionCode": "function solution(input) {\n  if (!input || typeof input !== 'object' || Array.isArray(input)) return false;\n  if (typeof input.id !== 'string' || input.id.trim().length === 0) return false;\n  if (typeof input.email !== 'string' || !input.email.includes('@')) return false;\n  if (!Array.isArray(input.roles) || input.roles.length === 0) return false;\n  return input.roles.every((r) => typeof r === 'string' && r.trim().length > 0);\n}",
+          "explanation": "ตรวจสอบชนิดข้อมูลของอ็อบเจกต์และพร็อพเพอร์ตี้แต่ละตัวแบบ Strict Runtime Type Guard ก่อนนำไปใช้งาน",
+          "testCases": [
+            {
+              "input": "[{\"id\":\"usr-1\",\"email\":\"dev@mozilla.org\",\"roles\":[\"CANDIDATE\"]}]",
+              "expectedOutput": "true",
+              "isHidden": false
+            },
+            {
+              "input": "[{\"id\":\"\",\"email\":\"dev@mozilla.org\",\"roles\":[\"CANDIDATE\"]}]",
+              "expectedOutput": "false",
+              "isHidden": false
+            },
+            {
+              "input": "[{\"id\":\"usr-2\",\"email\":\"invalid-email\",\"roles\":[\"ADMIN\"]}]",
+              "expectedOutput": "false",
+              "isHidden": true
+            },
+            {
+              "input": "[{\"id\":\"usr-3\",\"email\":\"a@b.com\",\"roles\":[123]}]",
+              "expectedOutput": "false",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "Discriminated Union Async State Machine",
+          "prompt": "เขียนฟังก์ชัน `solution(actions)` ที่จำลองการเปลี่ยนสถานะของ Async State Machine จากลำดับ Action แบบ Discriminated Union:\n- เริ่มต้นที่ `{ status: \"IDLE\", data: null, error: null, attempts: 0 }`\n- `type: \"FETCH_START\"` -> `status: \"LOADING\", error: null, attempts: attempts + 1`\n- `type: \"FETCH_SUCCESS\"` -> `status: \"SUCCESS\", data: action.payload, error: null`\n- `type: \"FETCH_ERROR\"` -> `status: \"ERROR\", data: null, error: action.message`\n- `type: \"RESET\"` -> กลับสู่ค่าเริ่มต้นทั้งหมด",
+          "difficulty": "MEDIUM",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(actions) {\n  // คำนวณสถานะสุดท้ายจากลำดับ Discriminated Union Actions\n  return { status: \"IDLE\", data: null, error: null, attempts: 0 };\n}",
+          "solutionCode": "function solution(actions) {\n  let state = { status: 'IDLE', data: null, error: null, attempts: 0 };\n  for (const act of actions || []) {\n    if (!act || !act.type) continue;\n    if (act.type === 'FETCH_START') {\n      state = { ...state, status: 'LOADING', error: null, attempts: state.attempts + 1 };\n    } else if (act.type === 'FETCH_SUCCESS') {\n      state = { ...state, status: 'SUCCESS', data: act.payload ?? null, error: null };\n    } else if (act.type === 'FETCH_ERROR') {\n      state = { ...state, status: 'ERROR', data: null, error: act.message ?? 'Unknown error' };\n    } else if (act.type === 'RESET') {\n      state = { status: 'IDLE', data: null, error: null, attempts: 0 };\n    }\n  }\n  return state;\n}",
+          "explanation": "ใช้รูปแบบ Discriminated Union แยกตามพร็อพเพอร์ตี้ `type` และอัปเดตสถานะอย่างเป็นลำดับโดยไม่กลายพันธุ์ค่าเดิม",
+          "testCases": [
+            {
+              "input": "[[{\"type\":\"FETCH_START\"},{\"type\":\"FETCH_SUCCESS\",\"payload\":{\"items\":3}}]]",
+              "expectedOutput": "{\"status\":\"SUCCESS\",\"data\":{\"items\":3},\"error\":null,\"attempts\":1}",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"type\":\"FETCH_START\"},{\"type\":\"FETCH_ERROR\",\"message\":\"Timeout\"},{\"type\":\"FETCH_START\"}]]",
+              "expectedOutput": "{\"status\":\"LOADING\",\"data\":null,\"error\":null,\"attempts\":2}",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"type\":\"FETCH_START\"},{\"type\":\"RESET\"}]]",
+              "expectedOutput": "{\"status\":\"IDLE\",\"data\":null,\"error\":null,\"attempts\":0}",
+              "isHidden": true
+            },
+            {
+              "input": "[[]]",
+              "expectedOutput": "{\"status\":\"IDLE\",\"data\":null,\"error\":null,\"attempts\":0}",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "Generic GroupBy & Summary Mapper",
+          "prompt": "เขียนฟังก์ชัน `solution(records, keyField, valueField)` ที่จัดกลุ่มอาร์เรย์ของอ็อบเจกต์ `records` ตามค่าของ `records[i][keyField]` และรวมผลบวกของตัวเลขใน `records[i][valueField]` คืนค่าเป็นอ็อบเจกต์ที่เรียงลำดับคีย์ตามตัวอักษร (A-Z)",
+          "difficulty": "HARD",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(records, keyField, valueField) {\n  // จัดกลุ่มตาม keyField และรวมผลบวกของ valueField\n  return {};\n}",
+          "solutionCode": "function solution(records, keyField, valueField) {\n  const map = new Map();\n  for (const item of records || []) {\n    if (!item || item[keyField] === undefined || item[keyField] === null) continue;\n    const k = String(item[keyField]);\n    const v = Number(item[valueField]) || 0;\n    map.set(k, (map.get(k) || 0) + v);\n  }\n  const out = {};\n  for (const k of Array.from(map.keys()).sort()) {\n    out[k] = map.get(k);\n  }\n  return out;\n}",
+          "explanation": "ดึงค่าคีย์และค่าตัวเลขแบบ Dynamic Property Access แล้วจัดเรียงคีย์ก่อนสร้างอ็อบเจกต์ผลลัพธ์",
+          "testCases": [
+            {
+              "input": "[[{\"category\":\"FRONTEND\",\"points\":40},{\"category\":\"BACKEND\",\"points\":50},{\"category\":\"FRONTEND\",\"points\":35}], \"category\", \"points\"]",
+              "expectedOutput": "{\"BACKEND\":50,\"FRONTEND\":75}",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"team\":\"B\",\"hours\":5},{\"team\":\"A\",\"hours\":8}], \"team\", \"hours\"]",
+              "expectedOutput": "{\"A\":8,\"B\":5}",
+              "isHidden": false
+            },
+            {
+              "input": "[[], \"category\", \"points\"]",
+              "expectedOutput": "{}",
+              "isHidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "mdn-react-state-architecture-v1",
+      "title": "React State Management & UI Selectors (MDN Web Docs Reference)",
+      "description": "อ้างอิงหลักสูตร Front-End Frameworks & React จาก MDN Web Docs วัดทักษะการจัดการ Immutable State, การคำนวณ Derived UI State และการแปลงโครงสร้างข้อมูลแบบ Tree สำหรับ Component",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "react",
+      "timeLimitMinutes": 45,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Immutable Cart State Reducer",
+          "prompt": "อ้างอิงแนวคิด React `useReducer` จาก MDN / React Docs: เขียนฟังก์ชัน `solution(initialItems, action)` ที่อัปเดตรายการสินค้า `[{ id, qty }]` แบบ Immutable:\n- `action.type === \"ADD\"`: หากมี `id` อยู่แล้วให้บวก `qty` เพิ่มตาม `action.qty` หากยังไม่มีให้ต่อท้ายรายการใหม่\n- `action.type === \"REMOVE\"`: ลบรายการที่มี `id` ตรงกับ `action.id`\n- หากรายการใดมี `qty <= 0` ให้ตัดออกจากผลลัพธ์เสมอ",
+          "difficulty": "EASY",
+          "points": 30,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(initialItems, action) {\n  // คืนค่าอาร์เรย์ใหม่ของรายการสินค้าโดยไม่แก้ไข initialItems เดิม\n  return [];\n}",
+          "solutionCode": "function solution(initialItems, action) {\n  const items = Array.isArray(initialItems) ? initialItems.map((x) => ({ ...x })) : [];\n  if (!action || !action.type) return items.filter((x) => x.qty > 0);\n  if (action.type === 'REMOVE') {\n    return items.filter((x) => x.id !== action.id && x.qty > 0);\n  }\n  if (action.type === 'ADD') {\n    const idx = items.findIndex((x) => x.id === action.id);\n    if (idx >= 0) {\n      items[idx].qty += Number(action.qty || 0);\n    } else if (Number(action.qty || 0) > 0) {\n      items.push({ id: action.id, qty: Number(action.qty) });\n    }\n  }\n  return items.filter((x) => x.qty > 0);\n}",
+          "explanation": "สร้างสำเนาอาร์เรย์ใหม่เสมอเพื่อให้ React ตรวจจับการเปลี่ยนแปลง Reference ได้อย่างถูกต้อง",
+          "testCases": [
+            {
+              "input": "[[{\"id\":\"p1\",\"qty\":1}], {\"type\":\"ADD\",\"id\":\"p1\",\"qty\":2}]",
+              "expectedOutput": "[{\"id\":\"p1\",\"qty\":3}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"id\":\"p1\",\"qty\":2},{\"id\":\"p2\",\"qty\":1}], {\"type\":\"REMOVE\",\"id\":\"p1\"}]",
+              "expectedOutput": "[{\"id\":\"p2\",\"qty\":1}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"id\":\"p1\",\"qty\":2}], {\"type\":\"ADD\",\"id\":\"p1\",\"qty\":-2}]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            },
+            {
+              "input": "[[], {\"type\":\"ADD\",\"id\":\"p9\",\"qty\":1}]",
+              "expectedOutput": "[{\"id\":\"p9\",\"qty\":1}]",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "Memoized Job Filter & Sort Selector",
+          "prompt": "เขียนฟังก์ชัน `solution(jobs, filter)` สำหรับคำนวณรายการแสดงผลใน React UI โดยกรองเฉพาะงานที่:\n1. `job.salary >= filter.minSalary` (ถ้ามีระบุ)\n2. `job.title` มีคำว่า `filter.search` (ไม่สนใจตัวพิมพ์เล็ก-ใหญ่)\nและคืนค่าเป็นอาร์เรย์ของ `job.id` เรียงตาม `salary` จากมากไปน้อย (หากเท่ากันให้เรียงตาม `id` A-Z)",
+          "difficulty": "MEDIUM",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(jobs, filter) {\n  // คืนค่าอาร์เรย์ของ job.id ที่ผ่านเกณฑ์และเรียงลำดับแล้ว\n  return [];\n}",
+          "solutionCode": "function solution(jobs, filter) {\n  const f = filter || {};\n  const minSal = Number(f.minSalary) || 0;\n  const q = String(f.search || '').trim().toLowerCase();\n  return (jobs || [])\n    .filter((j) => {\n      if (!j) return false;\n      if ((Number(j.salary) || 0) < minSal) return false;\n      if (q && !String(j.title || '').toLowerCase().includes(q)) return false;\n      return true;\n    })\n    .sort((a, b) => {\n      if (b.salary !== a.salary) return b.salary - a.salary;\n      return String(a.id).localeCompare(String(b.id));\n    })\n    .map((j) => j.id);\n}",
+          "explanation": "กรองข้อมูลตามเงื่อนไขค้นหาและเงินเดือนขั้นต่ำ แล้วจัดเรียงลำดับบนสำเนาอาร์เรย์เพื่อคืนค่าเฉพาะรายการ ID",
+          "testCases": [
+            {
+              "input": "[[{\"id\":\"j1\",\"title\":\"React Developer\",\"salary\":50000},{\"id\":\"j2\",\"title\":\"Senior React Engineer\",\"salary\":80000},{\"id\":\"j3\",\"title\":\"Python Engineer\",\"salary\":90000}], {\"search\":\"react\",\"minSalary\":45000}]",
+              "expectedOutput": "[\"j2\",\"j1\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"id\":\"b\",\"title\":\"Frontend\",\"salary\":60000},{\"id\":\"a\",\"title\":\"Frontend Lead\",\"salary\":60000}], {\"search\":\"frontend\",\"minSalary\":60000}]",
+              "expectedOutput": "[\"a\",\"b\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"id\":\"j1\",\"title\":\"React\",\"salary\":30000}], {\"search\":\"react\",\"minSalary\":50000}]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "Hierarchical Comment Tree Builder",
+          "prompt": "เขียนฟังก์ชัน `solution(comments)` ที่แปลงรายการคอมเมนต์แบบแบน `[{ id, parentId, text }]` ให้เป็นโครงสร้างต้นไม้ `[{ id, text, children: [...] }]` สำหรับเรนเดอร์ Recursive Component ใน React โดยคอมเมนต์ระดับบนสุดจะมี `parentId: null`",
+          "difficulty": "HARD",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(comments) {\n  // แปลง flat list เป็น nested tree ด้วยพร็อพเพอร์ตี้ children\n  return [];\n}",
+          "solutionCode": "function solution(comments) {\n  const map = new Map();\n  const roots = [];\n  for (const c of comments || []) {\n    map.set(c.id, { id: c.id, text: c.text, children: [] });\n  }\n  for (const c of comments || []) {\n    const node = map.get(c.id);\n    if (c.parentId && map.has(c.parentId)) {\n      map.get(c.parentId).children.push(node);\n    } else {\n      roots.push(node);\n    }\n  }\n  return roots;\n}",
+          "explanation": "สร้าง Map ของโหนดทั้งหมดในรอบแรก (`O(n)`) แล้วเชื่อมโหนดลูกเข้ากับ `children` ของ `parentId` ในรอบที่สอง",
+          "testCases": [
+            {
+              "input": "[[{\"id\":\"c1\",\"parentId\":null,\"text\":\"Root\"},{\"id\":\"c2\",\"parentId\":\"c1\",\"text\":\"Reply\"}]]",
+              "expectedOutput": "[{\"id\":\"c1\",\"text\":\"Root\",\"children\":[{\"id\":\"c2\",\"text\":\"Reply\",\"children\":[]}]}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"id\":\"1\",\"parentId\":null,\"text\":\"A\"},{\"id\":\"2\",\"parentId\":null,\"text\":\"B\"}]]",
+              "expectedOutput": "[{\"id\":\"1\",\"text\":\"A\",\"children\":[]},{\"id\":\"2\",\"text\":\"B\",\"children\":[]}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[]]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "mdn-web-security-http-theory-v1",
+      "title": "Web Security, HTTP & Browser Standards (MDN Web Docs Reference)",
+      "description": "อ้างอิงเอกสารมาตรฐาน MDN Web Docs (developer.mozilla.org) ด้าน Web Security, HTTP Protocol, CORS และ Authentication (ผลสอบทฤษฎีใช้เพื่อการเรียนรู้ทบทวน)",
+      "type": "THEORY",
+      "skillSlug": "application-security",
+      "timeLimitMinutes": 25,
+      "passingScore": 75,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "HttpOnly Cookie Protection",
+          "prompt": "ตามมาตรฐาน MDN Web Security การกำหนดแฟล็ก `HttpOnly` ให้กับคุกกี้ที่เก็บ Session หรือ Refresh Token ช่วยป้องกันการโจมตีรูปแบบใดโดยตรง?",
+          "difficulty": "EASY",
+          "points": 20,
+          "explanation": "HttpOnly ป้องกันไม่ให้สคริปต์ฝั่งไคลเอนต์เข้าถึงคุกกี้ผ่าน document.cookie จึงลดความเสียหายจาก XSS",
+          "choices": [
+            { "text": "ป้องกัน JavaScript ฝั่งไคลเอนต์เข้าถึงค่าคุกกี้ผ่าน document.cookie เมื่อเกิดช่องโหว่ XSS", "isCorrect": true, "order": 1 },
+            { "text": "ป้องกันการแก้ไขคำสั่ง SQL ในฐานข้อมูลผ่านพารามิเตอร์ของ URL", "isCorrect": false, "order": 2 },
+            { "text": "บังคับให้เบราว์เซอร์บีบอัดข้อมูลคุกกี้ด้วยอัลกอริทึม Gzip ทุกครั้ง", "isCorrect": false, "order": 3 },
+            { "text": "แปลงโปรโตคอล HTTP เป็น WebSocket โดยอัตโนมัติ", "isCorrect": false, "order": 4 }
+          ]
+        },
+        {
+          "title": "CORS Preflight Request Method",
+          "prompt": "ตามเอกสาร MDN เรื่อง Cross-Origin Resource Sharing (CORS) เมื่อเว็บแอปพลิเคชันส่งคำขอแบบ `PUT` หรือแนบ Header `Authorization` ข้ามโดเมน เบราว์เซอร์จะส่ง Preflight Request ด้วย HTTP Method ใดไปตรวจสอบสิทธิ์ก่อน?",
+          "difficulty": "EASY",
+          "points": 20,
+          "explanation": "เบราว์เซอร์ส่ง HTTP OPTIONS เพื่อตรวจสอบ Access-Control-Allow-Methods และ Access-Control-Allow-Headers",
+          "choices": [
+            { "text": "HTTP OPTIONS (Preflight Request)", "isCorrect": true, "order": 1 },
+            { "text": "HTTP HEAD", "isCorrect": false, "order": 2 },
+            { "text": "HTTP TRACE", "isCorrect": false, "order": 3 },
+            { "text": "HTTP CONNECT", "isCorrect": false, "order": 4 }
+          ]
+        },
+        {
+          "title": "Content-Security-Policy (CSP) Defense",
+          "prompt": "HTTP Response Header ใดตามมาตรฐาน MDN ที่ใช้จำกัดแหล่งที่มาของสคริปต์ รูปภาพ และสไตล์ชีตที่เบราว์เซอร์ได้รับอนุญาตให้โหลดและรันบนหน้าเว็บ?",
+          "difficulty": "MEDIUM",
+          "points": 20,
+          "explanation": "Content-Security-Policy (CSP) ใช้กำหนดโดเมนที่ได้รับอนุญาต เช่น script-src 'self'",
+          "choices": [
+            { "text": "Content-Security-Policy", "isCorrect": true, "order": 1 },
+            { "text": "X-Powered-By", "isCorrect": false, "order": 2 },
+            { "text": "Accept-Encoding", "isCorrect": false, "order": 3 },
+            { "text": "Transfer-Encoding", "isCorrect": false, "order": 4 }
+          ]
+        },
+        {
+          "title": "HTTP 401 vs 403 Semantics",
+          "prompt": "ตามนิยาม HTTP Status Codes บน MDN ความแตกต่างที่ถูกต้องระหว่าง `401 Unauthorized` และ `403 Forbidden` คือข้อใด?",
+          "difficulty": "MEDIUM",
+          "points": 20,
+          "explanation": "401 หมายถึงยังไม่ผ่านการยืนยันตัวตน (Unauthenticated) ส่วน 403 คือยืนยันตัวตนแล้วแต่ไม่มีสิทธิ์เข้าถึงทรัพยากรนั้น",
+          "choices": [
+            { "text": "401 คือยังไม่ได้ยืนยันตัวตนหรือ Token ไม่ถูกต้อง ส่วน 403 คือยืนยันตัวตนแล้วแต่บทบาทไม่มีสิทธิ์เข้าถึง", "isCorrect": true, "order": 1 },
+            { "text": "401 ใช้กับข้อผิดพลาดฝั่งฐานข้อมูล ส่วน 403 ใช้เมื่อเซิร์ฟเวอร์ปลายทางล่ม", "isCorrect": false, "order": 2 },
+            { "text": "401 ใช้เฉพาะกับคำขอแบบ GET ส่วน 403 ใช้เฉพาะกับคำขอแบบ POST", "isCorrect": false, "order": 3 },
+            { "text": "401 หมายถึงไม่พบหน้าเว็บ ส่วน 403 หมายถึงส่งคำขอถี่เกินกำหนด", "isCorrect": false, "order": 4 }
+          ]
+        },
+        {
+          "title": "SameSite Cookie Attribute for CSRF Mitigation",
+          "prompt": "การกำหนดค่าแอตทริบิวต์ `SameSite=Lax` หรือ `SameSite=Strict` บนคุกกี้ตามแนวทางของ MDN มีวัตถุประสงค์หลักเพื่อลดความเสี่ยงจากการโจมตีประเภทใด?",
+          "difficulty": "MEDIUM",
+          "points": 20,
+          "explanation": "SameSite ควบคุมการส่งคุกกี้ข้ามเว็บไซต์ จึงช่วยป้องกัน Cross-Site Request Forgery (CSRF)",
+          "choices": [
+            { "text": "Cross-Site Request Forgery (CSRF)", "isCorrect": true, "order": 1 },
+            { "text": "Distributed Denial of Service (DDoS)", "isCorrect": false, "order": 2 },
+            { "text": "Buffer Overflow ในหน่วยความจำของเซิร์ฟเวอร์", "isCorrect": false, "order": 3 },
+            { "text": "DNS Cache Poisoning", "isCorrect": false, "order": 4 }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "w3s-postgresql-relational-data-v1",
+      "title": "PostgreSQL & Relational Query Logic (W3Schools Reference)",
+      "description": "อ้างอิงบทเรียน SQL & PostgreSQL จาก W3Schools.com วัดทักษะการเชื่อมตาราง (INNER JOIN), การจัดกลุ่มพร้อมเงื่อนไข (GROUP BY / HAVING) และการจัดอันดับข้อมูล (Window Ranking)",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "postgresql",
+      "timeLimitMinutes": 45,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Relational INNER JOIN Matcher",
+          "prompt": "อ้างอิงบทเรียน SQL INNER JOIN จาก W3Schools: เขียนฟังก์ชัน `solution(users, orders)` ที่จำลองคำสั่ง:\n`SELECT orders.orderId, users.name, orders.total FROM orders INNER JOIN users ON orders.userId = users.id ORDER BY orders.orderId ASC`\nคืนค่าอาร์เรย์ของ `{ orderId, name, total }` เฉพาะรายการที่หา `userId` เจอในตาราง `users`",
+          "difficulty": "EASY",
+          "points": 30,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(users, orders) {\n  // เชื่อมข้อมูล users และ orders ด้วย userId และเรียงตาม orderId\n  return [];\n}",
+          "solutionCode": "function solution(users, orders) {\n  const userMap = new Map((users || []).map((u) => [u.id, u.name]));\n  return (orders || [])\n    .filter((o) => o && userMap.has(o.userId))\n    .sort((a, b) => a.orderId - b.orderId)\n    .map((o) => ({ orderId: o.orderId, name: userMap.get(o.userId), total: o.total }));\n}",
+          "explanation": "สร้าง Hash Map ของ `users` เพื่อทำการ Hash Join กับ `orders` ในเวลา `O(n + m)` แล้วเรียงตาม `orderId`",
+          "testCases": [
+            {
+              "input": "[[{\"id\":1,\"name\":\"Alice\"},{\"id\":2,\"name\":\"Bob\"}], [{\"orderId\":102,\"userId\":1,\"total\":500},{\"orderId\":101,\"userId\":2,\"total\":300},{\"orderId\":103,\"userId\":99,\"total\":100}]]",
+              "expectedOutput": "[{\"orderId\":101,\"name\":\"Bob\",\"total\":300},{\"orderId\":102,\"name\":\"Alice\",\"total\":500}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"id\":5,\"name\":\"Chai\"}], [{\"orderId\":1,\"userId\":5,\"total\":1200}]]",
+              "expectedOutput": "[{\"orderId\":1,\"name\":\"Chai\",\"total\":1200}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"id\":1,\"name\":\"Alice\"}], [{\"orderId\":10,\"userId\":2,\"total\":50}]]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "GROUP BY Category with HAVING Clause",
+          "prompt": "อ้างอิงบทเรียน SQL HAVING Clause จาก W3Schools: เขียนฟังก์ชัน `solution(sales, minRevenue)` ที่จำลองคำสั่ง:\n`SELECT category, SUM(amount) AS totalRevenue, COUNT(*) AS orderCount FROM sales WHERE status = 'PAID' GROUP BY category HAVING SUM(amount) >= minRevenue ORDER BY totalRevenue DESC`",
+          "difficulty": "MEDIUM",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(sales, minRevenue) {\n  // กรอง status === 'PAID', จัดกลุ่มตาม category และคัดเฉพาะ totalRevenue >= minRevenue\n  return [];\n}",
+          "solutionCode": "function solution(sales, minRevenue) {\n  const groups = new Map();\n  for (const s of sales || []) {\n    if (!s || s.status !== 'PAID') continue;\n    const cur = groups.get(s.category) || { category: s.category, totalRevenue: 0, orderCount: 0 };\n    cur.totalRevenue += Number(s.amount || 0);\n    cur.orderCount += 1;\n    groups.set(s.category, cur);\n  }\n  return Array.from(groups.values())\n    .filter((g) => g.totalRevenue >= Number(minRevenue || 0))\n    .sort((a, b) => b.totalRevenue - a.totalRevenue || a.category.localeCompare(b.category));\n}",
+          "explanation": "กรองแถวด้วยเงื่อนไข `WHERE status = 'PAID'` ก่อนจัดกลุ่ม แล้วจึงกรองผลรวมด้วยเงื่อนไข `HAVING`",
+          "testCases": [
+            {
+              "input": "[[{\"category\":\"Cloud\",\"amount\":600,\"status\":\"PAID\"},{\"category\":\"Cloud\",\"amount\":500,\"status\":\"PAID\"},{\"category\":\"Book\",\"amount\":200,\"status\":\"PAID\"},{\"category\":\"Book\",\"amount\":900,\"status\":\"CANCELLED\"}], 1000]",
+              "expectedOutput": "[{\"category\":\"Cloud\",\"totalRevenue\":1100,\"orderCount\":2}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"category\":\"A\",\"amount\":500,\"status\":\"PAID\"},{\"category\":\"B\",\"amount\":800,\"status\":\"PAID\"}], 400]",
+              "expectedOutput": "[{\"category\":\"B\",\"totalRevenue\":800,\"orderCount\":1},{\"category\":\"A\",\"totalRevenue\":500,\"orderCount\":1}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[], 100]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "Window Function Top-N Per Department",
+          "prompt": "อ้างอิงการทำ Partition Ranking ใน PostgreSQL: เขียนฟังก์ชัน `solution(employees, topN)` ที่จำลอง `ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC, name ASC)` เพื่อดึงพนักงานที่มีเงินเดือนสูงสุดไม่เกิน `topN` อันดับแรกของแต่ละแผนก โดยเรียงผลลัพธ์ตามชื่อแผนก (A-Z) และเงินเดือนจากมากไปน้อย",
+          "difficulty": "HARD",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(employees, topN) {\n  // คืนค่าพนักงานสูงสุด topN ต่อแผนก เรียงตาม department A-Z และ salary DESC\n  return [];\n}",
+          "solutionCode": "function solution(employees, topN) {\n  const limit = Math.max(0, Number(topN) || 0);\n  const byDept = new Map();\n  for (const emp of employees || []) {\n    if (!emp || !emp.department) continue;\n    const list = byDept.get(emp.department) || [];\n    list.push({ department: emp.department, name: emp.name, salary: Number(emp.salary || 0) });\n    byDept.set(emp.department, list);\n  }\n  const out = [];\n  for (const dept of Array.from(byDept.keys()).sort()) {\n    const sorted = byDept.get(dept).sort((a, b) => b.salary - a.salary || a.name.localeCompare(b.name));\n    out.push(...sorted.slice(0, limit));\n  }\n  return out;\n}",
+          "explanation": "แบ่งกลุ่มข้อมูลตาม `department` (Partition) เรียงลำดับตาม `salary DESC, name ASC` แล้วตัดมาเฉพาะ `topN` แถวแรกของแต่ละกลุ่ม",
+          "testCases": [
+            {
+              "input": "[[{\"department\":\"Eng\",\"name\":\"Ann\",\"salary\":70000},{\"department\":\"Eng\",\"name\":\"Ben\",\"salary\":90000},{\"department\":\"Eng\",\"name\":\"Cid\",\"salary\":80000},{\"department\":\"HR\",\"name\":\"May\",\"salary\":55000}], 2]",
+              "expectedOutput": "[{\"department\":\"Eng\",\"name\":\"Ben\",\"salary\":90000},{\"department\":\"Eng\",\"name\":\"Cid\",\"salary\":80000},{\"department\":\"HR\",\"name\":\"May\",\"salary\":55000}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"department\":\"Data\",\"name\":\"Zoe\",\"salary\":85000},{\"department\":\"Data\",\"name\":\"Amy\",\"salary\":85000}], 1]",
+              "expectedOutput": "[{\"department\":\"Data\",\"name\":\"Amy\",\"salary\":85000}]",
+              "isHidden": false
+            },
+            {
+              "input": "[[], 3]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "w3s-python-data-analytics-v1",
+      "title": "Python Data Processing & Analytics (W3Schools Reference)",
+      "description": "อ้างอิงบทเรียน Python Tutorial & Data Structures จาก W3Schools.com วัดทักษะการทำความสะอาดข้อมูล (Data Cleaning), การแปลงเมทริกซ์ และการวิเคราะห์ Log เชิงสถิติด้วยภาษา Python",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "python",
+      "timeLimitMinutes": 45,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Clean & Summarize Sensor Readings",
+          "prompt": "อ้างอิงบทเรียน Python Lists & Math จาก W3Schools: เขียนฟังก์ชัน `def solution(readings):` ในภาษา Python ที่รับลิสต์ของค่าเซนเซอร์ (อาจมีค่า `None` หรือค่าติดลบซึ่งเป็นข้อมูลผิดพลาด) ให้กรองเฉพาะค่าตัวเลขที่มีค่า `>= 0` แล้วคืนค่า dictionary `{\"count\": จำนวนข้อมูลที่ถูกต้อง, \"average\": ค่าเฉลี่ยปัดเศษทศนิยม 2 ตำแหน่ง}` (หากไม่มีข้อมูลที่ถูกต้องเลยให้ `average` เป็น `0`)",
+          "difficulty": "EASY",
+          "points": 30,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "def solution(readings):\n    # กรองเฉพาะค่า >= 0 และคำนวณ count กับ average\n    return {\"count\": 0, \"average\": 0}\n",
+          "solutionCode": "def solution(readings):\n    valid = [float(x) for x in (readings or []) if isinstance(x, (int, float)) and not isinstance(x, bool) and x >= 0]\n    if not valid:\n        return {\"count\": 0, \"average\": 0}\n    avg = round(sum(valid) / len(valid), 2)\n    if avg.is_integer():\n        avg = int(avg)\n    return {\"count\": len(valid), \"average\": avg}\n",
+          "explanation": "ใช้ List Comprehension กรองค่า `None` และค่าติดลบออก แล้วคำนวณค่าเฉลี่ยด้วย `sum(valid) / len(valid)`",
+          "testCases": [
+            { "input": "[[10, 20, null, -5, 30]]", "expectedOutput": "{\"count\":3,\"average\":20}", "isHidden": false },
+            { "input": "[[1.5, 2.25, 3.0]]", "expectedOutput": "{\"count\":3,\"average\":2.25}", "isHidden": false },
+            { "input": "[[null, -10, -1]]", "expectedOutput": "{\"count\":0,\"average\":0}", "isHidden": true },
+            { "input": "[[]]", "expectedOutput": "{\"count\":0,\"average\":0}", "isHidden": true }
+          ]
+        },
+        {
+          "title": "2D Matrix Transpose",
+          "prompt": "เขียนฟังก์ชัน `def solution(matrix):` ในภาษา Python ที่รับเมทริกซ์ 2 มิติขนาด `R x C` แล้วคืนค่าเมทริกซ์ที่สลับแถวเป็นคอลัมน์ (Transpose ขนาด `C x R`) หากเมทริกซ์ว่างให้คืนค่า `[]`",
+          "difficulty": "MEDIUM",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "def solution(matrix):\n    # สลับแถวและคอลัมน์ของเมทริกซ์ 2 มิติ\n    return []\n",
+          "solutionCode": "def solution(matrix):\n    if not matrix or not matrix[0]:\n        return []\n    return [list(col) for col in zip(*matrix)]\n",
+          "explanation": "ใช้ `zip(*matrix)` ร่วมกับ List Comprehension เพื่อสลับแถวและคอลัมน์ใน Python อย่างกระชับ",
+          "testCases": [
+            { "input": "[[[1, 2, 3], [4, 5, 6]]]", "expectedOutput": "[[1,4],[2,5],[3,6]]", "isHidden": false },
+            { "input": "[[[10, 20], [30, 40]]]", "expectedOutput": "[[10,30],[20,40]]", "isHidden": false },
+            { "input": "[[[7]]]", "expectedOutput": "[[7]]", "isHidden": true },
+            { "input": "[[]]", "expectedOutput": "[]", "isHidden": true }
+          ]
+        },
+        {
+          "title": "Service Error Rate Spike Detector",
+          "prompt": "เขียนฟังก์ชัน `def solution(logs, thresholdPercent):` ในภาษา Python ที่รับลิสต์ของ Log `{\"service\": str, \"status\": int}` และคำนวณสัดส่วน Error (`status >= 500`) ต่อจำนวน Log ทั้งหมดของแต่ละบริการ คืนค่ารายชื่อ `service` ที่มีอัตรา Error `>= thresholdPercent` เรียงตามตัวอักษร (A-Z)",
+          "difficulty": "HARD",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "def solution(logs, thresholdPercent):\n    # คืนค่าลิสต์ของชื่อ service ที่มีอัตรา status >= 500 เกินเกณฑ์\n    return []\n",
+          "solutionCode": "def solution(logs, thresholdPercent):\n    totals = {}\n    errors = {}\n    for entry in (logs or []):\n        if not isinstance(entry, dict) or 'service' not in entry:\n            continue\n        svc = str(entry['service'])\n        status = int(entry.get('status', 200))\n        totals[svc] = totals.get(svc, 0) + 1\n        if status >= 500:\n            errors[svc] = errors.get(svc, 0) + 1\n    flagged = []\n    for svc, total in totals.items():\n        err_rate = (errors.get(svc, 0) / total) * 100.0\n        if err_rate >= float(thresholdPercent):\n            flagged.append(svc)\n    return sorted(flagged)\n",
+          "explanation": "นับจำนวน Request ทั้งหมดและจำนวนที่ `status >= 500` แยกตามบริการด้วย Dictionary แล้วเปรียบเทียบเปอร์เซ็นต์กับ `thresholdPercent`",
+          "testCases": [
+            {
+              "input": "[[{\"service\":\"auth\",\"status\":500},{\"service\":\"auth\",\"status\":200},{\"service\":\"pay\",\"status\":503},{\"service\":\"pay\",\"status\":500},{\"service\":\"search\",\"status\":200}], 50]",
+              "expectedOutput": "[\"auth\",\"pay\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[[{\"service\":\"api\",\"status\":200},{\"service\":\"api\",\"status\":500}], 80]",
+              "expectedOutput": "[]",
+              "isHidden": false
+            },
+            {
+              "input": "[[], 10]",
+              "expectedOutput": "[]",
+              "isHidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "w3s-docker-devops-config-v1",
+      "title": "Docker & DevOps Configuration Linter (W3Schools Reference)",
+      "description": "อ้างอิงแนวทาง Container & Cloud Configuration จาก W3Schools และมาตรฐาน DevOps วัดทักษะการแปลงไฟล์ .env, การตรวจสอบความปลอดภัยของ Dockerfile และการจัดลำดับ Container Dependencies",
+      "type": "PRACTICAL_CODING",
+      "skillSlug": "docker",
+      "timeLimitMinutes": 45,
+      "passingScore": 70,
+      "feedbackVisibility": "IMMEDIATE",
+      "questions": [
+        {
+          "title": "Docker Environment File (.env) Parser",
+          "prompt": "เขียนฟังก์ชัน `solution(envText)` ที่แปลงข้อความในไฟล์ `.env` สำหรับ Docker Container ให้เป็นอ็อบเจกต์ `{ KEY: VALUE }` โดยมีเกณฑ์:\n- ข้ามบรรทัดว่างและบรรทัดคอมเมนต์ที่ขึ้นต้นด้วย `#`\n- ตัดช่องว่างรอบคีย์และค่า รวมถึงตัดเครื่องหมาย `\"` หรือ `'` ที่ครอบหัวท้ายของค่าออก",
+          "difficulty": "EASY",
+          "points": 30,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(envText) {\n  // แปลงข้อความ .env เป็น object { KEY: VALUE }\n  return {};\n}",
+          "solutionCode": "function solution(envText) {\n  const out = {};\n  const lines = String(envText || '').split(/\\r?\\n/);\n  for (const raw of lines) {\n    const line = raw.trim();\n    if (!line || line.startsWith('#')) continue;\n    const eqIdx = line.indexOf('=');\n    if (eqIdx <= 0) continue;\n    const key = line.slice(0, eqIdx).trim();\n    let val = line.slice(eqIdx + 1).trim();\n    if ((val.startsWith('\"') && val.endsWith('\"')) || (val.startsWith(\"'\") && val.endsWith(\"'\"))) {\n      val = val.slice(1, -1);\n    }\n    out[key] = val;\n  }\n  return out;\n}",
+          "explanation": "แยกบรรทัดด้วย `\\r?\\n` ข้ามบรรทัด `#` และใช้ `indexOf('=')` เพื่อให้รองรับค่าที่มีเครื่องหมาย `=` อยู่ภายใน",
+          "testCases": [
+            {
+              "input": "[\"# Database Config\\nPORT=8080\\nNODE_ENV=\\\"production\\\"\\n\"]",
+              "expectedOutput": "{\"PORT\":\"8080\",\"NODE_ENV\":\"production\"}",
+              "isHidden": false
+            },
+            {
+              "input": "[\"APP_NAME='smart-career'\\n# comment\\nLOG_LEVEL=info\"]",
+              "expectedOutput": "{\"APP_NAME\":\"smart-career\",\"LOG_LEVEL\":\"info\"}",
+              "isHidden": false
+            },
+            {
+              "input": "[\"   \\n# only comments\"]",
+              "expectedOutput": "{}",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "Dockerfile Security & Best-Practice Linter",
+          "prompt": "เขียนฟังก์ชัน `solution(lines)` ที่รับอาร์เรย์ของบรรทัดคำสั่งใน `Dockerfile` และตรวจหาความเสี่ยงตามกฎต่อไปนี้:\n- หากมีคำสั่ง `FROM` ที่ใช้แท็ก `:latest` หรือไม่ระบุแท็กเวอร์ชันเลย ให้เพิ่มรหัส `\"AVOID_LATEST_TAG\"`\n- หากสถานะผู้ใช้สุดท้ายคือ `USER root` ให้เพิ่มรหัส `\"AVOID_ROOT_USER\"`\n- หากมีคำสั่งขึ้นต้นด้วย `ADD ` ให้เพิ่มรหัส `\"PREFER_COPY_OVER_ADD\"`\nคืนค่ารหัสความเสี่ยงที่ไม่ซ้ำกันเรียงตามตัวอักษร (A-Z)",
+          "difficulty": "MEDIUM",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(lines) {\n  // คืนค่าอาร์เรย์ของรหัสแจ้งเตือนด้านความปลอดภัย เรียง A-Z\n  return [];\n}",
+          "solutionCode": "function solution(lines) {\n  const issues = new Set();\n  let lastUser = null;\n  for (const raw of lines || []) {\n    const line = String(raw || '').trim();\n    if (!line || line.startsWith('#')) continue;\n    if (/^FROM\\s+/i.test(line)) {\n      const image = line.replace(/^FROM\\s+/i, '').split(/\\s+/)[0];\n      if (!image.includes(':') || image.endsWith(':latest')) {\n        issues.add('AVOID_LATEST_TAG');\n      }\n    } else if (/^USER\\s+/i.test(line)) {\n      lastUser = line.replace(/^USER\\s+/i, '').trim().toLowerCase();\n    } else if (/^ADD\\s+/i.test(line)) {\n      issues.add('PREFER_COPY_OVER_ADD');\n    }\n  }\n  if (lastUser === 'root') {\n    issues.add('AVOID_ROOT_USER');\n  }\n  return Array.from(issues).sort();\n}",
+          "explanation": "ตรวจสอบแต่ละคำสั่งใน Dockerfile เพื่อบังคับใช้การ Pin เวอร์ชันอิมเมจ การใช้ COPY แทน ADD และการไม่รัน Container ด้วยสิทธิ์ root",
+          "testCases": [
+            {
+              "input": "[[\"FROM node:latest\", \"ADD . /app\", \"USER root\"]]",
+              "expectedOutput": "[\"AVOID_LATEST_TAG\",\"AVOID_ROOT_USER\",\"PREFER_COPY_OVER_ADD\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[[\"FROM node:20-alpine\", \"COPY . /app\", \"USER node\"]]",
+              "expectedOutput": "[]",
+              "isHidden": false
+            },
+            {
+              "input": "[[\"FROM ubuntu\", \"USER root\", \"USER appuser\"]]",
+              "expectedOutput": "[\"AVOID_LATEST_TAG\"]",
+              "isHidden": true
+            }
+          ]
+        },
+        {
+          "title": "Docker Compose Startup Order Resolver",
+          "prompt": "เขียนฟังก์ชัน `solution(services)` ที่รับอ็อบเจกต์ของบริการใน Docker Compose เช่น `{ web: [\"api\"], api: [\"db\", \"redis\"], db: [], redis: [] }` (แต่ละคีย์ระบุรายการบริการที่ต้องสตาร์ทก่อนใน `depends_on`) ให้คืนค่าลำดับการสตาร์ทบริการที่ถูกต้อง (หากมีหลายบริการที่พร้อมสตาร์ทพร้อมกัน ให้เรียงตามชื่อบริการ A-Z) หากพบวงจรพึ่งพากันเอง (Cycle) ให้คืนค่า `[\"CYCLE_DETECTED\"]`",
+          "difficulty": "HARD",
+          "points": 35,
+          "evaluationMethod": "AUTOMATED_TEST_CASES",
+          "starterCode": "function solution(services) {\n  // คำนวณลำดับ Topological Sort ของบริการใน Docker Compose\n  return [];\n}",
+          "solutionCode": "function solution(services) {\n  const graph = services && typeof services === 'object' ? services : {};\n  const names = Object.keys(graph).sort();\n  const resolved = new Set();\n  const order = [];\n  let progress = true;\n  while (order.length < names.length && progress) {\n    progress = false;\n    for (const name of names) {\n      if (resolved.has(name)) continue;\n      const deps = Array.isArray(graph[name]) ? graph[name] : [];\n      if (deps.every((d) => resolved.has(d))) {\n        resolved.add(name);\n        order.push(name);\n        progress = true;\n        break;\n      }\n    }\n  }\n  if (order.length < names.length) return ['CYCLE_DETECTED'];\n  return order;\n}",
+          "explanation": "ใช้อัลกอริทึม Topological Sort เลือกบริการที่ Dependencies ทั้งหมดพร้อมแล้วตามลำดับตัวอักษร หากไม่สามารถเลือกต่อได้จนครบแสดงว่ามี Circular Dependency",
+          "testCases": [
+            {
+              "input": "[{\"web\":[\"api\"],\"api\":[\"db\",\"redis\"],\"db\":[],\"redis\":[]}]",
+              "expectedOutput": "[\"db\",\"redis\",\"api\",\"web\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[{\"a\":[\"b\"],\"b\":[\"a\"]}]",
+              "expectedOutput": "[\"CYCLE_DETECTED\"]",
+              "isHidden": false
+            },
+            {
+              "input": "[{\"worker\":[\"queue\"],\"queue\":[]}]",
+              "expectedOutput": "[\"queue\",\"worker\"]",
+              "isHidden": true
+            }
+          ]
+        }
+      ]
     }
   ]
 }

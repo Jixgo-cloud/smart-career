@@ -3,29 +3,8 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import {
-  Activity,
-  Award,
-  ClipboardCheck,
-  Database,
-  FileSearch,
-  LayoutDashboard,
-  ShieldAlert,
-  Sparkles,
-  Users,
-} from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
-
-const ADMIN_NAV_ITEMS = [
-  { href: '/admin/dashboard', label: 'ศูนย์ควบคุม (Dashboard)', icon: LayoutDashboard },
-  { href: '/admin/users', label: 'จัดการผู้ใช้งาน (Users)', icon: Users },
-  { href: '/admin/verifications', label: 'ตรวจบริษัทยืนยันตัวตน', icon: ClipboardCheck },
-  { href: '/admin/skills', label: 'ทักษะกลาง (Skills)', icon: Sparkles },
-  { href: '/admin/assessments', label: 'ข้อสอบกลาง (Exams)', icon: Award },
-  { href: '/admin/ingestion', label: 'นำเข้าข้อมูล (Ingestion)', icon: Database },
-  { href: '/admin/data', label: 'ข้อมูลระบบ (Data Browser)', icon: FileSearch },
-  { href: '/admin/audit-logs', label: 'Audit Logs', icon: Activity },
-];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -88,33 +67,5 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="bg-white border border-slate-200 rounded-xl p-2 shadow-xs overflow-x-auto">
-        <div className="flex items-center gap-1.5 min-w-max">
-          {ADMIN_NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const active =
-              pathname === item.href ||
-              (item.href !== '/admin/dashboard' && pathname?.startsWith(item.href));
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
-                  active
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-      {children}
-    </div>
-  );
+  return <div className="space-y-6">{children}</div>;
 }

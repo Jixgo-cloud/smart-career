@@ -314,9 +314,6 @@ export default function AdminAssessmentsPage() {
         <h1 className="text-2xl font-bold text-slate-900">
           จัดการคลังข้อสอบมาตรฐานกลาง (Platform Assessment Governance)
         </h1>
-        <p className="text-sm text-slate-600">
-          สร้าง แก้ไข ควบคุมสถานะข้อสอบ (PUBLISHED / RETIRED) นโยบายการเปิดเผยเฉลย (IMMEDIATE / AFTER_REVIEW / PRIVATE_TO_COMPANY) และตรวจสอบผลการเข้าสอบ
-        </p>
       </div>
 
       <AdminBanner
@@ -330,7 +327,7 @@ export default function AdminAssessmentsPage() {
 
       {/* Create / Edit Platform Exam */}
       <form onSubmit={handleSubmit} className="card space-y-5">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-lg font-bold text-slate-900">
             {editingId ? 'แก้ไขชุดข้อสอบกลาง' : 'สร้างชุดข้อสอบกลางใหม่'}
           </h2>
@@ -351,7 +348,7 @@ export default function AdminAssessmentsPage() {
           </div>
         )}
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label className="label">ชื่อข้อสอบ</label>
             <input
@@ -399,7 +396,7 @@ export default function AdminAssessmentsPage() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-4 items-end">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <div>
             <label className="label">เวลาสอบ (นาที: 1–240)</label>
             <input
@@ -705,11 +702,11 @@ export default function AdminAssessmentsPage() {
                       {q.testCases.map((tc, tcIdx) => (
                         <div
                           key={tcIdx}
-                          className="grid grid-cols-12 gap-2 items-center"
+                          className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center"
                         >
                           <input
                             type="text"
-                            className="input text-xs col-span-5 font-mono"
+                            className="input text-xs sm:col-span-5 font-mono"
                             placeholder="Input"
                             value={tc.input}
                             onChange={(e) =>
@@ -724,7 +721,7 @@ export default function AdminAssessmentsPage() {
                           />
                           <input
                             type="text"
-                            className="input text-xs col-span-5 font-mono"
+                            className="input text-xs sm:col-span-5 font-mono"
                             placeholder="Expected Output"
                             value={tc.expectedOutput}
                             onChange={(e) =>
@@ -737,7 +734,7 @@ export default function AdminAssessmentsPage() {
                               })
                             }
                           />
-                          <label className="col-span-2 flex items-center gap-1 text-xs">
+                          <label className="sm:col-span-2 flex items-center gap-1 text-xs">
                             <input
                               type="checkbox"
                               checked={tc.isHidden}
@@ -775,7 +772,7 @@ export default function AdminAssessmentsPage() {
         {loading ? (
           <div className="p-8 text-center text-slate-500">กำลังโหลดชุดข้อสอบ...</div>
         ) : (
-          <table className="w-full text-sm text-left border-collapse">
+          <table className="w-full min-w-[820px] text-sm text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2.5 px-3">ชื่อข้อสอบ</th>
@@ -888,7 +885,7 @@ export default function AdminAssessmentsPage() {
       {/* Attempts Viewer Panel */}
       {selectedExamForAttempts && (
         <div className="card space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <h2 className="text-base font-bold text-slate-900">
                 ประวัติการเข้าสอบ: {selectedExamForAttempts.title}
@@ -916,7 +913,7 @@ export default function AdminAssessmentsPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left border-collapse">
+              <table className="w-full min-w-[600px] text-xs text-left border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200 text-slate-600">
                     <th className="py-2 px-3">ผู้สมัคร</th>

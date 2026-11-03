@@ -136,6 +136,16 @@ export class ApplicationsService {
     const candidateId = user?.candidateProfile?.id;
     const application = await this.prisma.jobApplication.findUnique({
       where: { id: applicationId },
+      include: {
+        job: {
+          include: {
+            company: { include: { members: true } },
+          },
+        },
+        candidate: {
+          select: { fullName: true },
+        },
+      },
     });
 
     if (!application) {
@@ -156,7 +166,7 @@ export class ApplicationsService {
       );
     }
 
-    return this.prisma.$transaction(async (tx) => {
+    const cancelled = await this.prisma.$transaction(async (tx) => {
       const updated = await tx.jobApplication.update({
         where: { id: application.id },
         data: { status: ApplicationStatus.CANCELLED },
@@ -178,6 +188,29 @@ export class ApplicationsService {
 
       return updated;
     });
+
+    const candidateName =
+      application.candidate?.fullName ||
+      user?.candidateProfile?.fullName ||
+      user?.email ||
+      'ผู้สมัคร';
+
+    for (const member of application.job?.company?.members || []) {
+      await this.notifications.createNotification({
+        userId: member.userId,
+        type: NotificationType.APPLICATION_STATUS_CHANGED,
+        title: 'ผู้สมัครยกเลิกใบสมัครงาน',
+        message: `${candidateName} ได้ยกเลิกใบสมัครในตำแหน่ง ${application.job.title}`,
+        link: `/company/applications?jobId=${application.jobId}`,
+        metadata: {
+          applicationId: application.id,
+          jobId: application.jobId,
+          status: ApplicationStatus.CANCELLED,
+        },
+      });
+    }
+
+    return cancelled;
   }
 
   async getMyApplications(user: any) {

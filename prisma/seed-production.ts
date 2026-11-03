@@ -210,6 +210,9 @@ export async function runProductionMasterSeed() {
         timeLimitMinutes: exam.timeLimitMinutes,
         passingScore: exam.passingScore,
         feedbackVisibility: (exam.feedbackVisibility || 'IMMEDIATE') as FeedbackVisibility,
+        frameworkCode: exam.frameworkCode ?? null,
+        frameworkVersion: exam.frameworkVersion ?? null,
+        frameworkScope: exam.frameworkScope ?? null,
         isActive: true,
       },
       create: {
@@ -221,6 +224,9 @@ export async function runProductionMasterSeed() {
         timeLimitMinutes: exam.timeLimitMinutes,
         passingScore: exam.passingScore,
         feedbackVisibility: (exam.feedbackVisibility || 'IMMEDIATE') as FeedbackVisibility,
+        frameworkCode: exam.frameworkCode ?? null,
+        frameworkVersion: exam.frameworkVersion ?? null,
+        frameworkScope: exam.frameworkScope ?? null,
         isActive: true,
       },
     });
@@ -241,6 +247,8 @@ export async function runProductionMasterSeed() {
           evaluationMethod: (q.evaluationMethod || 'AUTOMATED_TEST_CASES') as QuestionEvaluationMethod,
           testCases: q.testCases ?? null,
           rubric: q.rubric ?? null,
+          frameworkTopicId: q.frameworkTopicId ?? null,
+          frameworkMappingNote: q.frameworkMappingNote ?? null,
         },
       });
 

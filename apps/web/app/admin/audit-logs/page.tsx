@@ -49,15 +49,12 @@ export default function AdminAuditLogsPage() {
           <h1 className="text-2xl font-bold text-slate-900">
             บันทึกการกระทำของผู้ดูแลระบบ (Admin Audit Trail)
           </h1>
-          <p className="text-sm text-slate-600">
-            ตรวจสอบประวัติการดำเนินการทั้งหมดของแอดมิน (ใคร ทำอะไร กับข้อมูลใด เมื่อไร)
-          </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
           <input
             type="text"
-            className="input w-64 text-xs"
+            className="input w-full sm:w-64 text-xs"
             placeholder="ค้นหา Action, Target ID หรืออีเมลแอดมิน..."
             value={search}
             onChange={(e) => {
@@ -66,7 +63,7 @@ export default function AdminAuditLogsPage() {
             }}
           />
           <select
-            className="input w-44 text-xs"
+            className="input w-full sm:w-44 text-xs"
             value={targetType}
             onChange={(e) => {
               setTargetType(e.target.value);
@@ -97,7 +94,7 @@ export default function AdminAuditLogsPage() {
             ไม่พบบันทึกการกระทำในระบบ
           </div>
         ) : (
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full min-w-[680px] text-xs text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2.5 px-3">เวลา</th>

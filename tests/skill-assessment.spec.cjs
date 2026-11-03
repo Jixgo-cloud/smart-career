@@ -363,4 +363,21 @@ describe('SmartCareer Shared Policy & Scoring Engine', () => {
     });
     assert.equal(practice.isValid, true);
   });
+
+  it('Validates all assessments in prisma/assessment-bank/javascript-sandbox.json pass readiness', () => {
+    const fs = require('node:fs');
+    const path = require('node:path');
+    const bankPath = path.join(__dirname, '..', 'prisma', 'assessment-bank', 'javascript-sandbox.json');
+    const bank = JSON.parse(fs.readFileSync(bankPath, 'utf8'));
+    assert.ok(Array.isArray(bank.assessments));
+    assert.ok(bank.assessments.length >= 13, `Expected at least 13 assessments in bank, got ${bank.assessments.length}`);
+    for (const exam of bank.assessments) {
+      const readiness = validateAssessmentReadiness(exam);
+      assert.equal(
+        readiness.isReady,
+        true,
+        `Assessment "${exam.slug}" failed readiness: ${(readiness.errors || []).join('; ')}`,
+      );
+    }
+  });
 });

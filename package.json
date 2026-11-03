@@ -22,13 +22,14 @@
     "lint": "npm run lint --workspace=@smartcareer/shared && npm run lint --workspace=@smartcareer/api && npm run lint --workspace=@smartcareer/web",
     "test:domain": "node --test tests/skill-assessment.spec.cjs tests/job-detail-content.spec.cjs",
     "test:security": "node --test tests/security.spec.cjs",
+    "test:notifications": "node --test tests/notifications.spec.cjs",
     "test:uat": "node --test tests/uat-e2e.spec.cjs",
     "test:admin": "node --test tests/admin-completeness.spec.cjs",
     "test:e2e:browser": "playwright test",
     "test:scraping": "node --test tests/live-scraping.spec.cjs",
     "test:regression": "node scripts/verify-core-regression.cjs",
     "verify:core": "node scripts/verify-core-regression.cjs",
-    "test": "npm run test:domain && npm run test:security && npm run test:uat && npm run test:admin"
+    "test": "npm run test:domain && npm run test:security && npm run test:notifications && npm run test:uat && npm run test:admin"
   },
   "dependencies": {
     "@prisma/client": "5.22.0"

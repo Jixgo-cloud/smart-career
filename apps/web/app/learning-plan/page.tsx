@@ -136,9 +136,6 @@ export default function LearningPlanPage() {
         <h1 className="text-2xl font-bold text-slate-900">
           ผลประเมินจากบริษัทและแผนพัฒนาทักษะ (Learning Plan)
         </h1>
-        <p className="text-sm text-slate-600">
-          ดูข้อเสนอแนะ 4 มิติจากบริษัทที่สัมภาษณ์หรือพิจารณาใบสมัคร พร้อมบันทึกหลักฐานการพัฒนาทักษะ (รองรับ Optimistic Concurrency Control)
-        </p>
       </div>
 
       {message && (
@@ -180,7 +177,7 @@ export default function LearningPlanPage() {
 
               return (
                 <div key={evalId} className="card space-y-4">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                     <div className="flex items-center gap-3">
                       <CompanyLogo
                         logoUrl={ev.company?.logoUrl || resolveJobLogoUrl(jobObj)}
@@ -201,7 +198,7 @@ export default function LearningPlanPage() {
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     <div className="p-2 rounded bg-slate-50">
                       ทักษะเทคนิค (Technical): <b>{tech} / 5</b>
                     </div>

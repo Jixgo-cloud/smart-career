@@ -75,9 +75,6 @@ export default function AssessmentsCatalogPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">ศูนย์สอบมาตรฐานกลาง (Skill Assessments)</h1>
-        <p className="text-sm text-slate-600">
-          เฉพาะแบบทดสอบปฏิบัติกลาง (PRACTICAL_CODING) เท่านั้นที่ถูกนำไปอัปเดตเป็นคะแนนทักษะหลัก (Global Skill Score) ส่วนแบบทดสอบทฤษฎีใช้ประกอบความรู้พื้นฐาน
-        </p>
       </div>
 
       {/* Earned Badges */}
@@ -152,7 +149,7 @@ export default function AssessmentsCatalogPage() {
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                  <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
                     <span className="text-xs text-slate-500">
                       โหมดตรวจ: {exam.gradingMode || (exam.companyId ? 'COMPANY_CUSTOM' : 'PLATFORM_AUTOMATED')}
                     </span>
@@ -179,7 +176,7 @@ export default function AssessmentsCatalogPage() {
             )}
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left border-collapse">
+            <table className="w-full min-w-[720px] text-sm text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="py-2.5 px-3">ชื่อชุดข้อสอบ</th>
@@ -256,9 +253,9 @@ export default function AssessmentsCatalogPage() {
 
       {/* Attempt Review Modal (GET /assessments/attempts/:attemptId/review) */}
       {reviewDetail && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-xl border border-slate-200 p-6 space-y-5">
-            <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[88vh] overflow-y-auto shadow-xl border border-slate-200 p-4 sm:p-6 space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-slate-100 pb-4">
               <div>
                 <span className="badge bg-blue-50 text-blue-700">
                   {reviewDetail.assessment?.type || 'ASSESSMENT'} • การแสดงผล:{' '}

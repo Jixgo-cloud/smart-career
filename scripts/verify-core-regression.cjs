@@ -9,6 +9,7 @@ try {
   runStep('Build Shared Package', 'npm run build:shared');
   runStep('Domain Invariants Test Suite', 'npm run test:domain');
   runStep('Security & Isolation Test Suite', 'npm run test:security');
+  runStep('Notification System Test Suite', 'npm run test:notifications');
   runStep('Full UAT E2E Test Suite', 'npm run test:uat');
   console.log('\n✅ ALL CORE REGRESSION CHECKS PASSED');
 } catch (err) {

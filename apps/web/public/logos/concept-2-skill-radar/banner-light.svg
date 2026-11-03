@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 480" width="1600" height="480">
+  <defs>
+    
+    <linearGradient id="c2-lock-light-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1120" />
+      <stop offset="55%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#070B14" />
+    </linearGradient>
+    <radialGradient id="c2-lock-light-glow" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#2584FF" stop-opacity="0.42" />
+      <stop offset="60%" stop-color="#6366F1" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#070B14" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="c2-lock-light-hex" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#1D7AFC" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+    <linearGradient id="c2-lock-light-poly" x1="15%" y1="85%" x2="85%" y2="15%">
+      <stop offset="0%" stop-color="#1D7AFC" stop-opacity="0.38" />
+      <stop offset="100%" stop-color="#00E5FF" stop-opacity="0.76" />
+    </linearGradient>
+    <linearGradient id="c2-lock-light-needle" x1="20%" y1="80%" x2="85%" y2="15%">
+      <stop offset="0%" stop-color="#2584FF" />
+      <stop offset="100%" stop-color="#00F5D4" />
+    </linearGradient>
+  
+    <linearGradient id="c2-lock-light-word-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1D7AFC" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+  </defs>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap');
+  .wordmark {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+  .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+</style>
+  <rect x="0" y="0" width="1600" height="480" rx="32" fill="#FFFFFF" />
+
+  <!-- Left Icon Badge -->
+  <g transform="translate(72, 64)">
+    <rect x="0" y="0" width="352" height="352" rx="84" fill="url(#c2-lock-light-bg)" />
+    <rect x="0" y="0" width="352" height="352" rx="84" fill="url(#c2-lock-light-glow)" />
+    <rect x="2" y="2" width="348" height="348" rx="82" fill="none" stroke="rgba(56,189,248,0.35)" stroke-width="4" />
+    <g transform="translate(28, 28) scale(0.578)">
+      
+    <!-- Outer Hexagon Frame -->
+    <polygon points="256,68 418,162 418,350 256,444 94,350 94,162"
+      fill="none"
+      stroke="url(#c2-lock-light-hex)"
+      stroke-width="28"
+      stroke-linejoin="round" />
+
+    <!-- Radar Spokes / Axes -->
+    <g stroke="rgba(148, 163, 184, 0.30)" stroke-width="8" stroke-linecap="round">
+      <line x1="256" y1="68" x2="256" y2="444" />
+      <line x1="94" y1="162" x2="418" y2="350" />
+      <line x1="94" y1="350" x2="418" y2="162" />
+    </g>
+
+    <!-- Asymmetric Skill Radar Polygon -->
+    <polygon points="256,118 418,162 366,320 256,396 130,328 150,195"
+      fill="url(#c2-lock-light-poly)"
+      stroke="#00E5FF"
+      stroke-width="14"
+      stroke-linejoin="round" />
+
+    <!-- Matching Vector Needle (Center to Verified Top-Right Job Match Node) -->
+    <path d="M 184 328 L 418 162"
+      fill="none"
+      stroke="url(#c2-lock-light-needle)"
+      stroke-width="30"
+      stroke-linecap="round" />
+
+    <!-- Radar Vertex Dots -->
+    <circle cx="256" cy="118" r="13" fill="#38BDF8" />
+    <circle cx="366" cy="320" r="13" fill="#38BDF8" />
+    <circle cx="256" cy="396" r="13" fill="#38BDF8" />
+    <circle cx="130" cy="328" r="13" fill="#38BDF8" />
+    <circle cx="150" cy="195" r="13" fill="#38BDF8" />
+
+    <!-- Center Core Hub -->
+    <circle cx="256" cy="256" r="28" fill="#0F172A" stroke="#FFFFFF" stroke-width="16" />
+
+    <!-- Highlighted Match Target Node at Top-Right Vertex -->
+    <circle cx="418" cy="162" r="32" fill="#00F5D4" stroke="#0F172A" stroke-width="12" />
+  
+    </g>
+  </g>
+
+  <!-- Right Brand Typography -->
+  <g transform="translate(472, 0)">
+    <!-- Wordmark: Smart + Career -->
+    <text x="0" y="242" class="wordmark" font-size="152" fill="#0F172A">
+      Smart<tspan fill="url(#c2-lock-light-word-grad)">Career</tspan>
+    </text>
+
+    <!-- Subtitle Pill + Tagline -->
+    <rect x="4" y="288" width="164" height="48" rx="14" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="2" />
+    <text x="86" y="319" text-anchor="middle" class="tagline" font-size="21" fill="#1D7AFC">VERIFIED</text>
+    <text x="192" y="320" class="tagline" font-size="23" fill="#475569">SKILL ASSESSMENT &amp; JOB MATCHING</text>
+  </g>
+</svg>

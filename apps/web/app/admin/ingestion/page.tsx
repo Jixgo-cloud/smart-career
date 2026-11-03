@@ -353,9 +353,6 @@ export default function AdminIngestionPage() {
         <h1 className="text-2xl font-bold text-slate-900">
           จัดการระบบดึงข้อมูลงานและคอร์สเรียน (Data Scraping &amp; Ingestion)
         </h1>
-        <p className="text-sm text-slate-600">
-          รองรับการดึงข้อมูลสดจาก API/เว็บภายนอก (Remotive, Blognone, JobsDB, JSearch) ตั้งค่าโควตา นำเข้าผ่าน Local Job Batch พร้อมระบบ Durable Lock (IngestionRun)
-        </p>
       </div>
 
       <AdminBanner
@@ -372,7 +369,7 @@ export default function AdminIngestionPage() {
         <h2 className="text-lg font-bold text-slate-900">
           1. ดึงประกาศงานสดจากแหล่งภายนอก (Live Scraping &amp; API Ingestion)
         </h2>
-        <div className="grid md:grid-cols-4 gap-4 items-end">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <div>
             <label className="label">เลือกแหล่งข้อมูล (Source)</label>
             <select
@@ -404,7 +401,7 @@ export default function AdminIngestionPage() {
               onChange={(e) => setLimit(Number(e.target.value))}
             />
           </div>
-          <div className="md:col-span-2 flex flex-wrap gap-2">
+          <div className="sm:col-span-2 flex flex-wrap gap-2">
             <button
               type="button"
               onClick={handleSyncJobs}
@@ -634,7 +631,7 @@ export default function AdminIngestionPage() {
         )}
 
         {closedCoursesPreview && (
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs flex items-center justify-between">
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs flex flex-wrap items-center justify-between gap-2">
             <div className="font-semibold text-slate-800">
               คอร์สเรียนที่ปิดหรือลิงก์ไม่ถูกต้อง: พบ{' '}
               {closedCoursesPreview.totalPreviewed} รายการ
@@ -658,7 +655,7 @@ export default function AdminIngestionPage() {
           ประวัติการดึงข้อมูลล่าสุด (Ingestion Audit Logs)
         </h2>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left border-collapse">
+          <table className="w-full min-w-[680px] text-sm text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2.5 px-3">แหล่งข้อมูล (Source)</th>

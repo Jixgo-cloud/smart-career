@@ -47,9 +47,6 @@ export default function MyApplicationsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">ประวัติการสมัครงานของฉัน</h1>
-        <p className="text-sm text-slate-600">
-          ติดตามสถานะใบสมัคร รอบการสมัคร (Round) แบบทดสอบเฉพาะตำแหน่ง และผลประเมินจากบริษัท
-        </p>
       </div>
 
       {error && (
@@ -120,7 +117,7 @@ export default function MyApplicationsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {app.assignedAssessmentId && (
                       <Link
                         href={`/assessments/${app.assignedAssessmentId}?applicationId=${app.id}`}
@@ -141,7 +138,7 @@ export default function MyApplicationsPage() {
                 </div>
 
                 {ev && (
-                  <div className="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs flex items-center justify-between">
+                  <div className="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <span className="text-emerald-900 font-medium">
                       บริษัทได้ส่งผลประเมินและข้อเสนอแนะสำหรับพัฒนาทักษะแล้ว (คะแนนเฉลี่ย:{' '}
                       {avgEvalScore})

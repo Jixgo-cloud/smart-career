@@ -65,15 +65,12 @@ export default function AdminDataBrowserPage() {
           <h1 className="text-2xl font-bold text-slate-900">
             ตรวจสอบข้อมูลระบบ (Platform Data Browser)
           </h1>
-          <p className="text-sm text-slate-600">
-            เรียกดูรายการตำแหน่งงาน บริษัท และใบสมัครงานทั้งหมดในระบบแบบอ่านอย่างเดียว (Read-only Governance View)
-          </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
           <input
             type="text"
-            className="input w-64 text-xs"
+            className="input w-full sm:w-64 text-xs"
             placeholder="ค้นหาชื่อตำแหน่งงาน บริษัท หรือผู้สมัคร..."
             value={search}
             onChange={(e) => {
@@ -82,7 +79,7 @@ export default function AdminDataBrowserPage() {
             }}
           />
           <select
-            className="input w-44 text-xs"
+            className="input w-full sm:w-44 text-xs"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
@@ -118,7 +115,7 @@ export default function AdminDataBrowserPage() {
         </div>
       </div>
 
-      <div className="flex gap-2 border-b border-slate-200 pb-3" role="tablist">
+      <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3" role="tablist">
         {[
           { key: 'jobs', label: 'ตำแหน่งงาน (Jobs)' },
           { key: 'companies', label: 'บริษัท (Companies)' },
@@ -153,7 +150,7 @@ export default function AdminDataBrowserPage() {
         ) : items.length === 0 ? (
           <div className="p-8 text-center text-slate-500">ไม่พบรายการที่ตรงตามเงื่อนไข</div>
         ) : tab === 'jobs' ? (
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full min-w-[640px] text-xs text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2.5 px-3">ตำแหน่งงาน</th>
@@ -203,7 +200,7 @@ export default function AdminDataBrowserPage() {
             </tbody>
           </table>
         ) : tab === 'companies' ? (
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full min-w-[640px] text-xs text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2.5 px-3">ชื่อบริษัท</th>
@@ -243,7 +240,7 @@ export default function AdminDataBrowserPage() {
             </tbody>
           </table>
         ) : (
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full min-w-[640px] text-xs text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2.5 px-3">ผู้สมัคร</th>

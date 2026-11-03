@@ -91,9 +91,6 @@ export default function AdminUsersPage() {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">จัดการบัญชีผู้ใช้งาน</h1>
-          <p className="text-sm text-slate-600">
-            ตรวจสอบสถานะบัญชี กรองตามบทบาท และระงับการใช้งาน (Revoke sessions ทันทีเมื่อระงับบัญชี)
-          </p>
           {counts && (
             <div className="text-xs text-slate-500 mt-1">
               ทั้งหมด {counts.ALL} บัญชี • ผู้สมัคร {counts.CANDIDATE} • บริษัท{' '}
@@ -103,10 +100,10 @@ export default function AdminUsersPage() {
           )}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
           <input
             type="text"
-            className="input w-64"
+            className="input w-full sm:w-64"
             placeholder="ค้นหาชื่อ หรืออีเมล..."
             value={search}
             onChange={(e) => {
@@ -115,7 +112,7 @@ export default function AdminUsersPage() {
             }}
           />
           <select
-            className="input w-40 text-xs"
+            className="input w-full sm:w-40 text-xs"
             value={roleFilter}
             onChange={(e) => {
               setRoleFilter(e.target.value);
@@ -129,7 +126,7 @@ export default function AdminUsersPage() {
             <option value="ADMIN">ADMIN</option>
           </select>
           <select
-            className="input w-40 text-xs"
+            className="input w-full sm:w-40 text-xs"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
@@ -159,7 +156,7 @@ export default function AdminUsersPage() {
         ) : users.length === 0 ? (
           <div className="p-8 text-center text-slate-500">ไม่พบบัญชีผู้ใช้งานที่ตรงตามเงื่อนไข</div>
         ) : (
-          <table className="w-full text-sm text-left border-collapse">
+          <table className="w-full min-w-[740px] text-sm text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2.5 px-3">อีเมล</th>

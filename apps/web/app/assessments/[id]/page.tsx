@@ -343,7 +343,7 @@ export default function AssessmentRoomPage() {
           </div>
           <h1 className="text-xl font-bold text-slate-900 mt-1">{assessment.title}</h1>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button onClick={handleAutosave} className="btn-secondary text-xs">
             บันทึกฉบับร่าง (Autosave)
           </button>
@@ -413,7 +413,7 @@ export default function AssessmentRoomPage() {
           })}
         </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Question Selector & Prompt */}
           <div className="card space-y-4">
             <div className="flex flex-wrap gap-2">
@@ -451,7 +451,7 @@ export default function AssessmentRoomPage() {
                       .map((tc: any, i: number) => (
                         <div
                           key={i}
-                          className="p-2.5 rounded bg-slate-50 border border-slate-200 font-mono text-xs space-y-1"
+                          className="p-2.5 rounded bg-slate-50 border border-slate-200 font-mono text-xs space-y-1 overflow-x-auto"
                         >
                           <div>Input: {tc.input}</div>
                           <div>Expected: {tc.expectedOutput}</div>
@@ -464,14 +464,14 @@ export default function AssessmentRoomPage() {
           </div>
 
           {/* Code Editor & Runner */}
-          <div className="md:col-span-2 card space-y-4">
+          <div className="lg:col-span-2 card space-y-4">
             {currentQ && (
               <>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <span className="text-sm font-bold text-slate-800">
                     Code Editor (JavaScript / Node.js Sandbox)
                   </span>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => handleRunVisibleTests(currentQ.id)}
                       disabled={runningCode}

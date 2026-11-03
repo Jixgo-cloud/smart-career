@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 480" width="1600" height="480">
+  <defs>
+    
+    <linearGradient id="c3-lock-dark-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D1326" />
+      <stop offset="50%" stop-color="#090D1A" />
+      <stop offset="100%" stop-color="#05070F" />
+    </linearGradient>
+    <radialGradient id="c3-lock-dark-glow" cx="35%" cy="25%" r="70%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.42" />
+      <stop offset="55%" stop-color="#1D7AFC" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#05070F" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="c3-lock-dark-s-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#1D7AFC" />
+      <stop offset="100%" stop-color="#4F46E5" />
+    </linearGradient>
+    <linearGradient id="c3-lock-dark-c-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2584FF" />
+      <stop offset="50%" stop-color="#00E5FF" />
+      <stop offset="100%" stop-color="#00F5D4" />
+    </linearGradient>
+    <filter id="c3-lock-dark-shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#00E5FF" flood-opacity="0.22" />
+    </filter>
+  
+    <linearGradient id="c3-lock-dark-word-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1D7AFC" />
+      <stop offset="100%" stop-color="#00E5FF" />
+    </linearGradient>
+  </defs>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap');
+  .wordmark {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+  .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+</style>
+  <rect x="0" y="0" width="1600" height="480" rx="32" fill="#0B0F17" />
+
+  <!-- Left Icon Badge -->
+  <g transform="translate(72, 64)">
+    <rect x="0" y="0" width="352" height="352" rx="84" fill="url(#c3-lock-dark-bg)" />
+    <rect x="0" y="0" width="352" height="352" rx="84" fill="url(#c3-lock-dark-glow)" />
+    <rect x="2" y="2" width="348" height="348" rx="82" fill="none" stroke="rgba(56,189,248,0.35)" stroke-width="4" />
+    <g transform="translate(28, 28) scale(0.578)">
+      
+    <!-- Geometric 'S' on the Left Half (x: 68..244, y: 120..392) -->
+    <path d="M 232 132
+             H 132
+             C 92 132, 68 156, 68 194
+             C 68 232, 92 256, 136 256
+             H 176
+             C 220 256, 244 280, 244 318
+             C 244 356, 220 380, 176 380
+             H 76"
+      fill="none"
+      stroke="url(#c3-lock-dark-s-grad)"
+      stroke-width="46"
+      stroke-linecap="round"
+      stroke-linejoin="round" />
+
+    <!-- Geometric 'C' on the Right Half with Rising Career Arrow Terminal (x: 280..448) -->
+    <g filter="url(#c3-lock-dark-shadow)">
+      <!-- Main C curve + upward diagonal shaft -->
+      <path d="M 432 332
+               C 412 364, 380 380, 342 380
+               C 298 380, 272 346, 272 256
+               C 272 166, 298 132, 346 132
+               H 436"
+        fill="none"
+        stroke="url(#c3-lock-dark-c-grad)"
+        stroke-width="46"
+        stroke-linecap="round"
+        stroke-linejoin="round" />
+
+      <!-- Arrowhead at Top-Right of 'C' (Career Growth / Verified) -->
+      <path d="M 382 86 L 444 132 L 382 178"
+        fill="none"
+        stroke="url(#c3-lock-dark-c-grad)"
+        stroke-width="42"
+        stroke-linecap="round"
+        stroke-linejoin="round" />
+    </g>
+
+    <!-- White/Navy Accent Core Dot between S and C -->
+    <circle cx="348" cy="256" r="18" fill="#FFFFFF" />
+  
+    </g>
+  </g>
+
+  <!-- Right Brand Typography -->
+  <g transform="translate(472, 0)">
+    <!-- Wordmark: Smart + Career -->
+    <text x="0" y="242" class="wordmark" font-size="152" fill="#FFFFFF">
+      Smart<tspan fill="url(#c3-lock-dark-word-grad)">Career</tspan>
+    </text>
+
+    <!-- Subtitle Pill + Tagline -->
+    <rect x="4" y="288" width="164" height="48" rx="14" fill="#161F33" stroke="#1E3A8A" stroke-width="2" />
+    <text x="86" y="319" text-anchor="middle" class="tagline" font-size="21" fill="#38BDF8">VERIFIED</text>
+    <text x="192" y="320" class="tagline" font-size="23" fill="#94A3B8">SKILL ASSESSMENT &amp; JOB MATCHING</text>
+  </g>
+</svg>

@@ -225,9 +225,6 @@ export default function CompanyAssessmentsPage() {
         <h1 className="text-2xl font-bold text-slate-900">
           จัดการข้อสอบคัดเลือกของบริษัทและตรวจให้คะแนน (Company Manual Review)
         </h1>
-        <p className="text-sm text-slate-600">
-          ข้อสอบที่สร้างโดยบริษัทจะใช้โหมดตรวจโดยผู้เชี่ยวชาญของบริษัท (COMPANY_MANUAL) และไม่กระทบคะแนน Global Skill Score กลางของแพลตฟอร์ม
-        </p>
       </div>
 
       {message && (
@@ -241,10 +238,10 @@ export default function CompanyAssessmentsPage() {
         </div>
       )}
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Create / Edit Company Assessment */}
         <form onSubmit={handleSaveAssessment} className="card space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-slate-900">
               {editingAssessmentId
                 ? 'แก้ไขชุดข้อสอบของบริษัท'
@@ -284,7 +281,7 @@ export default function CompanyAssessmentsPage() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="label">ทักษะหลักที่เกี่ยวข้อง</label>
               <select
@@ -336,7 +333,7 @@ export default function CompanyAssessmentsPage() {
           </div>
 
           <div className="space-y-3 pt-2 border-t border-slate-100">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <label className="label mb-0">รายการโจทย์ปัญหา ({questions.length} ข้อ)</label>
               <button
                 type="button"
@@ -397,7 +394,7 @@ export default function CompanyAssessmentsPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
                     <label className="label text-xs">โค้ดเริ่มต้น (Starter Code)</label>
                     <input
@@ -459,9 +456,9 @@ export default function CompanyAssessmentsPage() {
                       : 'border-slate-200 hover:bg-slate-50'
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-2">
+                  <div className="flex flex-wrap items-start justify-between gap-2">
                     <div>
-                      <div className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                      <div className="font-bold text-slate-900 text-sm flex flex-wrap items-center gap-2">
                         {a.title}
                         <span
                           className={`badge text-[10px] ${
@@ -631,7 +628,7 @@ export default function CompanyAssessmentsPage() {
                     );
                   })}
 
-                  <div className="grid md:grid-cols-4 gap-3 items-end pt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end pt-2">
                     <div>
                       <label className="label">ให้คะแนนโดยผู้เชี่ยวชาญ (Human Score 0-100)</label>
                       <input

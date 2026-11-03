@@ -12,6 +12,7 @@ import {
   AssessmentReviewStatus,
   AssessmentType,
   AttemptStatus,
+  FeedbackVisibility,
   NotificationType,
   QuestionEvaluationMethod,
   UserRole,
@@ -625,7 +626,39 @@ export class AssessmentsService {
       },
     });
 
+    if (isCompanyExam) {
+      await this.notifyCompanyAssessmentSubmitted(completed, user);
+    }
+
     return formatAttemptForCandidate(completed);
+  }
+
+  private async notifyCompanyAssessmentSubmitted(attempt: any, user: any) {
+    const companyId = attempt?.assessment?.companyId;
+    if (!companyId) return;
+
+    const members = await this.prisma.companyMember.findMany({
+      where: { companyId },
+      select: { userId: true },
+    });
+
+    const candidateName =
+      user?.candidateProfile?.fullName || user?.email || 'ผู้สมัคร';
+
+    for (const member of members) {
+      await this.notifications.createNotification({
+        userId: member.userId,
+        type: NotificationType.ASSESSMENT_ASSIGNED,
+        title: 'ผู้สมัครส่งข้อสอบบริษัทแล้ว (รอตรวจ)',
+        message: `${candidateName} ได้ส่งข้อสอบ "${attempt.assessment.title}" เรียบร้อยแล้ว รอการตรวจให้คะแนน`,
+        link: `/company/assessments`,
+        metadata: {
+          attemptId: attempt.id,
+          assessmentId: attempt.assessmentId,
+          candidateId: attempt.candidateId,
+        },
+      });
+    }
   }
 
   async submitCodingQuestion(
@@ -897,6 +930,7 @@ export class AssessmentsService {
           answers: true,
         },
       });
+      await this.notifyCompanyAssessmentSubmitted(completedCompany, user);
       return formatAttemptForCandidate(completedCompany);
     }
 
@@ -1035,6 +1069,7 @@ export class AssessmentsService {
         assessment: {
           include: { questions: true, skill: true },
         },
+        candidate: true,
         answers: true,
       },
     });
@@ -1132,6 +1167,20 @@ export class AssessmentsService {
         answers: true,
       },
     });
+
+    if (
+      attempt.candidate?.userId &&
+      attempt.assessment.feedbackVisibility !== FeedbackVisibility.PRIVATE_TO_COMPANY
+    ) {
+      await this.notifications.createNotification({
+        userId: attempt.candidate.userId,
+        type: NotificationType.ASSESSMENT_ASSIGNED,
+        title: 'ผลการตรวจข้อสอบได้รับการอัปเดต',
+        message: `ข้อสอบ "${attempt.assessment.title}" ได้รับการประเมินผลเรียบร้อยแล้ว`,
+        link: `/assessments`,
+        metadata: { attemptId: attempt.id, assessmentId: attempt.assessmentId },
+      });
+    }
 
     return isOwnerCandidate ? formatAttemptForCandidate(updated) : updated;
   }
@@ -1231,7 +1280,10 @@ export class AssessmentsService {
       },
     });
 
-    if (attempt.candidate?.userId) {
+    if (
+      attempt.candidate?.userId &&
+      attempt.assessment.feedbackVisibility !== FeedbackVisibility.PRIVATE_TO_COMPANY
+    ) {
       await this.notifications.createNotification({
         userId: attempt.candidate.userId,
         type: NotificationType.ASSESSMENT_ASSIGNED,

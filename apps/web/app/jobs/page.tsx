@@ -448,10 +448,11 @@ export default function JobsListPage() {
   }, [filteredJobs, safePage]);
 
   const salarySliderPct = Math.min(100, Math.max(0, Math.round((minSalary / 120000) * 100)));
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   return (
     <div className="space-y-6">
-      {/* SECTION HEADER: Preserved Title & Subtitle + Real Keyword Search + Real SortBy Dropdown */}
+      {/* SECTION HEADER: Preserved Title + Real Keyword Search + Real SortBy Dropdown */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-3">
@@ -463,13 +464,9 @@ export default function JobsListPage() {
               {totalPages})
             </span>
           </div>
-          <p className="text-sm text-zinc-600">
-            แสดงคะแนนความเหมาะสม (Match Score) พร้อมระดับความครอบคลุมของการสอบประเมิน (Assessment
-            Coverage)
-          </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           {/* Saved Jobs Toggle (GET /jobs/favorites/me) */}
           {user?.role === 'CANDIDATE' && (
             <div className="inline-flex rounded-full bg-zinc-200/70 p-1 text-xs font-semibold">
@@ -532,12 +529,12 @@ export default function JobsListPage() {
           </div>
 
           {/* Real SortBy Selector */}
-          <div className="px-4 py-2 rounded-full bg-white border border-zinc-300 text-xs font-semibold text-zinc-800 flex items-center gap-1.5 shadow-sm">
-            <span className="text-zinc-400">เรียงตาม:</span>
+          <div className="px-4 py-2 rounded-full bg-white border border-zinc-300 text-xs font-semibold text-zinc-800 flex items-center justify-between sm:justify-start gap-1.5 shadow-sm w-full sm:w-auto">
+            <span className="text-zinc-400 shrink-0">เรียงตาม:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortByOption)}
-              className="bg-transparent font-semibold text-zinc-800 focus:outline-none cursor-pointer"
+              className="bg-transparent font-semibold text-zinc-800 focus:outline-none cursor-pointer w-full sm:w-auto"
               aria-label="เรียงตาม"
             >
               <option value="publishedAt">ล่าสุด (publishedAt)</option>
@@ -545,13 +542,29 @@ export default function JobsListPage() {
               <option value="matchScore">คะแนนความเหมาะสม (matchScore)</option>
             </select>
           </div>
+
+          {/* Mobile & Tablet Filter Drawer Toggle (< 1024px) */}
+          <button
+            type="button"
+            onClick={() => setMobileFiltersOpen((prev) => !prev)}
+            className="lg:hidden w-full sm:w-auto px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+            aria-expanded={mobileFiltersOpen}
+          >
+            <span>
+              {mobileFiltersOpen ? 'ซ่อนตัวกรองตำแหน่งงาน ▲' : 'ตัวกรองตำแหน่งงาน (Filters) ▼'}
+            </span>
+          </button>
         </div>
       </div>
 
       {/* 2-COLUMN LAYOUT: Left Sidebar Filters (3 Cols) + Right 3-Col Job Cards Grid (9 Cols) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* LEFT SIDEBAR FILTERS (100% Real-System Connected) */}
-        <aside className="lg:col-span-3 space-y-6 lg:pr-2">
+        <aside
+          className={`${
+            mobileFiltersOpen ? 'block bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm' : 'hidden'
+          } lg:block lg:bg-transparent lg:p-0 lg:border-0 lg:shadow-none lg:col-span-3 space-y-6 lg:pr-2`}
+        >
           {/* Filter Group 1: JobType Enum */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -954,7 +967,7 @@ export default function JobsListPage() {
                   (สูงสุด {JOBS_PER_PAGE} งานต่อหน้า)
                 </span>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center justify-center gap-2">
                   <button
                     type="button"
                     disabled={safePage <= 1}
@@ -964,7 +977,7 @@ export default function JobsListPage() {
                     ← หน้าก่อนหน้า
                   </button>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex flex-wrap items-center justify-center gap-1">
                     {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pageNum) => (
                       <button
                         key={pageNum}

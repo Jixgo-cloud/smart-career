@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartCareer — สไลด์นำเสนอโครงงาน (RUTS Template)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700;800&family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: #1e293b;
+      color: #111111;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      user-select: none;
+    }
+    .deck-viewport {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-frame {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      background: #ffffff;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.55);
+      overflow: hidden;
+      transform-origin: center center;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      background-size: 1920px 1080px;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: none;
+    }
+    .slide.active {
+      display: block;
+    }
+
+    /* Standard Elements */
+    .top-heading {
+      position: absolute;
+      left: 200px;
+      top: 72px;
+      font-size: 54px;
+      font-weight: 700;
+      color: #111111;
+      letter-spacing: -0.01em;
+    }
+    .page-num {
+      position: absolute;
+      right: 18px;
+      bottom: 10px;
+      width: 95px;
+      text-align: center;
+      font-family: 'Kanit', sans-serif;
+      font-size: 56px;
+      font-weight: 800;
+      color: #111111;
+      line-height: 1;
+    }
+
+    /* Slide 1: Cover */
+    .cover1-logo {
+      position: absolute;
+      left: 615px;
+      top: 335px;
+      width: 310px;
+      height: 310px;
+      border-radius: 68px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+    }
+    .cover1-title-th {
+      position: absolute;
+      left: 955px;
+      top: 340px;
+      right: 75px;
+      text-align: right;
+      font-family: 'Kanit', sans-serif;
+      font-size: 76px;
+      font-weight: 800;
+      line-height: 1.12;
+      color: #23170d;
+    }
+    .cover1-title-en {
+      position: absolute;
+      left: 600px;
+      top: 675px;
+      right: 75px;
+      text-align: right;
+      font-size: 36px;
+      font-weight: 600;
+      color: #6b5335;
+    }
+    .cover1-footer {
+      position: absolute;
+      left: 880px;
+      bottom: 58px;
+      right: 120px;
+      font-size: 29px;
+      font-weight: 700;
+      color: #4a3a28;
+      line-height: 1.52;
+    }
+
+    /* Slide 2: Inner Cover */
+    .cover2-box {
+      position: absolute;
+      left: 260px;
+      right: 260px;
+      top: 270px;
+      bottom: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      font-size: 34px;
+      color: #111111;
+      line-height: 1.55;
+    }
+    .cover2-box strong {
+      font-weight: 700;
+    }
+
+    /* Slide 3: Hook */
+    .hook-quote {
+      position: absolute;
+      left: 380px;
+      right: 95px;
+      top: 120px;
+      font-size: 46px;
+      font-weight: 700;
+      color: #111111;
+      line-height: 1.5;
+    }
+    .hook-illus {
+      position: absolute;
+      left: 580px;
+      top: 395px;
+      width: 820px;
+      height: 610px;
+      object-fit: contain;
+    }
+
+    /* Slide 4: Problem Statement */
+    .prob-left-illus {
+      position: absolute;
+      left: 110px;
+      top: 215px;
+      width: 530px;
+      height: 470px;
+      object-fit: contain;
+    }
+    .prob-left-item {
+      position: absolute;
+      left: 75px;
+      top: 725px;
+      width: 680px;
+    }
+    .prob-right-col {
+      position: absolute;
+      left: 815px;
+      top: 115px;
+      right: 75px;
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+    }
+    .prob-row {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .prob-row img {
+      width: 235px;
+      height: 215px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .dot-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 31px;
+      font-weight: 700;
+      color: #111111;
+      margin-bottom: 10px;
+    }
+    .dot-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #1b4d3e;
+      flex-shrink: 0;
+    }
+    .dot-circle.gold {
+      background: #8a7932;
+    }
+    .prob-text {
+      font-size: 26px;
+      line-height: 1.48;
+      color: #1e1e1e;
+    }
+
+    /* Slide 5: Objectives */
+    .obj-list {
+      position: absolute;
+      left: 220px;
+      right: 120px;
+      top: 195px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .obj-row {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .obj-row img {
+      width: 300px;
+      height: 220px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .obj-text {
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.42;
+      color: #111111;
+    }
+
+    /* Slides 6-8: Scope */
+    .scope-sub {
+      position: absolute;
+      left: 740px;
+      top: 205px;
+      font-size: 46px;
+      font-weight: 700;
+      color: #111111;
+    }
+    .scope-left-img {
+      position: absolute;
+      left: 115px;
+      top: 320px;
+      width: 520px;
+      height: 450px;
+      object-fit: contain;
+    }
+    .scope-bullets {
+      position: absolute;
+      left: 750px;
+      right: 95px;
+      top: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      font-size: 27px;
+      font-weight: 500;
+      line-height: 1.42;
+      color: #111111;
+    }
+    .scope-bullets li {
+      margin-left: 32px;
+    }
+
+    /* Slide 9: Tech Stack */
+    .tech-grid {
+      position: absolute;
+      left: 140px;
+      right: 140px;
+      top: 225px;
+      bottom: 120px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 36px;
+      align-items: center;
+      justify-items: center;
+    }
+    .tech-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid rgba(15, 23, 42, 0.12);
+      border-radius: 24px;
+      padding: 28px 34px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+      gap: 14px;
+    }
+    .tech-badge-icon {
+      font-family: 'Kanit', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      padding: 12px 28px;
+      border-radius: 18px;
+    }
+    .tech-card h3 {
+      font-family: 'Kanit', sans-serif;
+      font-size: 34px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .tech-card p {
+      font-size: 23px;
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    /* Slide 11: UX/UI Overview Grid */
+    .ux-left-logo {
+      position: absolute;
+      left: 70px;
+      top: 410px;
+      width: 280px;
+      height: 280px;
+      border-radius: 62px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    }
+    .ux-grid-10 {
+      position: absolute;
+      left: 390px;
+      right: 42px;
+      top: 72px;
+      bottom: 88px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .ux-grid-10 img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 12px;
+      border: 2px solid #cbd5e1;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    /* Slides 12-26: Method UI Showcase (Enlarged UI Screenshots!) */
+    .method-layout {
+      position: absolute;
+      left: 65px;
+      right: 35px;
+      top: 148px;
+      bottom: 58px;
+      display: grid;
+      grid-template-columns: 395px 1fr;
+      gap: 26px;
+      align-items: center;
+    }
+    .method-left {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .method-bullet {
+      font-size: 37px;
+      font-weight: 700;
+      color: #111111;
+    }
+    .method-sub {
+      font-size: 30px;
+      font-weight: 700;
+      color: #1b4d3e;
+      line-height: 1.36;
+      padding-left: 18px;
+    }
+    .method-desc {
+      font-size: 24px;
+      color: #334155;
+      line-height: 1.48;
+      padding-left: 18px;
+    }
+    .method-right {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .shot-single {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .shot-single img {
+      width: 100%;
+      max-width: 1395px;
+      max-height: 865px;
+      object-fit: contain;
+      border-radius: 16px;
+      border: 3px solid #334155;
+      box-shadow: 0 20px 48px rgba(0,0,0,0.20);
+    }
+    .shot-stack {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+    }
+    .shot-stack img {
+      width: 100%;
+      max-width: 1260px;
+      max-height: 426px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 14px;
+      border: 2.5px solid #334155;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.18);
+    }
+
+    /* Slide 27: Testing Photos */
+    .test-photos-row {
+      position: absolute;
+      left: 65px;
+      right: 65px;
+      top: 265px;
+      height: 445px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .test-photos-row img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+    .test-caption {
+      position: absolute;
+      left: 120px;
+      right: 120px;
+      bottom: 135px;
+      text-align: center;
+      font-size: 39px;
+      font-weight: 700;
+      color: #111111;
+      line-height: 1.48;
+    }
+
+    /* Slide 28: Evaluation Table */
+    .eval-sub {
+      position: absolute;
+      left: 280px;
+      top: 185px;
+      font-size: 35px;
+      font-weight: 700;
+      color: #111111;
+    }
+    .eval-table {
+      position: absolute;
+      left: 340px;
+      width: 1240px;
+      top: 260px;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.92);
+      font-size: 27px;
+      color: #111111;
+    }
+    .eval-table th, .eval-table td {
+      border: 2px solid #222222;
+      padding: 10px 18px;
+    }
+    .eval-table th {
+      font-weight: 700;
+      text-align: center;
+      background: rgba(241, 245, 249, 0.9);
+    }
+    .eval-table td.center {
+      text-align: center;
+    }
+
+    /* Slide 29: Questionnaire & QR */
+    .qr-layout {
+      position: absolute;
+      left: 200px;
+      right: 120px;
+      top: 205px;
+      bottom: 90px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .qr-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+    }
+    .qr-col-title {
+      font-size: 33px;
+      font-weight: 700;
+      color: #111111;
+      align-self: flex-start;
+    }
+
+    /* Slide 30: Conclusion */
+    .conc-logo {
+      position: absolute;
+      left: 230px;
+      top: 345px;
+      width: 425px;
+      height: 425px;
+      border-radius: 85px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.2);
+    }
+    .conc-text {
+      position: absolute;
+      left: 780px;
+      right: 110px;
+      top: 280px;
+      font-size: 35px;
+      font-weight: 600;
+      line-height: 1.52;
+      color: #111111;
+    }
+
+    /* Slide 31: End */
+    .end-title {
+      position: absolute;
+      left: 165px;
+      top: 420px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 112px;
+      font-weight: 800;
+      color: #23170d;
+    }
+    .end-sub {
+      position: absolute;
+      left: 172px;
+      top: 585px;
+      font-size: 36px;
+      font-weight: 600;
+      color: #5b4937;
+    }
+
+    /* Floating Toolbar */
+    .deck-toolbar {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px 18px;
+      border-radius: 999px;
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+    .toolbar-btn {
+      background: transparent;
+      border: none;
+      color: #f8fafc;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .toolbar-btn:hover {
+      background: rgba(56, 189, 248, 0.25);
+    }
+    .slide-counter {
+      color: #38bdf8;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 0 8px;
+    }
+
+    @media print {
+      @page {
+        size: 1920px 1080px;
+        margin: 0;
+      }
+      body {
+        overflow: visible;
+        width: auto;
+        height: auto;
+        background: #ffffff;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .deck-viewport {
+        display: block;
+        width: auto;
+        height: auto;
+      }
+      .slide-frame {
+        width: 1920px;
+        height: auto;
+        box-shadow: none;
+        transform: none !important;
+      }
+      .slide {
+        position: relative !important;
+        display: block !important;
+        width: 1920px !important;
+        height: 1080px !important;
+        page-break-after: always;
+        break-after: page;
+      }
+      .deck-toolbar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck-viewport">
+  <div class="slide-frame" id="slideFrame">
+
+    <!-- SLIDE 1: หน้าปกหลัก -->
+    <section class="slide active" style="background-image: url('outputs/presentation_assets/bg_cover1.png');">
+      <img class="cover1-logo" src="outputs/presentation_assets/smartcareer_icon.png" alt="SmartCareer Logo" />
+      <div class="cover1-title-th">ระบบวิเคราะห์ทักษะ<br/>และจับคู่งานสายไอที</div>
+      <div class="cover1-title-en">Skill Assessment &amp; Job Matching System (SmartCareer)</div>
+      <div class="cover1-footer">
+        ผู้ทำปริญญานิพนธ์ &nbsp;&nbsp; [ชื่อ-นามสกุล ผู้จัดทำคนที่ 1] &nbsp;&nbsp; [ชื่อ-นามสกุล ผู้จัดทำคนที่ 2]<br/>
+        คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเทคโนโลยีราชมงคลศรีวิชัย
+      </div>
+      <div class="page-num">1</div>
+    </section>
+
+    <!-- SLIDE 2: หน้าปกใน -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_cover2.png');">
+      <div class="cover2-box">
+        <div>
+          <strong>ระบบวิเคราะห์ทักษะและจับคู่งานสายเทคโนโลยี</strong><br/>
+          SMARTCAREER PLATFORM
+        </div>
+        <div>
+          [ชื่อ-นามสกุล ผู้จัดทำคนที่ 1] &nbsp;&nbsp;&nbsp; รหัสนักศึกษา 1664041400XX<br/>
+          [ชื่อ-นามสกุล ผู้จัดทำคนที่ 2] &nbsp;&nbsp;&nbsp; รหัสนักศึกษา 1664041400XX
+        </div>
+        <div>
+          <strong>อาจารย์ที่ปรึกษาปริญญานิพนธ์/โครงงาน</strong><br/>
+          อ.ดร.อรรถพล คงหวาน
+        </div>
+        <div>
+          สาขาวิศวกรรมคอมพิวเตอร์<br/>
+          คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเทคโนโลยีราชมงคลศรีวิชัย สงขลา
+        </div>
+      </div>
+      <div class="page-num">2</div>
+    </section>
+
+    <!-- SLIDE 3: คำถามนำ (Hook) -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_hook.png');">
+      <div class="hook-quote">
+        "ไม่ทราบว่าท่านคณะกรรมการทราบไหมครับ ว่าเมื่อผู้สมัครสายไอทีส่งเรซูเม่ที่ระบุทักษะเหมือนกัน บริษัทและผู้สมัครรู้ได้อย่างไรว่าใครเขียนโค้ดใช้งานจริงได้ และยังขาดทักษะใดที่ต้องเรียนเพิ่ม" ?
+      </div>
+      <img class="hook-illus" src="outputs/presentation_assets/min_hook_char.png" alt="SmartCareer Hook Illustration" />
+      <div class="page-num">3</div>
+    </section>
+
+    <!-- SLIDE 4: 1.ความสำคัญและที่มา -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">1.ความสำคัญและที่มา</div>
+      <img class="prob-left-illus" src="outputs/presentation_assets/min_prob_left.png" alt="Developers" />
+      <div class="prob-left-item">
+        <div class="dot-title"><span class="dot-circle"></span><span>การคัดกรองทักษะสายเทคโนโลยีในปัจจุบัน</span></div>
+        <div class="prob-text" style="padding-left: 50px;">
+          การสมัครงานสายเทคโนโลยีในปัจจุบันมักอ้างอิงจากคำกล่าวอ้างทักษะบนเรซูเม่ เช่น React, Node.js หรือ SQL ซึ่งทั้งหมดนี้ต้องอาศัยหลักฐานเชิงประจักษ์จากการลงมือเขียนโค้ดและโปรเจกต์จริงจึงจะวัดความสามารถได้ถูกต้อง
+        </div>
+      </div>
+
+      <div class="prob-right-col">
+        <div class="prob-row">
+          <img src="outputs/presentation_assets/min_prob_1_tech.png" alt="IT Career Ecosystem" />
+          <div>
+            <div class="dot-title"><span class="dot-circle gold"></span><span>บทบาทของเทคโนโลยีในปัจจุบัน</span></div>
+            <div class="prob-text">
+              ปัจจุบันมีแพลตฟอร์มประกาศงานออนไลน์ ระบบ GitHub สำหรับเก็บซอร์สโค้ด ระบบตรวจโค้ดอัตโนมัติ และคอร์สเรียนออนไลน์ที่ช่วยสนับสนุนการเตรียมความพร้อมสู่อาชีพสายไอที
+            </div>
+          </div>
+        </div>
+
+        <div class="prob-row">
+          <img src="outputs/presentation_assets/min_prob_2_silos.png" alt="Fragmented Platforms" />
+          <div>
+            <div class="dot-title"><span class="dot-circle"></span><span>ปัญหาของแพลตฟอร์มที่มีอยู่ในปัจจุบัน</span></div>
+            <div class="prob-text">
+              ในปัจจุบันแม้จะมีเว็บไซต์หางานและเว็บฝึกเขียนโค้ดอยู่หลายตัว แต่แต่ละระบบแยกส่วนกัน เช่น เว็บหางานไม่มีระบบตรวจโค้ดจริง ส่วนเว็บฝึกโค้ดไม่ได้เชื่อมกับประกาศงานจริงในตลาด ผู้ใช้จึงต้องสลับใช้งานหลายระบบ
+            </div>
+          </div>
+        </div>
+
+        <div class="prob-row">
+          <img src="outputs/presentation_assets/min_prob_3_gap.png" alt="Skill Gaps" />
+          <div>
+            <div class="dot-title"><span class="dot-circle"></span><span>ปัญหาการเตรียมความพร้อมของผู้ใช้งาน</span></div>
+            <div class="prob-text">
+              นักศึกษาจบใหม่หรือผู้หางานสายไอทีบางกลุ่ม อาจไม่ทราบว่าตนเองยังขาดทักษะใด (Skill Gaps) เมื่อเทียบกับเกณฑ์ของบริษัท และเมื่อไม่ผ่านการคัดเลือกก็ขาดแผนพัฒนาทักษะและคอร์สเรียนที่ตรงจุด
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-num">4</div>
+    </section>
+
+    <!-- SLIDE 5: 2.วัตถุประสงค์ -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">2.วัตถุประสงค์</div>
+      <div class="obj-list">
+        <div class="obj-row">
+          <img src="outputs/presentation_assets/min_obj_1_match.png" alt="GitHub & Job Match" />
+          <div class="obj-text">
+            เพื่อพัฒนาระบบรวบรวมประกาศงาน วิเคราะห์บริบทโครงการจาก GitHub และจับคู่งานสายเทคโนโลยี
+          </div>
+        </div>
+        <div class="obj-row">
+          <img src="outputs/presentation_assets/min_obj_2_ai.png" alt="AI & Sandbox" />
+          <div class="obj-text">
+            เพื่อพัฒนาระบบจัดสอบเขียนโค้ดอัตโนมัติและสกัดทักษะด้วย AI พร้อมแนะนำคอร์สเรียนและแผนพัฒนาทักษะ
+          </div>
+        </div>
+        <div class="obj-row">
+          <img src="outputs/presentation_assets/min_obj_3_eval.png" alt="User Satisfaction Evaluation" />
+          <div class="obj-text">
+            เพื่อประเมินผลการทำงานและความพึงพอใจของผู้ใช้งานที่มีต่อระบบ SMARTCAREER
+          </div>
+        </div>
+      </div>
+      <div class="page-num">5</div>
+    </section>
+
+    <!-- SLIDE 6: 3.ขอบเขตงานวิจัย (1.ขอบเขตด้านผู้ใช้งาน) -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">3.ขอบเขตงานวิจัย</div>
+      <div class="scope-sub">1.ขอบเขตด้านผู้ใช้งานของระบบ</div>
+      <img class="scope-left-img" src="outputs/presentation_assets/min_scope_1_users.png" alt="SmartCareer User Roles" />
+      <ul class="scope-bullets">
+        <li>ผู้เยี่ยมชมสามารถค้นหาตำแหน่งงาน คอร์สเรียน ดูรายการข้อสอบกลาง และทดลองวิเคราะห์โปรไฟล์ GitHub สาธารณะได้</li>
+        <li>ผู้สมัครงานสามารถเข้าสู่ระบบด้วย GitHub OAuth เพื่อซิงก์ข้อมูลโครงการและภาษาที่ใช้พัฒนาได้สูงสุด 8 repositories</li>
+        <li>ผู้สมัครงานสามารถทำแบบทดสอบทฤษฎีและเขียนโค้ดปฏิบัติ พร้อมดูกราฟเรดาร์ทักษะ 5 หมวดหมู่ได้</li>
+        <li>ผู้สมัครงานสามารถดูเปอร์เซ็นต์การจับคู่งาน (Match Score) กดสมัครงาน และติดตามสถานะใบสมัครได้</li>
+        <li>ผู้สมัครงานสามารถดูช่องว่างทักษะ (Skill Gaps) แผนพัฒนาทักษะ และคอร์สเรียนแนะนำจาก Udemy และ YouTube ได้</li>
+        <li>บริษัทสามารถเข้าสู่ระบบด้วย Google OAuth ส่งเอกสารยืนยันนิติบุคคล 13 หลัก สร้างประกาศงาน และออกข้อสอบบริษัทได้</li>
+        <li>บริษัทสามารถคัดกรองผู้สมัคร มอบหมายข้อสอบ บันทึกผลประเมินผู้สมัคร 4 มิติ และส่งออกรายชื่อเป็นไฟล์ CSV ได้</li>
+        <li>ผู้ดูแลระบบสามารถอนุมัติบริษัท จัดการผู้ใช้/ทักษะ/ข้อสอบกลาง สั่งดึงข้อมูลงานและคอร์ส และตรวจสอบ Audit Logs ได้</li>
+      </ul>
+      <div class="page-num">6</div>
+    </section>
+
+    <!-- SLIDE 7: 3.ขอบเขตงานวิจัย (2.ขอบเขตด้านฟังก์ชันของระบบ) -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">3.ขอบเขตงานวิจัย</div>
+      <div class="scope-sub">2.ขอบเขตด้านฟังก์ชันของระบบ</div>
+      <img class="scope-left-img" src="outputs/presentation_assets/min_scope_2_funcs.png" alt="System Functions" />
+      <ul class="scope-bullets">
+        <li>รวบรวมประกาศงานจากแหล่งภายนอก 5 แหล่ง (JSearch, JobsDB, Blognone, JobThai, Remotive) และงานตรงจากบริษัท</li>
+        <li>สกัดทักษะทางเทคนิคจากประกาศงานอัตโนมัติด้วยคลังคำสำคัญร่วมกับโมเดล Google Gemini AI</li>
+        <li>วิเคราะห์บริบทโครงการจาก GitHub API ทั้งสัดส่วนภาษา ป้ายกำกับ (Topics) และไลบรารีจากไฟล์ package.json</li>
+        <li>จัดสอบเขียนโค้ดออนไลน์ผ่าน Monaco Editor และตรวจชุดทดสอบ (Test Cases) อัตโนมัติด้วย Judge0 Sandbox</li>
+        <li>คำนวณคะแนนความเหมาะสมกับตำแหน่งงาน (Match Score) ถ่วงน้ำหนักทักษะจำเป็น 70% และทักษะเสริม 30%</li>
+        <li>แสดงกราฟเรดาร์ทักษะ 5 มิติ ได้แก่ Frontend, Backend, Database, DevOps และ Testing</li>
+        <li>วิเคราะห์ช่องว่างทักษะตามสายอาชีพเป้าหมาย และสร้างแผนพัฒนาทักษะ 3 ขั้นตอนจากผลประเมิน 4 มิติของบริษัท</li>
+        <li>ซิงก์ข้อมูลประกาศงานและคอร์สเรียนพร้อมปิดประกาศที่หมดอายุอัตโนมัติทุกวันเวลา 00:00 น. (Cron Scheduler)</li>
+      </ul>
+      <div class="page-num">7</div>
+    </section>
+
+    <!-- SLIDE 8: 3.ขอบเขตงานวิจัย (3.ขอบเขตข้อจำกัดของระบบ) -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">3.ขอบเขตงานวิจัย</div>
+      <div class="scope-sub">3.ขอบเขตข้อจำกัดของระบบ</div>
+      <img class="scope-left-img" src="outputs/presentation_assets/min_scope_3_limits.png" alt="System Limitations" />
+      <ul class="scope-bullets" style="gap: 28px; top: 340px;">
+        <li>การทำงานของระบบจำเป็นต้องเชื่อมต่ออินเทอร์เน็ตในการยืนยันตัวตน OAuth การซิงก์ข้อมูล GitHub และการประมวลผลข้อสอบ</li>
+        <li>การกดส่งใบสมัครและติดตามสถานะภายในระบบรองรับเฉพาะประกาศงานที่บริษัทสร้างในระบบ (INTERNAL) ส่วนงานจากเว็บภายนอกจะเป็นการเปิดลิงก์ไปยังเว็บไซต์ต้นทาง</li>
+        <li>การดึงประกาศงานจากเว็บไซต์ภายนอกบางแห่งอาจถูกจำกัดด้วยระบบป้องกันบอท จึงต้องใช้กลไกสำรอง HTTP/2, Puppeteer หรือการนำเข้าผ่านไฟล์ Local Job Batch</li>
+        <li>ระบบเรียกใช้งาน API ภายนอกแบบมีโควตา (เช่น Gemini AI, Judge0, JSearch, YouTube API) ซึ่งมีข้อจำกัดด้านจำนวนครั้งในการเรียกใช้งาน</li>
+        <li>ระบบรันและตรวจโค้ดอัตโนมัติในห้องสอบปฏิบัติรองรับภาษา JavaScript (Node.js) และ Python เป็นหลัก</li>
+      </ul>
+      <div class="page-num">8</div>
+    </section>
+
+    <!-- SLIDE 9: 4.ทฤษฎีและหลักการที่เกี่ยวข้อง / เครื่องมือและเทคโนโลยี -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">4.ทฤษฎีและหลักการที่เกี่ยวข้อง</div>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <img src="outputs/presentation_assets/logo_vscode.png" alt="VS Code" style="height: 140px; object-fit: contain;" />
+          <h3>Visual Studio Code</h3>
+          <p>เครื่องมือหลักในการพัฒนาโค้ดแบบ Monorepo (TypeScript 5.7)</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-badge-icon" style="background:#0f172a; color:#38bdf8;">Next.js 15 + React 19</div>
+          <h3>Frontend &amp; Monaco Editor</h3>
+          <p>พัฒนาส่วนติดต่อผู้ใช้ กราฟเรดาร์ 5 มิติ (Recharts) และห้องสอบเขียนโค้ด</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-badge-icon" style="background:#fff1f2; color:#e11d48; border:2px solid #fecdd3;">NestJS 10 + Prisma</div>
+          <h3>Backend API &amp; PostgreSQL</h3>
+          <p>สถาปัตยกรรม 16 โมดูลธุรกิจ เชื่อมต่อฐานข้อมูล PostgreSQL และ RLS</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-badge-icon" style="background:#ecfdf5; color:#059669; border:2px solid #a7f3d0;">Judge0 CE Sandbox</div>
+          <h3>Automated Code Execution</h3>
+          <p>ระบบรันโค้ดและตรวจชุดทดสอบ (Public &amp; Hidden Test Cases) อัตโนมัติ</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-badge-icon" style="background:#f8fafc; color:#1e293b; border:2px solid #cbd5e1;">GitHub &amp; Google OAuth</div>
+          <h3>OAuth 2.0 PKCE &amp; GitHub API</h3>
+          <p>ยืนยันตัวตนปลอดภัยและวิเคราะห์โครงสร้างโปรเจกต์จาก Repository จริง</p>
+        </div>
+        <div class="tech-card">
+          <img src="outputs/presentation_assets/logo_gemini.png" alt="Gemini AI" style="height: 95px; object-fit: contain;" />
+          <h3>Google Gemini Flash AI</h3>
+          <p>สกัดทักษะจากประกาศงานและประเมินโค้ดปลายเปิดตามเกณฑ์ Rubric 4 ด้าน</p>
+        </div>
+      </div>
+      <div class="page-num">9</div>
+    </section>
+
+    <!-- SLIDE 10: 5.ภาพรวมของระบบ -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/slide_10_architecture.png');">
+      <div class="top-heading">5.ภาพรวมของระบบ</div>
+      <div class="page-num">10</div>
+    </section>
+
+    <!-- SLIDE 11: UX/UI Overview -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">UX/UI</div>
+      <img class="ux-left-logo" src="outputs/presentation_assets/smartcareer_icon.png" alt="SmartCareer Logo" />
+      <div class="ux-grid-10">
+        <img src="outputs/presentation_assets/ui_01_home.png" alt="Home" />
+        <img src="outputs/presentation_assets/ui_04_jobs_list.png" alt="Jobs" />
+        <img src="outputs/presentation_assets/ui_05_job_detail_match.png" alt="Job Match" />
+        <img src="outputs/presentation_assets/ui_06_candidate_profile.png" alt="Candidate Profile" />
+        <img src="outputs/presentation_assets/ui_08_assessments_list.png" alt="Assessments" />
+        <img src="outputs/presentation_assets/ui_09_assessment_room.png" alt="Coding Room" />
+        <img src="outputs/presentation_assets/ui_10_courses_catalog.png" alt="Skill Gaps & Courses" />
+        <img src="outputs/presentation_assets/ui_13_company_dashboard.png" alt="Company Dashboard" />
+        <img src="outputs/presentation_assets/ui_18_admin_dashboard.png" alt="Admin Dashboard" />
+      </div>
+      <div class="page-num">11</div>
+    </section>
+
+    
+        <!-- SLIDE 12 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">5.วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าแรกของระบบและหน้าเข้าสู่ระบบแยกตามบทบาท</div>
+              <div class="method-desc">รองรับการเข้าใช้งาน 3 ช่องทางหลัก ได้แก่ ผู้สมัครงาน (GitHub OAuth), บริษัท (Google OAuth) และผู้ดูแลระบบ (Admin)</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-stack">
+              <img src="outputs/presentation_assets/ui_01_home_wide.png" alt="หน้าแรกของระบบและหน้าเข้าสู่ระบบแยกตามบทบาท 1" />
+              <img src="outputs/presentation_assets/ui_03_login_wide.png" alt="หน้าแรกของระบบและหน้าเข้าสู่ระบบแยกตามบทบาท 2" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">12</div>
+        </section>
+        
+        <!-- SLIDE 13 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าทดลองวิเคราะห์บริบทโปรเจกต์จาก GitHub สาธารณะ</div>
+              <div class="method-desc">ผู้เยี่ยมชมสามารถกรอกชื่อผู้ใช้ GitHub เพื่อสแกนภาษาโปรแกรมและไลบรารีจากไฟล์ package.json ได้โดยไม่ต้องล็อกอิน</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-single">
+              <img src="outputs/presentation_assets/ui_02_github_public.png" alt="หน้าทดลองวิเคราะห์บริบทโปรเจกต์จาก GitHub สาธารณะ" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">13</div>
+        </section>
+        
+        <!-- SLIDE 14 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าค้นหาตำแหน่งงานสายเทคโนโลยีและตัวกรองอัจฉริยะ</div>
+              <div class="method-desc">รวมประกาศงานจาก 5 แหล่งภายนอก (JobsDB, Blognone, JobThai, JSearch, Remotive) และงานรับสมัครตรงจากบริษัทในระบบ</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-single">
+              <img src="outputs/presentation_assets/ui_04_jobs_list.png" alt="หน้าค้นหาตำแหน่งงานสายเทคโนโลยีและตัวกรองอัจฉริยะ" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">14</div>
+        </section>
+        
+        <!-- SLIDE 15 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้ารายละเอียดงานและผลการคำนวณคะแนนจับคู่งาน (Job Match)</div>
+              <div class="method-desc">แสดงเปอร์เซ็นต์ความสอดคล้อง (Match Score) เทียบทักษะที่ตำแหน่งงานต้องการกับหลักฐานผลสอบและ GitHub ของผู้สมัคร</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-stack">
+              <img src="outputs/presentation_assets/ui_05_job_detail_match_wide.png" alt="หน้ารายละเอียดงานและผลการคำนวณคะแนนจับคู่งาน (Job Match) 1" />
+              <img src="outputs/presentation_assets/ui_05b_job_skills_breakdown_wide.png" alt="หน้ารายละเอียดงานและผลการคำนวณคะแนนจับคู่งาน (Job Match) 2" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">15</div>
+        </section>
+        
+        <!-- SLIDE 16 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าโปรไฟล์ผู้สมัครงานและกราฟเรดาร์ทักษะ 5 หมวดหลัก</div>
+              <div class="method-desc">แสดงเรดาร์ทักษะ 5 มิติ (Frontend, Backend, Database, DevOps, Testing) และการเชื่อมต่อซิงก์ข้อมูลจาก GitHub Repository</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-single">
+              <img src="outputs/presentation_assets/ui_06_candidate_profile.png" alt="หน้าโปรไฟล์ผู้สมัครงานและกราฟเรดาร์ทักษะ 5 หมวดหลัก" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">16</div>
+        </section>
+        
+        <!-- SLIDE 17 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าตารางสถานะทักษะรายวิชา (Skill Matrix) และโปรเจกต์ GitHub</div>
+              <div class="method-desc">จำแนกสถานะทักษะที่ผ่านเกณฑ์มาตรฐาน (ASSESSED) ทักษะที่ยังขาด (GAP) และแสดงรายการโปรเจกต์จาก GitHub สูงสุด 8 รายการ</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-single">
+              <img src="outputs/presentation_assets/ui_07_candidate_github.png" alt="หน้าตารางสถานะทักษะรายวิชา (Skill Matrix) และโปรเจกต์ GitHub" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">17</div>
+        </section>
+        
+        <!-- SLIDE 18 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าศูนย์สอบมาตรฐานกลาง (Skill Assessments Center)</div>
+              <div class="method-desc">รวมแบบทดสอบวัดทักษะทั้งภาคทฤษฎี (ปรนัย) และภาคปฏิบัติ (เขียนโค้ด) พร้อมระบุเวลาสอบและเกณฑ์คะแนนผ่าน</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-single">
+              <img src="outputs/presentation_assets/ui_08_assessments_list.png" alt="หน้าศูนย์สอบมาตรฐานกลาง (Skill Assessments Center)" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">18</div>
+        </section>
+        
+        <!-- SLIDE 19 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าห้องสอบเขียนโค้ดออนไลน์ (Monaco Editor & Judge0 Sandbox)</div>
+              <div class="method-desc">ผู้สมัครเขียนโค้ดแก้โจทย์ กดซ้อมรันชุดทดสอบที่เปิดเผย (Visible Test Cases) และส่งตรวจชุดทดสอบซ่อนเร้นผ่าน Judge0</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-single">
+              <img src="outputs/presentation_assets/ui_09_assessment_room.png" alt="หน้าห้องสอบเขียนโค้ดออนไลน์ (Monaco Editor & Judge0 Sandbox)" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">19</div>
+        </section>
+        
+        <!-- SLIDE 20 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าวิเคราะห์ช่องว่างทักษะตามสายอาชีพและคลังคอร์สเรียน</div>
+              <div class="method-desc">วิเคราะห์ทักษะที่ยังขาดเทียบกับสายอาชีพเป้าหมาย (เช่น Full-Stack Developer) พร้อมแนะนำคอร์สเรียนจาก Udemy และ YouTube</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-stack">
+              <img src="outputs/presentation_assets/ui_10_courses_catalog_wide.png" alt="หน้าวิเคราะห์ช่องว่างทักษะตามสายอาชีพและคลังคอร์สเรียน 1" />
+              <img src="outputs/presentation_assets/ui_10b_courses_grid_wide.png" alt="หน้าวิเคราะห์ช่องว่างทักษะตามสายอาชีพและคลังคอร์สเรียน 2" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">20</div>
+        </section>
+        
+        <!-- SLIDE 21 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าผลประเมินจากบริษัทและแผนพัฒนาทักษะ (Learning Plan)</div>
+              <div class="method-desc">รับข้อเสนอแนะและทักษะที่ควรพัฒนาจากบริษัทมาสร้างแผนการเรียนรู้ 3 ขั้นตอน พร้อมระบบติดตามความคืบหน้า (Skill Progress Tracker)</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-single">
+              <img src="outputs/presentation_assets/ui_11_learning_plan.png" alt="หน้าผลประเมินจากบริษัทและแผนพัฒนาทักษะ (Learning Plan)" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">21</div>
+        </section>
+        
+        <!-- SLIDE 22 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าประวัติการสมัครงานและการติดตามสถานะใบสมัคร</div>
+              <div class="method-desc">ผู้สมัครตรวจสอบประวัติการส่งใบสมัคร คะแนน Match Score ณ วันที่สมัคร และสถานะการคัดเลือกทั้ง 8 ขั้นตอน</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-single">
+              <img src="outputs/presentation_assets/ui_12_candidate_applications.png" alt="หน้าประวัติการสมัครงานและการติดตามสถานะใบสมัคร" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">22</div>
+        </section>
+        
+        <!-- SLIDE 23 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าแดชบอร์ดบริษัทและการส่งเอกสารยืนยันนิติบุคคล</div>
+              <div class="method-desc">บริษัทตรวจสอบภาพรวมประกาศงานและอัปโหลดไฟล์หนังสือรับรอง PDF พร้อมเลขทะเบียนนิติบุคคล 13 หลักเพื่อยืนยันตัวตน</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-stack">
+              <img src="outputs/presentation_assets/ui_13_company_dashboard_wide.png" alt="หน้าแดชบอร์ดบริษัทและการส่งเอกสารยืนยันนิติบุคคล 1" />
+              <img src="outputs/presentation_assets/ui_14_company_profile_verify_wide.png" alt="หน้าแดชบอร์ดบริษัทและการส่งเอกสารยืนยันนิติบุคคล 2" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">23</div>
+        </section>
+        
+        <!-- SLIDE 24 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าสร้างประกาศตำแหน่งงานและจัดการข้อสอบคัดเลือกของบริษัท</div>
+              <div class="method-desc">บริษัทที่ผ่านการยืนยัน (VERIFIED) สามารถสร้างประกาศงาน กำหนดทักษะจำเป็น/ทักษะเสริม และออกข้อสอบเฉพาะของบริษัทได้</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-stack">
+              <img src="outputs/presentation_assets/ui_15b_company_job_new_wide.png" alt="หน้าสร้างประกาศตำแหน่งงานและจัดการข้อสอบคัดเลือกของบริษัท 1" />
+              <img src="outputs/presentation_assets/ui_16_company_assessments_wide.png" alt="หน้าสร้างประกาศตำแหน่งงานและจัดการข้อสอบคัดเลือกของบริษัท 2" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">24</div>
+        </section>
+        
+        <!-- SLIDE 25 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าคัดกรองผู้สมัครและบันทึกผลประเมินผู้สมัคร 4 มิติ</div>
+              <div class="method-desc">บริษัทเปลี่ยนสถานะใบสมัคร มอบหมายข้อสอบ บันทึกผลประเมิน 4 ด้าน (Technical, Problem Solving, Communication, Teamwork) และส่งออก CSV</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-stack">
+              <img src="outputs/presentation_assets/ui_17_company_applications_eval_wide.png" alt="หน้าคัดกรองผู้สมัครและบันทึกผลประเมินผู้สมัคร 4 มิติ 1" />
+              <img src="outputs/presentation_assets/ui_17b_company_4d_modal_wide.png" alt="หน้าคัดกรองผู้สมัครและบันทึกผลประเมินผู้สมัคร 4 มิติ 2" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">25</div>
+        </section>
+        
+        <!-- SLIDE 26 -->
+        <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+          <div class="top-heading">วิธีการดำเนินงาน</div>
+          <div class="method-layout">
+            <div class="method-left">
+              <div class="method-bullet">• การพัฒนามุมมองของผู้ใช้</div>
+              <div class="method-sub">หน้าศูนย์ควบคุมผู้ดูแลระบบ (Admin Control Center)</div>
+              <div class="method-desc">ผู้ดูแลระบบตรวจสอบอนุมัติบริษัท ตั้งค่าโควตาและสั่งรันระบบดึงข้อมูลงาน/คอร์สอัตโนมัติ จัดการคลังทักษะ และตรวจสอบ Audit Logs</div>
+            </div>
+            <div class="method-right">
+              
+            <div class="shot-stack">
+              <img src="outputs/presentation_assets/ui_18_admin_dashboard_wide.png" alt="หน้าศูนย์ควบคุมผู้ดูแลระบบ (Admin Control Center) 1" />
+              <img src="outputs/presentation_assets/ui_20_admin_ingestion_wide.png" alt="หน้าศูนย์ควบคุมผู้ดูแลระบบ (Admin Control Center) 2" />
+            </div>
+            
+            </div>
+          </div>
+          <div class="page-num">26</div>
+        </section>
+        
+
+    <!-- SLIDE 27: 6.ผลการดำเนินงาน (กลุ่มตัวอย่างทดสอบระบบ) -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">6.ผลการดำเนินงาน</div>
+      <div class="test-photos-row">
+        <img src="outputs/presentation_assets/test_photo_1.jpg" alt="Tester 1" />
+        <img src="outputs/presentation_assets/test_photo_2.jpg" alt="Tester 2" />
+        <img src="outputs/presentation_assets/test_photo_3.jpg" alt="Tester 3" />
+        <img src="outputs/presentation_assets/test_photo_4.jpg" alt="Tester 4" />
+      </div>
+      <div class="test-caption">
+        กลุ่มตัวอย่างในการทดสอบการใช้งานจริงของระบบ : นักศึกษาสายเทคโนโลยี ตัวแทนบริษัท และผู้ใช้งานทั่วไป<br/>
+        จำนวน 30 คน
+      </div>
+      <div class="page-num">27</div>
+    </section>
+
+    <!-- SLIDE 28: 7.ผลการทดสอบ (ตาราง 10 ข้อ) -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">7.ผลการทดสอบ</div>
+      <div class="eval-sub">• ผลการประเมินความพึงพอใจของผู้ใช้งานระบบ SmartCareer อยู่ในระดับ “มากที่สุด”</div>
+      <table class="eval-table">
+        <thead>
+          <tr>
+            <th style="width: 90px;">ข้อ</th>
+            <th>รายการประเมิน</th>
+            <th style="width: 160px;">ค่าเฉลี่ย</th>
+            <th style="width: 190px;">ระดับ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="center">1</td><td>ระบบ SmartCareer ใช้งานง่าย ไม่ซับซ้อน</td><td class="center">4.80</td><td class="center">มากที่สุด</td></tr>
+          <tr><td class="center">2</td><td>ระบบทำงานรวดเร็ว ไม่มีอาการค้างหรือหน่วง</td><td class="center">4.73</td><td class="center">มากที่สุด</td></tr>
+          <tr><td class="center">3</td><td>ข้อมูลผลการวิเคราะห์ทักษะและกราฟเรดาร์ 5 มิติเข้าใจง่าย</td><td class="center">4.77</td><td class="center">มากที่สุด</td></tr>
+          <tr><td class="center">4</td><td>สามารถค้นหาตำแหน่งงานและคอร์สเรียนที่ต้องการได้อย่างรวดเร็ว</td><td class="center">4.83</td><td class="center">มากที่สุด</td></tr>
+          <tr><td class="center">5</td><td>การซิงก์ข้อมูลโครงการจาก GitHub แสดงผลได้ชัดเจนและถูกต้อง</td><td class="center">4.87</td><td class="center">มากที่สุด</td></tr>
+          <tr><td class="center">6</td><td>หน้าจอระบบมีความสวยงาม น่าใช้ สีสันและตัวอักษรเหมาะสม</td><td class="center">4.83</td><td class="center">มากที่สุด</td></tr>
+          <tr><td class="center">7</td><td>ระบบห้องสอบเขียนโค้ด (Monaco &amp; Judge0) ทำงานได้ตามที่คาดหวัง</td><td class="center">4.67</td><td class="center">มากที่สุด</td></tr>
+          <tr><td class="center">8</td><td>การสมัครงานตรงในระบบและการรองรับภาษาในห้องสอบปฏิบัติ (JS/Python)</td><td class="center">4.47</td><td class="center">มาก</td></tr>
+          <tr><td class="center">9</td><td>ระบบช่วยให้วางแผนพัฒนาทักษะ (Learning Plan) และปิดช่องว่างทักษะได้ง่ายขึ้น</td><td class="center">4.80</td><td class="center">มากที่สุด</td></tr>
+          <tr><td class="center">10</td><td>ฉันต้องการใช้ระบบนี้ในการเตรียมความพร้อมและสมัครงานสายเทคโนโลยีต่อไป</td><td class="center">4.93</td><td class="center">มากที่สุด</td></tr>
+          <tr style="font-weight: 700; background: rgba(241,245,249,0.95);">
+            <td colspan="2" class="center">ค่าเฉลี่ยรวมทุกด้าน</td>
+            <td class="center">4.77</td>
+            <td class="center">มากที่สุด</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="page-num">28</div>
+    </section>
+
+    <!-- SLIDE 29: ผลการทดสอบ (แบบสอบถาม & QR Code) -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">ผลการทดสอบ</div>
+      <div class="qr-layout">
+        <div class="qr-col">
+          <div class="qr-col-title">• ตัวอย่างแบบสอบถามความพึงพอใจต่อการใช้งานระบบ</div>
+          <img src="outputs/presentation_assets/questionnaire_form.png" alt="Questionnaire Form" style="height: 690px; object-fit: contain; box-shadow: 0 10px 28px rgba(0,0,0,0.12);" />
+        </div>
+        <div class="qr-col">
+          <div class="qr-col-title">• ผลการรวบรวมแบบประเมินจำนวน 30 คน</div>
+          <img src="outputs/presentation_assets/qr_evaluation.png" alt="QR Code" style="width: 540px; height: 540px; object-fit: contain; margin-top: 45px;" />
+        </div>
+      </div>
+      <div class="page-num">29</div>
+    </section>
+
+    <!-- SLIDE 30: สรุปผลการดำเนินงาน -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_standard.png');">
+      <div class="top-heading">สรุปผลการดำเนินงาน</div>
+      <img class="conc-logo" src="outputs/presentation_assets/smartcareer_icon.png" alt="SmartCareer" />
+      <div class="conc-text">
+        ผลการดำเนินงานพบว่า SMARTCAREER ทำงานได้ถูกต้องตามที่ออกแบบไว้ รวมระบบวิเคราะห์ GitHub ระบบจัดสอบโค้ดอัตโนมัติ ระบบจับคู่งาน และระบบแนะนำคอร์สเรียนไว้ในแพลตฟอร์มเดียว ผลการทดสอบการทำงานผ่านครบทุกฟังก์ชัน (Playwright E2E 42/42 เคส) ส่วนความพึงพอใจของผู้ใช้งาน 30 คน อยู่ในระดับมากที่สุด ค่าเฉลี่ย 4.77 โดยข้อที่ได้คะแนนสูงสุดคือความต้องการใช้ระบบในการเตรียมความพร้อมและสมัครงานสายเทคโนโลยีต่อไป (4.93) ส่วนข้อที่ได้คะแนนต่ำสุดคือการกดสมัครงานตรงที่รองรับเฉพาะงานภายในและการตรวจโค้ดเฉพาะภาษา JavaScript/Python (4.47) <span style="white-space: nowrap;">ซึ่งเป็นข้อจำกัดที่จะพัฒนาต่อยอดในอนาคต</span>
+      </div>
+      <div class="page-num">30</div>
+    </section>
+
+    <!-- SLIDE 31: จบการนำเสนอ -->
+    <section class="slide" style="background-image: url('outputs/presentation_assets/bg_end31.png');">
+      <div class="end-title">จบการนำเสนอ</div>
+      <div class="end-sub">ขอขอบพระคุณคณะกรรมการทุกท่าน • เปิดรับคำถามและข้อเสนอแนะ (Q&amp;A)</div>
+    </section>
+
+  </div>
+</div>
+
+<div class="deck-toolbar">
+  <button class="toolbar-btn" onclick="prevSlide()">◀ ก่อนหน้า</button>
+  <span class="slide-counter" id="slideCounter">01 / 31</span>
+  <button class="toolbar-btn" onclick="nextSlide()">ถัดไป ▶</button>
+  <button class="toolbar-btn" onclick="toggleFullscreen()">⛶ เต็มจอ (F)</button>
+  <button class="toolbar-btn" onclick="window.print()">🖨️ พิมพ์ / PDF</button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const slideCounter = document.getElementById('slideCounter');
+  const slideFrame = document.getElementById('slideFrame');
+  let currentIndex = 0;
+
+  function updateSlide(idx) {
+    if (idx < 0) idx = 0;
+    if (idx >= slides.length) idx = slides.length - 1;
+    currentIndex = idx;
+    slides.forEach((s, i) => s.classList.toggle('active', i === currentIndex));
+    slideCounter.textContent = String(currentIndex + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+  }
+
+  function nextSlide() { updateSlide(currentIndex + 1); }
+  function prevSlide() { updateSlide(currentIndex - 1); }
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+    else document.exitFullscreen().catch(() => {});
+  }
+
+  function fitFrame() {
+    const scale = Math.min((window.innerWidth - 20) / 1920, (window.innerHeight - 20) / 1080);
+    slideFrame.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener('resize', fitFrame);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+    else if (e.key === 'Home') { e.preventDefault(); updateSlide(0); }
+    else if (e.key === 'End') { e.preventDefault(); updateSlide(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
+  });
+
+  fitFrame();
+  updateSlide(0);
+</script>
+</body>
+</html>

@@ -334,11 +334,8 @@ export default function CandidateProfilePage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">โปรไฟล์ผู้สมัครและผลประเมินทักษะ</h1>
-          <p className="text-sm text-slate-600">
-            คะแนนทักษะคำนวณจากแบบทดสอบปฏิบัติกลาง (PRACTICAL_CODING) ล่าสุดเท่านั้น • ข้อมูล GitHub ใช้เป็นหลักฐานบริบท (scoreContribution = 0)
-          </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-2.5 sm:gap-3">
           <Link href="/assessments" className="btn-primary">
             ทำแบบทดสอบทักษะเพิ่ม
           </Link>
@@ -360,8 +357,8 @@ export default function CandidateProfilePage() {
       )}
 
       {/* 5-Category Radar / Skill Breakdown */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-[28px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_12px_40px_-12px_rgba(15,23,42,0.08)] flex flex-col justify-between relative overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-[28px] p-4 sm:p-7 border border-slate-200/80 shadow-[0_12px_40px_-12px_rgba(15,23,42,0.08)] flex flex-col justify-between relative overflow-hidden">
           {(() => {
             const radarItems: any[] = Array.isArray(skillsData?.radar) ? skillsData.radar : [];
             const totalSkillsAll = radarItems.reduce(
@@ -648,7 +645,7 @@ export default function CandidateProfilePage() {
         {/* GitHub Sync & Evidence Box */}
         <div className="card space-y-4 flex flex-col justify-between">
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg font-bold text-slate-900">บริบท GitHub Repository</h2>
               <span className="badge bg-amber-100 text-amber-800">Context Only (คะแนน = 0)</span>
             </div>
@@ -657,7 +654,7 @@ export default function CandidateProfilePage() {
             </p>
             <div className="pt-2">
               <label className="label">ชื่อผู้ใช้ GitHub (GitHub Username)</label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   className="input"
@@ -679,7 +676,7 @@ export default function CandidateProfilePage() {
 
           {profile?.githubSummary && (
             <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-2.5">
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="font-semibold text-slate-800">
                   ซิงก์ล่าสุด: @{profile.githubSummary.username} ({profile.githubSummary.repoCount || 0}{' '}
                   repos)
@@ -796,7 +793,7 @@ export default function CandidateProfilePage() {
                   </p>
                 </div>
 
-                <div className="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-semibold shrink-0">
+                <div className="inline-flex flex-wrap rounded-xl bg-slate-100 p-1 text-xs font-semibold max-w-full">
                   <button
                     type="button"
                     onClick={() => setSkillFilter('ALL')}
@@ -834,7 +831,7 @@ export default function CandidateProfilePage() {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left border-collapse">
+                <table className="w-full min-w-[680px] text-sm text-left border-collapse">
                   <thead>
                     <tr className="border-b border-slate-200 text-slate-600">
                       <th className="py-2.5 px-3">ทักษะ (Skill)</th>
@@ -1265,7 +1262,7 @@ export default function CandidateProfilePage() {
             />
           </div>
         </div>
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
           <label className="flex items-center gap-2 text-sm text-slate-700">
             <input
               type="checkbox"

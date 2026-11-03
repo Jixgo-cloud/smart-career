@@ -140,14 +140,11 @@ export default function CompanyJobsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">จัดการตำแหน่งงานของบริษัท</h1>
-          <p className="text-sm text-slate-600">
-            ดูจำนวนผู้สมัคร แก้ไขรายละเอียด โควต้ารับเข้าทำงาน และเปิด/ปิดรับสมัครตำแหน่งงาน
-          </p>
         </div>
-        <Link href="/company/jobs/new" className="btn-primary">
+        <Link href="/company/jobs/new" className="btn-primary self-start sm:self-auto shrink-0">
           + สร้างประกาศงานใหม่
         </Link>
       </div>
@@ -169,7 +166,7 @@ export default function CompanyJobsPage() {
           onSubmit={handleSaveEdit}
           className="card space-y-4 border-2 border-blue-500 bg-blue-50/15"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-slate-900">
               แก้ไขประกาศตำแหน่งงาน: {editingJob.title}
             </h2>
@@ -310,7 +307,7 @@ export default function CompanyJobsPage() {
           </div>
 
           <div className="space-y-2 pt-2 border-t border-slate-200">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <label className="label mb-0">
                 ทักษะที่ต้องการสำหรับตำแหน่งงานนี้ (จับคู่กับทักษะใน GitHub และผลสอบของผู้สมัคร)
               </label>
@@ -323,14 +320,14 @@ export default function CompanyJobsPage() {
                     { skillId: masterSkills[0].id, isRequired: true, minimumScore: 50 },
                   ]);
                 }}
-                className="btn-secondary text-xs"
+                className="btn-secondary text-xs shrink-0"
               >
                 + เพิ่มทักษะ
               </button>
             </div>
 
             {editSkills.map((row, idx) => (
-              <div key={idx} className="grid grid-cols-3 gap-2 items-center">
+              <div key={idx} className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
                 <select
                   className="input text-xs"
                   value={row.skillId}

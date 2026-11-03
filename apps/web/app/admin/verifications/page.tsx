@@ -110,14 +110,11 @@ export default function AdminVerificationsPage() {
           <h1 className="text-2xl font-bold text-slate-900">
             ตรวจสอบและอนุมัติการยืนยันตัวตนบริษัท (Company Verification Review)
           </h1>
-          <p className="text-sm text-slate-600">
-            ตรวจสอบเลขทะเบียนนิติบุคคล 13 หลักและเปิดดูเอกสารแนบ ก่อนอนุมัติสิทธิ์ประกาศตำแหน่งงาน
-          </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full md:w-auto">
           <select
-            className="input text-xs w-48"
+            className="input text-xs w-full sm:w-48"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
@@ -194,7 +191,7 @@ export default function AdminVerificationsPage() {
               <div key={c.id} className="card space-y-4">
                 <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span
                         className={`badge ${
                           c.verificationStatus === 'VERIFIED'
@@ -280,11 +277,11 @@ export default function AdminVerificationsPage() {
                   </div>
 
                   {isPending && (
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
-                      <div className="space-y-1">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0 w-full lg:w-auto">
+                      <div className="space-y-1 flex-1 sm:flex-initial">
                         <input
                           type="text"
-                          className="input text-xs w-72"
+                          className="input text-xs w-full sm:w-72"
                           placeholder="ระบุเหตุผลกรณีไม่อนุมัติ (อย่างน้อย 10 ตัวอักษร)..."
                           value={rejectionReasons[c.id] || ''}
                           onChange={(e) =>

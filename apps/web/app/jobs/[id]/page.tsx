@@ -127,8 +127,8 @@ export default function JobDetailPage() {
     myApplication.status !== 'REJECTED';
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <Link href="/jobs" className="text-sm font-medium text-blue-600 hover:underline">
           ← กลับหน้ารวมตำแหน่งงาน
         </Link>
@@ -168,7 +168,7 @@ export default function JobDetailPage() {
 
       <div className="card space-y-6">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-slate-100 pb-6">
-          <div className="flex items-start gap-4">
+          <div className="flex flex-col sm:flex-row items-start gap-4">
             <CompanyLogo
               logoUrl={resolveJobLogoUrl(job)}
               companyName={getCompanyDisplayName(job)}
@@ -192,7 +192,7 @@ export default function JobDetailPage() {
                   <span className="badge bg-red-100 text-red-700">ปิดรับสมัครแล้ว</span>
                 )}
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900">{job.title}</h1>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900">{job.title}</h1>
               <p className="text-slate-600 font-medium">
                 {getCompanyDisplayName(job)} • {job.location || 'ไม่ระบุสถานที่'}
               </p>
@@ -213,7 +213,7 @@ export default function JobDetailPage() {
           </div>
 
           {match && (
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-right space-y-1 shrink-0">
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-left md:text-right space-y-1 shrink-0 w-full md:w-auto">
               <div className="text-xs text-slate-500 uppercase font-semibold">
                 คะแนนความสอดคล้อง (Job Match)
               </div>
@@ -437,7 +437,7 @@ export default function JobDetailPage() {
                   คุณสามารถติดตามความคืบหน้าของใบสมัคร ทำแบบทดสอบเฉพาะตำแหน่ง หรือดูผลประเมินจากบริษัทได้ที่หน้าประวัติการสมัครงาน
                 </p>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
                 {myApplication.assignedAssessmentId && (
                   <Link
                     href={`/assessments/${myApplication.assignedAssessmentId}?applicationId=${myApplication.id}`}
@@ -453,7 +453,7 @@ export default function JobDetailPage() {
             </div>
           ) : (
             <form onSubmit={handleApplyInternal} className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <h3 className="font-bold text-slate-900">สมัครงานตำแหน่งนี้บน SmartCareer</h3>
                 {myApplication && (
                   <span className="text-xs text-slate-500">

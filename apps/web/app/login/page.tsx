@@ -63,11 +63,8 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 py-6">
-      <div className="text-center space-y-2">
+      <div className="text-center">
         <h1 className="text-3xl font-bold text-slate-900">เข้าสู่ระบบ SmartCareer</h1>
-        <p className="text-slate-600">
-          เลือกช่องทางเข้าสู่ระบบตามบทบาทของคุณ (ผู้สมัครงานใช้ GitHub, บริษัทใช้ Google, ผู้ดูแลระบบใช้ Email/Password)
-        </p>
       </div>
 
       {error && (

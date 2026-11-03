@@ -32,9 +32,6 @@ export default function AdminDashboardPage() {
           <h1 className="text-2xl font-bold text-slate-900">
             ศูนย์ควบคุมระบบ (Admin Control Center)
           </h1>
-          <p className="text-sm text-slate-600">
-            กำกับดูแลผู้ใช้งาน ทักษะมาตรฐาน คลังข้อสอบกลาง การยืนยันตัวตนบริษัท ข้อมูลงาน/คอร์สเรียน และบันทึก Audit
-          </p>
         </div>
       </div>
 
@@ -198,7 +195,7 @@ export default function AdminDashboardPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left border-collapse">
+            <table className="w-full min-w-[540px] text-xs text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="py-2 px-3">แหล่งข้อมูล</th>

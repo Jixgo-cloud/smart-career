@@ -14,6 +14,7 @@ import {
   NotificationType,
   QuestionDifficulty,
   QuestionEvaluationMethod,
+  UserRole,
   VerificationStatus,
 } from '@prisma/client';
 import * as crypto from 'crypto';
@@ -360,6 +361,26 @@ export class CompanyService {
 
       return ver;
     });
+
+    const admins = await this.prisma.user.findMany({
+      where: { role: UserRole.ADMIN, isActive: true },
+      select: { id: true },
+    });
+
+    for (const admin of admins) {
+      await this.notifications.createNotification({
+        userId: admin.id,
+        type: NotificationType.SYSTEM_ANNOUNCEMENT,
+        title: 'คำขอยืนยันตัวตนบริษัทใหม่',
+        message: `บริษัท "${company.name}" ได้ส่งเอกสารขอยืนยันตัวตนนิติบุคคล (${regNo}) รอการตรวจสอบ`,
+        link: `/admin/verifications`,
+        metadata: {
+          verificationId: created.id,
+          companyId: company.id,
+          status: VerificationStatus.PENDING,
+        },
+      });
+    }
 
     return this.sanitizeVerificationRecord(created, true);
   }
@@ -990,6 +1011,14 @@ export class CompanyService {
       validatedAssessmentId = exam.id;
     }
 
+    const statusChanged = newStatus !== application.status;
+    const assessmentChanged =
+      Boolean(validatedAssessmentId) &&
+      validatedAssessmentId !== application.assignedAssessmentId;
+    const trimmedNote = body.note ? String(body.note).trim() : null;
+    const shouldRecordHistory =
+      statusChanged || assessmentChanged || Boolean(trimmedNote);
+
     // Transactionally update status, history, and check acceptedQuota
     const updated = await this.prisma.$transaction(async (tx) => {
       const app = await tx.jobApplication.update({
@@ -1008,15 +1037,17 @@ export class CompanyService {
         },
       });
 
-      await tx.applicationStatusHistory.create({
-        data: {
-          applicationId: application.id,
-          previousStatus: application.status,
-          newStatus,
-          changedById: user.id,
-          note: body.note ? String(body.note).trim() : null,
-        },
-      });
+      if (shouldRecordHistory) {
+        await tx.applicationStatusHistory.create({
+          data: {
+            applicationId: application.id,
+            previousStatus: application.status,
+            newStatus,
+            changedById: user.id,
+            note: trimmedNote,
+          },
+        });
+      }
 
       if (
         newStatus === ApplicationStatus.ACCEPTED &&
@@ -1048,11 +1079,11 @@ export class CompanyService {
       });
     });
 
-    if (application.candidate?.userId) {
+    if (application.candidate?.userId && (statusChanged || assessmentChanged)) {
       let notifType: NotificationType = NotificationType.APPLICATION_STATUS_CHANGED;
       if (newStatus === ApplicationStatus.INTERVIEW) {
         notifType = NotificationType.INTERVIEW_INVITATION;
-      } else if (newStatus === ApplicationStatus.TECHNICAL_TEST || validatedAssessmentId) {
+      } else if (newStatus === ApplicationStatus.TECHNICAL_TEST || assessmentChanged) {
         notifType = NotificationType.ASSESSMENT_ASSIGNED;
       } else if (newStatus === ApplicationStatus.OFFER) {
         notifType = NotificationType.OFFER_RECEIVED;

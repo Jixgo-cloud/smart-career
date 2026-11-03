@@ -156,9 +156,6 @@ export default function CompanyProfilePage() {
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">ข้อมูลบริษัทและการยืนยันตัวตนนิติบุคคล</h1>
-        <p className="text-sm text-slate-600">
-          จัดการรายละเอียดองค์กร ช่องทางติดต่อ และส่งเลขทะเบียนนิติบุคคล 13 หลักเพื่อให้ผู้ดูแลระบบตรวจสอบ
-        </p>
       </div>
 
       {message && (
@@ -174,7 +171,7 @@ export default function CompanyProfilePage() {
 
       {/* Verification Form */}
       <form onSubmit={handleSubmitVerification} className="card space-y-4 border-blue-200">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-lg font-bold text-slate-900">
             การยืนยันตัวตนนิติบุคคล (Business Verification)
           </h2>

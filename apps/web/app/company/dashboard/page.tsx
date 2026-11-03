@@ -35,7 +35,7 @@ export default function CompanyDashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-bold text-slate-900">
               แดชบอร์ดบริษัท: {profile?.name || profile?.companyName || 'องค์กรของคุณ'}
             </h1>
@@ -51,9 +51,6 @@ export default function CompanyDashboardPage() {
               สถานะยืนยันองค์กร: {profile?.verificationStatus || 'UNVERIFIED'}
             </span>
           </div>
-          <p className="text-sm text-slate-600 mt-1">
-            บริหารจัดการตำแหน่งงาน ข้อสอบคัดเลือกของบริษัท และการประเมินผู้สมัครงานอย่างเป็นระบบ
-          </p>
         </div>
 
         <div className="flex flex-wrap gap-3">
@@ -67,7 +64,7 @@ export default function CompanyDashboardPage() {
       </div>
 
       {profile?.verificationStatus !== 'VERIFIED' && (
-        <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+        <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="text-sm text-amber-900">
             <b>แจ้งเตือน:</b> บริษัทจะต้องได้รับการอนุมัติยืนยันตัวตนนิติบุคคล (VERIFIED) ก่อนจึงจะสามารถประกาศตำแหน่งงานใหม่ได้
             {profile?.verificationRejectionReason && (
@@ -76,14 +73,14 @@ export default function CompanyDashboardPage() {
               </div>
             )}
           </div>
-          <Link href="/company/profile" className="btn-primary text-xs shrink-0">
+          <Link href="/company/profile" className="btn-primary text-xs shrink-0 self-start sm:self-auto">
             ส่งเอกสารยืนยันตัวตน →
           </Link>
         </div>
       )}
 
       {/* Summary Cards */}
-      <div className="grid md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <div className="card space-y-1">
           <div className="text-xs text-slate-500">ตำแหน่งงานทั้งหมด</div>
           <div className="text-3xl font-extrabold text-slate-900">{jobs.length}</div>

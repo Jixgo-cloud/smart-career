@@ -207,7 +207,7 @@ export default function CreateCompanyJobPage() {
 
         {/* Skills Configuration */}
         <div className="space-y-3 pt-2 border-t border-slate-100">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <label className="label mb-0">
                 ทักษะที่ต้องการสำหรับตำแหน่งงานนี้ (จับคู่กับทักษะใน GitHub และผลสอบของผู้สมัคร)
@@ -219,14 +219,14 @@ export default function CreateCompanyJobPage() {
             <button
               type="button"
               onClick={handleAddSkillRow}
-              className="btn-secondary text-xs shrink-0"
+              className="btn-secondary text-xs shrink-0 self-start sm:self-auto"
             >
               + เพิ่มทักษะ
             </button>
           </div>
 
           {selectedSkills.map((row, idx) => (
-            <div key={idx} className="grid grid-cols-3 gap-2 items-center">
+            <div key={idx} className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
               <select
                 className="input text-xs"
                 value={row.skillId}

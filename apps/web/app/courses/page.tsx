@@ -67,9 +67,6 @@ export default function CoursesAndRecommendationsPage() {
         <h1 className="text-2xl font-bold text-slate-900">
           คลังคอร์สเรียนและคำแนะนำปิดช่องว่างทักษะ (Skill Gaps & Courses)
         </h1>
-        <p className="text-sm text-slate-600">
-          วิเคราะห์ช่องว่างทักษะเทียบกับสายอาชีพเป้าหมายจากรายการทักษะใน GitHub ของคุณ แนะนำคอร์สเรียนสำหรับทักษะที่ยังขาด และทางเลือกสอบปฏิบัติเสริมเพื่อใช้ยื่นสมัครงาน
-        </p>
       </div>
 
       {/* Personalized Skill Gap Analysis */}
@@ -84,10 +81,10 @@ export default function CoursesAndRecommendationsPage() {
                 เทียบทักษะที่ตลาดงานสายนี้ต้องการสูงสุด กับทักษะที่ตรวจพบใน GitHub และผลสอบของคุณ
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
               <input
                 type="text"
-                className="input w-64"
+                className="input w-full sm:w-64"
                 value={targetRole}
                 onChange={(e) => setTargetRole(e.target.value)}
                 placeholder="เช่น Backend Engineer"
@@ -252,7 +249,7 @@ export default function CoursesAndRecommendationsPage() {
           <h2 className="text-lg font-bold text-slate-900">คอร์สเรียนคัดสรรตามทักษะ (Curated Courses)</h2>
           <div className="flex flex-wrap items-center gap-2.5">
             {/* Provider Filter (YOUTUBE / UDEMY) */}
-            <div className="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-semibold">
+            <div className="inline-flex flex-wrap rounded-xl bg-slate-100 p-1 text-xs font-semibold max-w-full">
               {[
                 { key: '', label: 'ทุกแพลตฟอร์ม' },
                 { key: 'YOUTUBE', label: 'YouTube (ฟรี)' },
@@ -277,7 +274,7 @@ export default function CoursesAndRecommendationsPage() {
             <select
               value={skillIdFilter}
               onChange={(e) => setSkillIdFilter(e.target.value)}
-              className="input max-w-[200px] text-xs"
+              className="input w-full sm:w-auto sm:max-w-[220px] text-xs"
               aria-label="กรองตามทักษะ"
             >
               <option value="">ทักษะทั้งหมด ({availableSkills.length})</option>
@@ -290,7 +287,7 @@ export default function CoursesAndRecommendationsPage() {
 
             <input
               type="text"
-              className="input max-w-xs"
+              className="input w-full sm:max-w-xs"
               placeholder="ค้นหาชื่อคอร์ส หรือทักษะ..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -301,7 +298,7 @@ export default function CoursesAndRecommendationsPage() {
         {loading ? (
           <div className="p-10 text-center text-slate-500">กำลังโหลดรายการคอร์สเรียน...</div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {courses.map((c: any) => (
               <div key={c.id} className="card flex flex-col justify-between space-y-4">
                 <div className="space-y-2.5">
